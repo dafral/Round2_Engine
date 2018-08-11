@@ -22,6 +22,9 @@
     <Filter Include="Sources\ImGui">
       <UniqueIdentifier>{e06ef449-d4cd-43aa-83f6-1c5ba659367a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Windows">
+      <UniqueIdentifier>{3520723e-13b2-4639-9515-af298228996f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -81,6 +84,12 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules\Game</Filter>
     </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Sources\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
     <ClInclude Include="ImGui\imconfig.h">
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
@@ -97,6 +106,9 @@
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ImGui\stb_truetype.h">
+      <Filter>Sources\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl.h">
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,6 +161,12 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Sources\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
     <ClCompile Include="ImGui\imgui.cpp">
       <Filter>Sources\ImGui</Filter>
     </ClCompile>
@@ -156,6 +174,9 @@
       <Filter>Sources\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Sources\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl.cpp">
       <Filter>Sources\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
