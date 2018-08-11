@@ -86,7 +86,6 @@
     <ClInclude Include="ImGui\stb_truetype.h" />
     <ClInclude Include="imgui_impl_sdl.h" />
     <ClInclude Include="ModuleEditor.h" />
-    <ClInclude Include="Window.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModulePhysics3D.h" />
@@ -125,7 +124,6 @@
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
