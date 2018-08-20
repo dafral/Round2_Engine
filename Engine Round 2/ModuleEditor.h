@@ -2,7 +2,11 @@
 #define __ModuleEditor_H__
 
 #include "Module.h"
-//#include "ImGui\imgui.h"
+#include <vector>
+
+class Panel;
+class PanelConfiguration;
+class PanelAbout;
 
 
 class ModuleEditor : public Module
@@ -19,16 +23,10 @@ public:
 
 	void Draw();
 
+	PanelConfiguration* configuration = nullptr;
+	PanelAbout* about = nullptr;
 
-
-	bool depth_test = true;
-	bool cull_face = true;
-	bool lighting = true;
-	bool color_material = true;
-	bool texture_2d = true;
-	bool blend = true;
-	bool dither = true;
-	bool wireframe = false;
+	std::vector<Panel*> panels;
 };
 
 #endif // __ModuleEditor_H__

@@ -25,6 +25,9 @@
     <Filter Include="Sources\Glew">
       <UniqueIdentifier>{2b210dcb-42f7-44bc-b807-29604c3a5650}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Panels">
+      <UniqueIdentifier>{6bab803b-4d7a-4fb2-817b-26b870883d03}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -120,6 +123,15 @@
     <ClInclude Include="glew\include\wglew.h">
       <Filter>Sources\Glew</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConfiguration.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelAbout.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -184,6 +196,12 @@
     </ClCompile>
     <ClCompile Include="imgui_impl_sdl.cpp">
       <Filter>Sources\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAbout.cpp">
+      <Filter>Sources\Panels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
