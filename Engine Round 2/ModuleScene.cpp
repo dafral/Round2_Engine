@@ -40,12 +40,7 @@ update_status ModuleScene::Update(float dt)
 	p.color = Green;
 	p.Render();
 
-	 // Drawing cube for testing
-	Cube cube(5, 5, 5);
-	cube.SetPos(0, 0, 0);
-	cube.Scale(1, 1, 1);
-	cube.color = Yellow;
-	cube.Render();
+	Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -53,5 +48,15 @@ update_status ModuleScene::Update(float dt)
 void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	
+}
+
+void ModuleScene::Draw()
+{
+	// Drawing cube for testing
+	Cube cube(5, 5, 5);
+	cube.SetPos(0, 0, 0);
+	cube.Scale(1, 1, 1);
+	cube.color = Yellow;
+	cube.Render();
 }
 
