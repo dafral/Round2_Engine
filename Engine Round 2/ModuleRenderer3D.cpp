@@ -124,6 +124,8 @@ bool ModuleRenderer3D::Init()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glEnable(GL_DITHER);
 	}
 
 	// Projection matrix for

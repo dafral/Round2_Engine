@@ -4,6 +4,8 @@
 #include "Primitive.h"
 #include "PhysBody3D.h"
 
+#include "glew\include\glew.h"
+
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
 
@@ -39,8 +41,6 @@ update_status ModuleScene::Update(float dt)
 	p.wire = false;
 	p.color = Green;
 	p.Render();
-
-	Draw();
 
 	return UPDATE_CONTINUE;
 }
