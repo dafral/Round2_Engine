@@ -22,6 +22,9 @@
     <Filter Include="Sources\ImGui">
       <UniqueIdentifier>{e06ef449-d4cd-43aa-83f6-1c5ba659367a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Glew">
+      <UniqueIdentifier>{2b210dcb-42f7-44bc-b807-29604c3a5650}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -104,6 +107,18 @@
     </ClInclude>
     <ClInclude Include="imgui_impl_sdl.h">
       <Filter>Sources\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\eglew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\glew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\glxew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="glew\include\wglew.h">
+      <Filter>Sources\Glew</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,12 +1,15 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+
+#include "glew\include\glew.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
+#pragma comment (lib, "glew/lib/glew32.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -28,6 +31,29 @@ bool ModuleRenderer3D::Init()
 	{
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
+	}
+
+	if (ret == true)
+	{
+		GLenum err = glewInit();
+		if (err != GL_NO_ERROR)
+		{
+			LOG("Glew library could not be initialized! Error: %s\n", gluErrorString(err));
+			ret = false;
+
+		}
+
+		else
+		{
+			LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+			LOG("Vendor: %s", glGetString(GL_VENDOR));
+			LOG("Renderer: %s", glGetString(GL_RENDERER));
+			LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+			LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+			ret = true;
+		}
+
 	}
 	
 	if(ret == true)
@@ -66,6 +92,9 @@ bool ModuleRenderer3D::Init()
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
+		//Initialize Blending
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//Check for error
 		error = glGetError();
 		if(error != GL_NO_ERROR)
@@ -94,6 +123,7 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 	}
 
 	// Projection matrix for
