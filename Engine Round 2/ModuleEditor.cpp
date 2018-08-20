@@ -83,19 +83,19 @@ void ModuleEditor::Draw()
 
 	ImGui::Text("Vendor: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_VENDOR));
+	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_VENDOR));
 
 	ImGui::Text("Renderer: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_RENDERER));
+	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_RENDERER));
 
 	ImGui::Text("OpenGL version supported: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_VERSION));
+	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_VERSION));
 
 	ImGui::Text("GLSL: ");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_SHADING_LANGUAGE_VERSION));
+	ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	if (ImGui::Checkbox("Depth Test", &depth_test))
 	{

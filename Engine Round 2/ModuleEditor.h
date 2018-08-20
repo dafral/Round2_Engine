@@ -19,6 +19,8 @@ public:
 
 	void Draw();
 
+
+
 	bool depth_test = true;
 	bool cull_face = true;
 	bool lighting = true;
