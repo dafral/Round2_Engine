@@ -28,6 +28,9 @@
     <Filter Include="Sources\Panels">
       <UniqueIdentifier>{6bab803b-4d7a-4fb2-817b-26b870883d03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\MathGeoLib">
+      <UniqueIdentifier>{534d71e7-d43c-4f41-99f5-7619696fb040}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -131,6 +134,15 @@
     </ClInclude>
     <ClInclude Include="PanelAbout.h">
       <Filter>Sources\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathBuildConfig.h">
+      <Filter>Sources\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathGeoLib.h">
+      <Filter>Sources\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="MathGeoLib\MathGeoLibFwd.h">
+      <Filter>Sources\MathGeoLib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
