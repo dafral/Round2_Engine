@@ -36,22 +36,3 @@ public:
 
 };
 
-class glCube
-{
-public:
-	void DrawCubeArrays();
-	void DrawCubeElements();
-};
-
-class SolidSphere
-{
-public:
-	std::vector<GLfloat> vertices;
-	std::vector<GLfloat> normals;
-	std::vector<GLfloat> texcoords;
-	std::vector<GLushort> indices;
-
-public:
-	SolidSphere(float radius, unsigned int rings, unsigned int sectors);
-	void draw(GLfloat x, GLfloat y, GLfloat z);
-};

@@ -144,6 +144,9 @@
     <ClInclude Include="MathGeoLib\MathGeoLibFwd.h">
       <Filter>Sources\MathGeoLib</Filter>
     </ClInclude>
+    <ClInclude Include="myPrimitives.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="myPrimitives.cpp">
+      <Filter>Sources\Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
