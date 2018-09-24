@@ -155,7 +155,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	App->scene_intro->Draw();
 	App->geometry->Draw();
+	App->editor->Draw();
 
 	/*if (debug_draw == true)
 	{
@@ -163,8 +165,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->DebugDraw();
 		EndDebugDraw();
 	}*/
-
-	App->editor->Draw();
 
 	SDL_GL_SwapWindow(App->window->window);
 	

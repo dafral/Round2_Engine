@@ -96,7 +96,7 @@ void ModuleEditor::Draw()
 
 		ImGui::EndDockspace();
 	}
-	ImGui::End();
 
+	ImGui::End();
 	ImGui::Render();
 }
