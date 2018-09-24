@@ -27,6 +27,5 @@ public:
 	void LoadGeometry(const char* path);
 	void Draw();
 
-	//char* path;
 	std::vector<Mesh> meshes;
 };

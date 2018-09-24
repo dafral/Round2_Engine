@@ -110,6 +110,22 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
 					App->renderer3D->OnResize(e.window.data1, e.window.data2);
+
+				break;
+			}
+
+			// In case if dropped file
+			case SDL_DROPFILE: 
+			{
+				char* dropped_file = e.drop.file;
+				// Shows directory of dropped file
+				//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir,	window);
+
+				App->geometry->LoadGeometry(dropped_file);
+
+				// Free dropped_filedir memory
+				SDL_free(dropped_file);
+				break;
 			}
 		}
 	}

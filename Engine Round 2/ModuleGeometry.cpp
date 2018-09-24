@@ -24,8 +24,6 @@ bool ModuleGeometry::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
-	LoadGeometry("BakerHouse.fbx");
-
 	return true;
 }
 
