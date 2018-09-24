@@ -147,6 +147,9 @@
     <ClInclude Include="myPrimitives.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleGeometry.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="myPrimitives.cpp">
       <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGeometry.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

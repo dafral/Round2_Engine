@@ -95,6 +95,7 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleGeometry.h" />
     <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="myPrimitives.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="ModuleGeometry.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />

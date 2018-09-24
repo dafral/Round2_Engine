@@ -103,7 +103,7 @@ void myCube::DrawCubeElements()
 							0, 0,-size,   0, 0,-size,   0, 0,-size,   0, 0,-size }; // v4,v7,v6,v5 (back)
 
 	// color array
-	GLfloat colors2[] = {		size, size, size,   size, size, 0,   size, 0, 0,   size, 0, size,   // v0,v1,v2,v3 (front)
+	GLfloat colors2[] = {	size, size, size,   size, size, 0,   size, 0, 0,   size, 0, size,   // v0,v1,v2,v3 (front)
 							size, size, size,   size, 0, size,   0, 0, size,   0, size, size,	 // v0,v3,v4,v5 (right)
 							size, size, size,   0, size, size,   0, size, 0,   size, size, 0,   // v0,v5,v6,v1 (top)
 							size, size, 0,   0, size, 0,   0, 0, 0,   size, 0, 0,				// v1,v6,v7,v2 (left)
@@ -126,7 +126,7 @@ void myCube::DrawCubeElements()
 	glVertexPointer(3, GL_FLOAT, 0, vertices2);
 
 	glPushMatrix();
-	glTranslatef(-2, -2, 0);                // move to bottom-left corner
+	//glTranslatef(-2, -2, 0);                // move to bottom-left corner
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, indices);
 

@@ -156,7 +156,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	App->scene_intro->Draw();
+	//App->scene_intro->Draw();
+
+	App->geometry->Draw();
 
 	/*if (debug_draw == true)
 	{
@@ -195,3 +197,4 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+
