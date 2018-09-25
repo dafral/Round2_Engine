@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "Globals.h"
 #include "Timer.h"
+
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -48,3 +49,5 @@ private:
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App;

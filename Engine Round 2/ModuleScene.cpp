@@ -4,7 +4,7 @@
 #include "ModuleScene.h"
 #include "myPrimitives.h"
 
-#include "glew\include\glew.h"
+#include "glew/include/glew.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -55,7 +55,6 @@ void ModuleScene::Draw()
 	// Cube
 	myCube cube;
 	cube.DrawCubeElements();
-
 }
 
 
