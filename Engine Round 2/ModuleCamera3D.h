@@ -1,9 +1,7 @@
 #pragma once
-
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
-#include "TextureMSAA.h"
 
 class ModuleCamera3D : public Module
 {
@@ -19,7 +17,9 @@ public:
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
 	float* GetViewMatrix();
-	TextureMSAA* GetSceneTexture();
+
+	//Camera controls
+	void MoveCamera();
 
 private:
 
@@ -28,7 +28,6 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-	TextureMSAA* scene_texture;
 
 private:
 

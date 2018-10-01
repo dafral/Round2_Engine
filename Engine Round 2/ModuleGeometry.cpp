@@ -39,6 +39,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
+
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		

@@ -9,7 +9,6 @@
 
 #include "PanelConfiguration.h"
 #include "PanelAbout.h"
-#include "PanelScene.h"
 
 //Constructor
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -26,7 +25,6 @@ bool ModuleEditor::Init()
 
 	panels.push_back(configuration = new PanelConfiguration(true));
 	panels.push_back(about = new PanelAbout(true));
-	panels.push_back(scene = new PanelScene(true));
 
 	return true;
 }
@@ -98,7 +96,7 @@ void ModuleEditor::Draw()
 
 		ImGui::EndDockspace();
 	}
-
 	ImGui::End();
+
 	ImGui::Render();
 }

@@ -2,8 +2,8 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 
-#include "glew/include/glew.h"
-#include "SDL/include/SDL_opengl.h"
+#include "glew\include\glew.h"
+#include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -40,6 +40,7 @@ bool ModuleRenderer3D::Init()
 		{
 			LOG("Glew library could not be initialized! Error: %s\n", gluErrorString(err));
 			ret = false;
+
 		}
 
 		else
@@ -154,9 +155,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	/*App->scene_intro->Draw();
 	App->geometry->Draw();
-	App->editor->Draw();*/
 
 	/*if (debug_draw == true)
 	{
@@ -165,8 +164,10 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		EndDebugDraw();
 	}*/
 
+	App->editor->Draw();
+
 	SDL_GL_SwapWindow(App->window->window);
-	App->camera->GetSceneTexture()->Bind();
+	
 	return UPDATE_CONTINUE;
 }
 

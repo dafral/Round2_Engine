@@ -4,7 +4,7 @@
 #include "ModuleScene.h"
 #include "myPrimitives.h"
 
-#include "glew/include/glew.h"
+#include "glew\include\glew.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -35,6 +35,13 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
+	// Plane
+	prPlane p(0, 1, 0, 0);
+	p.axis = false;
+	p.wire = false;
+	p.color = Green;
+	p.Render();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -45,16 +52,17 @@ void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleScene::Draw()
 {
-	// Plane
-	prPlane p(0, 1, 0, 0);
-	p.axis = false;
-	p.wire = false;
-	p.color = Green;
-	p.Render();
+	// Drawing cube for testing
+	/*Cube cube(5, 5, 5);
+	cube.SetPos(0, 0, 0);
+	cube.Scale(1, 1, 1);
+	cube.color = Yellow;
+	cube.Render();*/
 
-	// Cube
 	myCube cube;
+
 	cube.DrawCubeElements();
+
 }
 
 

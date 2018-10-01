@@ -10,6 +10,7 @@ public:
 	virtual ~PanelAbout();
 
 	void Draw();
+
 };
 
 #endif

@@ -22,19 +22,15 @@ ModuleCamera3D::~ModuleCamera3D()
 {}
 
 // -----------------------------------------------------------------
-
 bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	scene_texture = new TextureMSAA();
-	scene_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h);
 	return ret;
 }
 
 // -----------------------------------------------------------------
-
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
@@ -43,17 +39,17 @@ bool ModuleCamera3D::CleanUp()
 }
 
 // -----------------------------------------------------------------
-
 update_status ModuleCamera3D::Update(float dt)
 {
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
+	MoveCamera();
+
 	return UPDATE_CONTINUE;
 }
 
 // -----------------------------------------------------------------
-
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
@@ -73,7 +69,6 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 }
 
 // -----------------------------------------------------------------
-
 void ModuleCamera3D::LookAt( const vec3 &Spot)
 {
 	Reference = Spot;
@@ -85,8 +80,8 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 	CalculateViewMatrix();
 }
 
-// -----------------------------------------------------------------
 
+// -----------------------------------------------------------------
 void ModuleCamera3D::Move(const vec3 &Movement)
 {
 	Position += Movement;
@@ -96,23 +91,54 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 }
 
 // -----------------------------------------------------------------
-
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
 }
 
 // -----------------------------------------------------------------
-
 void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
 
-// ----------------------------------------------------------------
-
-TextureMSAA* ModuleCamera3D::GetSceneTexture() 
+void ModuleCamera3D::MoveCamera()
 {
-	return scene_texture;
+	//Forwards & Backwards
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
+	{
+		Position -= Z;
+		Reference -= Z;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
+	{
+		Position += Z;
+		Reference += Z;
+	}
+
+	//Left & Right
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+	{
+		Position -= X;
+		Reference -= X;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	{
+		Position += X;
+		Reference += X;
+	}
+
+	//Up & Down
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+	{
+		Position += Y;
+		Reference += Y;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+	{
+		Position -= Y;
+		Reference -= Y;
+	}
+
 }
