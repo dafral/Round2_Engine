@@ -40,6 +40,34 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {	
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("View"))
+		{
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Quit"))
+		{
+			return update_status::UPDATE_STOP;
+		}
+
+		ImGui::EndMainMenuBar();
+	}
+
+	// Rendering
+
+
 	return UPDATE_CONTINUE;
 }
 	
@@ -63,28 +91,20 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
-	if (ImGui::BeginMainMenuBar()) 
+	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
+	flags |= ImGuiWindowFlags_NoMove;
+	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+	if (ImGui::Begin("Dock", 0, flags))
 	{
-		if (ImGui::BeginMenu("File")) 
-		{
-			ImGui::EndMenu();
-		}
+		float h_offset = 6.0f;
+		float w_offset = 0.0f;
 
-		if (ImGui::BeginMenu("View"))
-		{
-			ImGui::EndMenu();
-		}
+		// Setting position on the screen
+		ImGui::SetWindowPos(ImVec2(w_offset, h_offset));
+		ImGui::SetWindowSize(ImVec2(App->window->GetScreenWidth() - w_offset, App->window->GetScreenHeight() - h_offset));
 
-		if (ImGui::BeginMenu("Help"))
-		{
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMainMenuBar();
-	}
-
-	if (ImGui::Begin("Panels"))
-	{
+		// Dock
 		ImGui::BeginDockspace();
 
 		for (std::vector<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)

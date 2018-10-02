@@ -162,11 +162,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		EndDebugDraw();
 	}*/
 
+	App->camera->GetSceneTexture()->Bind();
+
 	App->geometry->Draw();
 	App->scene_intro->Draw();
 	App->editor->Draw();
-
-	App->camera->GetSceneTexture()->Bind();
 
 	SDL_GL_SwapWindow(App->window->window);
 	

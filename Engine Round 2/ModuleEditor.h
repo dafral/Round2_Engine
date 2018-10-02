@@ -23,6 +23,8 @@ public:
 
 	void Draw();
 
+public:
+
 	PanelConfiguration* configuration = nullptr;
 	PanelAbout* about = nullptr;
 	PanelScene* scene = nullptr;
