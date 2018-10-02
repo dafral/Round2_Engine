@@ -63,27 +63,27 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::Draw()
 {
-	//if (ImGui::BeginMainMenuBar()) 
-	//{
-	//	if (ImGui::BeginMenu("File")) 
-	//	{
-	//		ImGui::EndMenu();
-	//	}
+	if (ImGui::BeginMainMenuBar()) 
+	{
+		if (ImGui::BeginMenu("File")) 
+		{
+			ImGui::EndMenu();
+		}
 
-	//	if (ImGui::BeginMenu("View"))
-	//	{
-	//		ImGui::EndMenu();
-	//	}
+		if (ImGui::BeginMenu("View"))
+		{
+			ImGui::EndMenu();
+		}
 
-	//	if (ImGui::BeginMenu("Help"))
-	//	{
-	//		ImGui::EndMenu();
-	//	}
+		if (ImGui::BeginMenu("Help"))
+		{
+			ImGui::EndMenu();
+		}
 
-	//	ImGui::EndMainMenuBar();
-	//}
+		ImGui::EndMainMenuBar();
+	}
 
-	if (ImGui::Begin("Panels", NULL, ImGuiWindowFlags_NoScrollbar))
+	if (ImGui::Begin("Panels"))
 	{
 		ImGui::BeginDockspace();
 
