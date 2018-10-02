@@ -153,6 +153,12 @@
     <ClInclude Include="ImGui\imgui_dock.h">
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="TextureMSAA.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelScene.h">
+      <Filter>Sources\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -232,6 +238,12 @@
     </ClCompile>
     <ClCompile Include="ImGui\imgui_dock.cpp">
       <Filter>Sources\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureMSAA.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelScene.cpp">
+      <Filter>Sources\Panels</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

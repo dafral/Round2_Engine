@@ -22,15 +22,20 @@ ModuleCamera3D::~ModuleCamera3D()
 {}
 
 // -----------------------------------------------------------------
+
 bool ModuleCamera3D::Start()
 {
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	scene_texture = new TextureMSAA();
+	scene_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h);
+
 	return ret;
 }
 
 // -----------------------------------------------------------------
+
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
@@ -39,6 +44,7 @@ bool ModuleCamera3D::CleanUp()
 }
 
 // -----------------------------------------------------------------
+
 update_status ModuleCamera3D::Update(float dt)
 {
 	// Recalculate matrix -------------
@@ -50,6 +56,7 @@ update_status ModuleCamera3D::Update(float dt)
 }
 
 // -----------------------------------------------------------------
+
 void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
 {
 	this->Position = Position;
@@ -69,6 +76,7 @@ void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool Rota
 }
 
 // -----------------------------------------------------------------
+
 void ModuleCamera3D::LookAt( const vec3 &Spot)
 {
 	Reference = Spot;
@@ -82,6 +90,7 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 
 
 // -----------------------------------------------------------------
+
 void ModuleCamera3D::Move(const vec3 &Movement)
 {
 	Position += Movement;
@@ -91,17 +100,21 @@ void ModuleCamera3D::Move(const vec3 &Movement)
 }
 
 // -----------------------------------------------------------------
+
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return &ViewMatrix;
 }
 
 // -----------------------------------------------------------------
+
 void ModuleCamera3D::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
 }
+
+// -----------------------------------------------------------------
 
 void ModuleCamera3D::MoveCamera()
 {
@@ -140,5 +153,11 @@ void ModuleCamera3D::MoveCamera()
 		Position -= Y;
 		Reference -= Y;
 	}
+}
 
+// ------------------------------------------------------------------
+
+TextureMSAA* ModuleCamera3D::GetSceneTexture()
+{
+	return scene_texture;
 }

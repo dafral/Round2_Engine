@@ -7,7 +7,7 @@
 class Panel;
 class PanelConfiguration;
 class PanelAbout;
-
+class PanelScene;
 
 class ModuleEditor : public Module
 {
@@ -25,6 +25,7 @@ public:
 
 	PanelConfiguration* configuration = nullptr;
 	PanelAbout* about = nullptr;
+	PanelScene* scene = nullptr;
 
 	std::vector<Panel*> panels;
 };
