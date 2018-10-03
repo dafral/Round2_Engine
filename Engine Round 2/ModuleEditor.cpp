@@ -47,13 +47,48 @@ update_status ModuleEditor::Update(float dt)
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::BeginMenu("Create"))
+		{
+			ImGui::Button("Cube");
+			ImGui::Button("Sphere");
+			ImGui::Button("Plane");
+			
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("View"))
 		{
+			bool scene = true;
+			
+			ImGui::Checkbox("Scene", &scene);
+
+			if (ImGui::Checkbox("Configuration", App->editor->configuration->getActive()))
+			{
+				App->editor->configuration->switchActive();
+				ImGui::CloseCurrentPopup();
+			}
+
+			if(ImGui::Checkbox("About", App->editor->about->getActive()))
+			{
+				App->editor->about->switchActive();
+			}
+
 			ImGui::EndMenu();
 		}
 
 		if (ImGui::BeginMenu("Help"))
 		{
+			if (ImGui::BeginMenu("About the engine"))
+			{
+				ImGui::Text("Prueba");
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::Button("Github Webpage"))
+			{
+				ShellExecute(0, 0, "https://github.com/dafral/Round2_Engine", 0, 0, SW_SHOW);
+			}
+
 			ImGui::EndMenu();
 		}
 

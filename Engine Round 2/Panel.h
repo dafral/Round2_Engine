@@ -13,6 +13,7 @@ public:
 
 	void virtual Draw() {};
 
+	bool* getActive() { return &active; };
 	void switchActive() { active != active; };
 
 	bool active;
