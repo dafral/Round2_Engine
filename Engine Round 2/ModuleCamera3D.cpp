@@ -52,6 +52,9 @@ update_status ModuleCamera3D::Update(float dt)
 
 	MoveCamera();
 
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+		RotateCamera();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -153,6 +156,45 @@ void ModuleCamera3D::MoveCamera()
 		Position -= Y;
 		Reference -= Y;
 	}
+}
+
+void ModuleCamera3D::RotateCamera()
+{
+	int oldX;
+	int oldY;
+
+	bool orb_x_inverted = false;
+	bool orb_y_inverted = false;
+
+	orb_x_inverted ? oldX = App->input->GetMouseXMotion() : oldX = -App->input->GetMouseXMotion();
+	orb_y_inverted ? oldY = App->input->GetMouseYMotion() : oldY = -App->input->GetMouseYMotion();
+
+	Position -= Reference;
+
+	if (oldX != 0)
+	{
+		float DeltaX = (float)oldX;
+
+		X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+		Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	if (oldY != 0)
+	{
+		float DeltaY = (float)oldY;
+
+		Y = rotate(Y, DeltaY, X);
+		Z = rotate(Z, DeltaY, X);
+
+		if (Y.y < 0.0f)
+		{
+			Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+			Y = cross(Z, X);
+		}
+	}
+
+	Position = Reference + Z * length(Position);
 }
 
 // ------------------------------------------------------------------

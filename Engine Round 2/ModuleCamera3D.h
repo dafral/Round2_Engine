@@ -22,6 +22,7 @@ public:
 
 	//Camera controls
 	void MoveCamera();
+	void RotateCamera();
 
 private:
 
