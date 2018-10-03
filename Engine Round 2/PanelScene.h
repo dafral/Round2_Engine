@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef __P_SCENE_H__
 #define __P_SCENE_H__
 

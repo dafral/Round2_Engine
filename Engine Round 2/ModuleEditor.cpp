@@ -9,6 +9,8 @@
 
 #include "PanelConfiguration.h"
 #include "PanelAbout.h"
+#include "PanelProperties.h"
+#include "PanelConsole.h"
 #include "PanelScene.h"
 
 //Constructor
@@ -26,6 +28,8 @@ bool ModuleEditor::Init()
 
 	panels.push_back(configuration = new PanelConfiguration(true));
 	panels.push_back(about = new PanelAbout(true));
+	panels.push_back(properties = new PanelProperties(true));
+	panels.push_back(console = new PanelConsole(true));
 	panels.push_back(scene = new PanelScene(true));
 
 	return true;
@@ -67,10 +71,23 @@ update_status ModuleEditor::Update(float dt)
 				App->editor->configuration->switchActive();
 				ImGui::CloseCurrentPopup();
 			}
+			
+			if (ImGui::Checkbox("Properties", App->editor->properties->getActive()))
+			{
+				App->editor->properties->switchActive();
+				ImGui::CloseCurrentPopup();
+			}
+
+			if (ImGui::Checkbox("Console", App->editor->console->getActive()))
+			{
+				App->editor->console->switchActive();
+				ImGui::CloseCurrentPopup();
+			}
 
 			if(ImGui::Checkbox("About", App->editor->about->getActive()))
 			{
 				App->editor->about->switchActive();
+				ImGui::CloseCurrentPopup();
 			}
 
 			ImGui::EndMenu();

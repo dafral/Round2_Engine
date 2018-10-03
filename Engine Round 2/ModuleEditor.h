@@ -7,6 +7,8 @@
 class Panel;
 class PanelConfiguration;
 class PanelAbout;
+class PanelProperties;
+class PanelConsole;
 class PanelScene;
 
 class ModuleEditor : public Module
@@ -27,6 +29,8 @@ public:
 
 	PanelConfiguration* configuration = nullptr;
 	PanelAbout* about = nullptr;
+	PanelProperties* properties = nullptr;
+	PanelConsole* console = nullptr;
 	PanelScene* scene = nullptr;
 
 	std::vector<Panel*> panels;

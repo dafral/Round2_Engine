@@ -111,6 +111,8 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
     <ClInclude Include="PanelConfiguration.h" />
+    <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="Primitive.h" />
@@ -141,9 +143,11 @@
     <ClCompile Include="myPrimitives.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
+    <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
