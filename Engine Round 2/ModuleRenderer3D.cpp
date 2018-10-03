@@ -22,7 +22,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 // Called before render is available
 bool ModuleRenderer3D::Init()
 {
-	LOG("Creating 3D Renderer context");
+	CONSOLELOG("Creating 3D Renderer context");
 	bool ret = true;
 	
 	//Create context
@@ -176,7 +176,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
-	LOG("Destroying 3D Renderer");
+	CONSOLELOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
 

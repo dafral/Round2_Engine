@@ -70,7 +70,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 				{
 					if (new_mesh->mFaces[i].mNumIndices != 3)
 					{
-						LOG("WARNING, geometry face with != 3 indices!");
+						CONSOLELOG("WARNING, geometry face with != 3 indices!");
 					}
 					else
 					{

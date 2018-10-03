@@ -11,6 +11,8 @@ public:
 
 	void Draw();
 
+	void ConsoleLog(const char* log);
+
 };
 
 #endif

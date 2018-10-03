@@ -13,6 +13,9 @@
 #include "ModulePhysics3D.h"
 #include "ModuleEditor.h"
 #include "ModuleGeometry.h"
+#include "PanelConsole.h"
+
+#include "ImGui/imgui.h"
 
 class Application
 {
@@ -26,6 +29,8 @@ public:
 	ModulePhysics3D* physics;
 	ModuleEditor* editor;
 	ModuleGeometry* geometry;
+
+	ImGuiTextBuffer consoleText;
 
 private:
 

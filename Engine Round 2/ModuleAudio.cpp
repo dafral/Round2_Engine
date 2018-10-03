@@ -14,7 +14,7 @@ ModuleAudio::~ModuleAudio()
 // Called before render is available
 bool ModuleAudio::Init()
 {
-	LOG("Loading Audio Mixer");
+	CONSOLELOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
 
@@ -47,7 +47,7 @@ bool ModuleAudio::Init()
 // Called before quitting
 bool ModuleAudio::CleanUp()
 {
-	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
+	CONSOLELOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
 	if(music != NULL)
 	{

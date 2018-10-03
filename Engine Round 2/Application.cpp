@@ -30,7 +30,6 @@ Application::Application()
 	AddModule(renderer3D);
 	AddModule(geometry);
 	AddModule(editor);
-
 }
 
 Application::~Application()
@@ -58,7 +57,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	LOG("Application Start --------------");
+	CONSOLELOG("Application Start --------------");
 	item = list_modules.getFirst();
 
 	while(item != NULL && ret == true)

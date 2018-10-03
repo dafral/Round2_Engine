@@ -25,7 +25,7 @@ ModuleCamera3D::~ModuleCamera3D()
 
 bool ModuleCamera3D::Start()
 {
-	LOG("Setting up the camera");
+	CONSOLELOG("Setting up the camera");
 	bool ret = true;
 
 	scene_texture = new TextureMSAA();
@@ -38,7 +38,7 @@ bool ModuleCamera3D::Start()
 
 bool ModuleCamera3D::CleanUp()
 {
-	LOG("Cleaning camera");
+	CONSOLELOG("Cleaning camera");
 
 	return true;
 }
