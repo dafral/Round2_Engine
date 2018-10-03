@@ -10,6 +10,13 @@ public:
 	virtual ~PanelProperties();
 
 	void Draw();
+
+	void SaveMeshInfo(const char* file_name, int nMesh, int nVertices);
+
+	const char* gName = " ";
+	int gNumMesh = 0;
+	int gNumVert = 0;
+
 };
 
 #endif // !__P_PROPERTIES_H__

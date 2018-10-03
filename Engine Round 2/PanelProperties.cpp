@@ -14,13 +14,46 @@ void PanelProperties::Draw()
 {
 	if (ImGui::BeginDock("Properties", &active))
 	{
-		ImGui::Text("Transformation: ");
+		//Transformation information
 
-		ImGui::Text("Geometry: ");
+		ImGui::Text("Transformation");
 
-		ImGui::Text("Texture: ");
+		ImGui::Separator();
+
+		//Geometry information
+
+		ImGui::Text("Geometry");
+
+		ImGui::Text("File name: ");
+		ImGui::SameLine();
+		ImGui::Text(gName);
+
+		ImGui::Text("Number of meshes: ");
+		ImGui::SameLine();
+		ImGui::Text("%d", gNumMesh);
+
+		ImGui::Text("Number of vertices: ");
+		ImGui::SameLine();
+		ImGui::Text("%d", gNumVert);
+
+		ImGui::Separator();
+
+		//Texture information
+
+		ImGui::Text("Texture");
+
+		ImGui::Text("Texture name: ");
+
+		ImGui::Text("Snapshot: ");
 
 	}
 
 	ImGui::EndDock();
+}
+
+void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertices)
+{
+	gName = file_name;
+	gNumMesh = nMesh;
+	gNumVert = nVertices;
 }

@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleGeometry.h"
+#include "PanelProperties.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -38,7 +39,7 @@ bool ModuleGeometry::CleanUp()
 void ModuleGeometry::LoadGeometry(const char* path)
 {
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-
+	int totalvertices = 0;
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -52,6 +53,8 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			m.num_vertices = new_mesh->mNumVertices;
 			m.vertices = new float[m.num_vertices * 3];
 			memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices * 3);
+
+			totalvertices += m.num_vertices;
 			LOG("New mesh with %d vertices", m.num_vertices);
 
 			glGenBuffers(1, (GLuint*) &(m.id_vertices));
@@ -84,6 +87,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			meshes.push_back(m);
 		}
 
+		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices);
 		//aiReleaseImport(scene);
 	}
 	else
