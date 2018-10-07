@@ -117,9 +117,6 @@ update_status ModuleEditor::Update(float dt)
 		ImGui::EndMainMenuBar();
 	}
 
-	// Rendering
-
-
 	return UPDATE_CONTINUE;
 }
 	
@@ -146,6 +143,7 @@ void ModuleEditor::Draw()
 	ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar;
 	flags |= ImGuiWindowFlags_NoMove;
 	flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+	flags |= ImGuiWindowFlags_NoResize;
 
 	if (ImGui::Begin("Dock", 0, flags))
 	{

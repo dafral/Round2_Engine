@@ -2,8 +2,8 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 
-#include "glew\include\glew.h"
-#include "SDL\include\SDL_opengl.h"
+#include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -53,7 +53,6 @@ bool ModuleRenderer3D::Init()
 
 			ret = true;
 		}
-
 	}
 	
 	if(ret == true)
@@ -162,11 +161,11 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		EndDebugDraw();
 	}*/
 
-	App->camera->GetSceneTexture()->Bind();
-
 	App->geometry->Draw();
 	App->scene_intro->Draw();
 	App->editor->Draw();
+
+	App->camera->GetSceneTexture()->Bind();
 
 	SDL_GL_SwapWindow(App->window->window);
 	
