@@ -52,9 +52,9 @@ void ModuleScene::Draw()
 	p.color = Green;
 	p.Render();
 
-	// Cube
-	myCube cube;
-	cube.DrawCubeElements();
+	//// Cube
+	//myCube cube;
+	//cube.DrawCubeElements();
 }
 
 

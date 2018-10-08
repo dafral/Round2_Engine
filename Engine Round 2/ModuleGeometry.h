@@ -2,6 +2,11 @@
 #include "Module.h"
 #include "Globals.h"
 
+struct Texture
+{
+	uint id_texture = 0;
+};
+
 struct Mesh
 {
 	uint id_vertices = 0; // id in VRAM
@@ -11,6 +16,10 @@ struct Mesh
 	uint id_indices = 0; // id in VRAM
 	uint num_vertices = 0;
 	float* vertices = nullptr;
+
+	uint id_uvs = 0; // id in VRAM
+	uint num_uvs = 0;
+	float* texture_coords = nullptr;
 };
 
 
@@ -25,7 +34,9 @@ public:
 	bool CleanUp();
 
 	void LoadGeometry(const char* path);
+	void LoadTexture(const char* path);
 	void Draw();
 
 	std::vector<Mesh> meshes;
+	Texture tex;
 };

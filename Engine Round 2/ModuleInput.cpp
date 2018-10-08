@@ -118,10 +118,22 @@ update_status ModuleInput::PreUpdate(float dt)
 			case SDL_DROPFILE: 
 			{
 				char* dropped_file = e.drop.file;
-				// Shows directory of dropped file
-				//SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "File dropped on window", dropped_filedir,	window);
+				std::string str = e.drop.file;
 
-				App->geometry->LoadGeometry(dropped_file);
+				int dot_pos = str.find_last_of(".");
+				std::string extension = str.substr(dot_pos + 1, 3);
+
+				if (extension == "fbx" || extension == "FBX") {
+					LOG("Dropped file: %s", dropped_file);
+					App->geometry->LoadGeometry(dropped_file);
+				}
+				else if (extension == "png" || extension == "PNG") {
+					LOG("Dropped texture: %s", dropped_file);
+					App->geometry->LoadTexture(dropped_file);
+				}
+				else {
+					CONSOLELOG("Invalid type of file dropped. This engine only supports FBX and PNG files!");
+				}
 
 				// Free dropped_filedir memory
 				SDL_free(dropped_file);
