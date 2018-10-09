@@ -13,9 +13,9 @@
 #include "Devil/include/IL/ilut.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
-#pragma comment (lib, "Devil/lib/x86/Release/DevIL.lib")
-#pragma comment (lib, "Devil/lib/x86/Release/ILU.lib")
-#pragma comment (lib, "Devil/lib/x86/Release/ILUT.lib")
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment (lib, "Devil/libx86/ILU.lib")
+#pragma comment (lib, "Devil/libx86/ILUT.lib")
 
 //Constructor
 ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
