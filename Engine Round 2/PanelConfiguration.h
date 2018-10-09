@@ -10,6 +10,10 @@ public:
 	virtual ~PanelConfiguration();
 
 	void Draw();
+	void RendererConfig();
+	void WindowConfig();
+	void InputConfig();
+	void TexturesConfig();
 
 	bool depth_test = true;
 	bool cull_face = true;

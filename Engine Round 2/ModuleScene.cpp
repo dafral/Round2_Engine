@@ -47,9 +47,9 @@ void ModuleScene::Draw()
 {
 	// Plane
 	prPlane p(0, 1, 0, 0);
-	p.axis = false;
+	p.axis = true;
 	p.wire = false;
-	p.color = Green;
+	p.color = White;
 	p.Render();
 
 	//// Cube
