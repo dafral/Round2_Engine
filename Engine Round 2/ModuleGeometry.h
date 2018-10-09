@@ -37,6 +37,7 @@ public:
 	void LoadTexture(const char* path);
 	void Draw();
 
+private:
 	std::vector<Mesh> meshes;
 	Texture tex;
 };

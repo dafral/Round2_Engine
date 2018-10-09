@@ -72,13 +72,14 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			// load buffer for vertices
 			glGenBuffers(1, (GLuint*) &(m.id_vertices));
 			glBindBuffer(GL_ARRAY_BUFFER, m.id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float)*m.num_vertices * 3, m.vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_vertices * 3, m.vertices, GL_STATIC_DRAW);
 
 			// copy indices
 			if (new_mesh->HasFaces())
 			{
 				m.num_indices = new_mesh->mNumFaces * 3;
 				m.indices = new uint[m.num_indices]; // assume each face is a triangle
+
 				for (uint i = 0; i < new_mesh->mNumFaces; i++)
 				{
 					if (new_mesh->mFaces[i].mNumIndices != 3)
@@ -94,7 +95,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 				// load buffer for indices
 				glGenBuffers(1, (GLuint*) &(m.id_indices));
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.id_indices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint)*m.num_indices, m.indices, GL_STATIC_DRAW);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m.num_indices, m.indices, GL_STATIC_DRAW);
 			}
 
 			// copy uvs
@@ -145,11 +146,7 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 		}
 		else
 		{
-			// Enabling texture
-			glEnable(GL_TEXTURE_2D);
-
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 			glGenTextures(1, &tex.id_texture);
 			glBindTexture(GL_TEXTURE_2D, tex.id_texture);
 
@@ -173,6 +170,8 @@ void ModuleGeometry::Draw()
 {
 	for (int i = 0; i < meshes.size(); i++)
 	{
+		glEnable(GL_TEXTURE_2D);
+
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, meshes[i].id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -191,5 +190,7 @@ void ModuleGeometry::Draw()
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		glDisable(GL_TEXTURE_2D);
 	}
 }

@@ -31,11 +31,12 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
+	bool orb_x_inverted, orb_y_inverted, wheel_inverted;
 
 private:
 
 	mat4x4 ViewMatrix, ViewMatrixInverse;
-	float x;
+	float x, sensitivity;
 	bool positive;
 	TextureMSAA* scene_texture = nullptr;
 };

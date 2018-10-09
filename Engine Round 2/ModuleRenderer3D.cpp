@@ -161,8 +161,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		EndDebugDraw();
 	}*/
 
-	App->geometry->Draw();
 	App->scene_intro->Draw();
+	App->geometry->Draw();
 	App->editor->Draw();
 
 	App->camera->GetSceneTexture()->Bind();

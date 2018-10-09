@@ -16,6 +16,11 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 
 	positive = true;
 	x = 0;
+
+	sensitivity = 0.25;
+	orb_x_inverted = false;
+	orb_y_inverted = false;
+	wheel_inverted = false;
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -47,13 +52,17 @@ bool ModuleCamera3D::CleanUp()
 
 update_status ModuleCamera3D::Update(float dt)
 {
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
-
 	MoveCamera();
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		RotateCamera();
+
+	// Look at Target
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+		LookAt({ 0, 0, 0 });
+
+	// Recalculate matrix -------------
+	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
@@ -96,10 +105,19 @@ void ModuleCamera3D::LookAt( const vec3 &Spot)
 
 void ModuleCamera3D::Move(const vec3 &Movement)
 {
+	vec3 newPos(0, 0, 0);
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * sensitivity;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * sensitivity;
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * sensitivity;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * sensitivity;
+
+	Position += newPos;
+	Reference += newPos;
+
 	Position += Movement;
 	Reference += Movement;
-
-	CalculateViewMatrix();
 }
 
 // -----------------------------------------------------------------
@@ -124,37 +142,37 @@ void ModuleCamera3D::MoveCamera()
 	//Forwards & Backwards
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
 	{
-		Position -= Z;
-		Reference -= Z;
+		Position -= Z * sensitivity;
+		Reference -= Z * sensitivity;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
 	{
-		Position += Z;
-		Reference += Z;
+		Position += Z * sensitivity;
+		Reference += Z * sensitivity;
 	}
 
 	//Left & Right
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
-		Position -= X;
-		Reference -= X;
+		Position -= X * sensitivity;
+		Reference -= X * sensitivity;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		Position += X;
-		Reference += X;
+		Position += X * sensitivity;
+		Reference += X * sensitivity;
 	}
 
 	//Up & Down
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
 	{
-		Position += Y;
-		Reference += Y;
+		Position += Y * sensitivity;
+		Reference += Y * sensitivity;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 	{
-		Position -= Y;
-		Reference -= Y;
+		Position -= Y * sensitivity;
+		Reference -= Y * sensitivity;
 	}
 }
 
@@ -163,9 +181,6 @@ void ModuleCamera3D::RotateCamera()
 	int oldX;
 	int oldY;
 
-	bool orb_x_inverted = false;
-	bool orb_y_inverted = false;
-
 	orb_x_inverted ? oldX = App->input->GetMouseXMotion() : oldX = -App->input->GetMouseXMotion();
 	orb_y_inverted ? oldY = App->input->GetMouseYMotion() : oldY = -App->input->GetMouseYMotion();
 
@@ -173,7 +188,7 @@ void ModuleCamera3D::RotateCamera()
 
 	if (oldX != 0)
 	{
-		float DeltaX = (float)oldX;
+		float DeltaX = (float)oldX * sensitivity;
 
 		X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 		Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
@@ -182,7 +197,7 @@ void ModuleCamera3D::RotateCamera()
 
 	if (oldY != 0)
 	{
-		float DeltaY = (float)oldY;
+		float DeltaY = (float)oldY * sensitivity;
 
 		Y = rotate(Y, DeltaY, X);
 		Z = rotate(Z, DeltaY, X);
