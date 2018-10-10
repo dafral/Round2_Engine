@@ -107,3 +107,61 @@ float ModuleWindow::GetScreenHeight()
 {
 	return height;
 }
+
+float ModuleWindow::GetBrightness()
+{
+	return SDL_GetWindowBrightness(window);
+}
+
+//float ModuleWindow::GetOpacity()
+//{
+//
+//}
+
+void ModuleWindow::SetScreenWidth(float new_width)
+{
+	width = new_width;
+}
+
+void ModuleWindow::SetScreenHeight(float new_height)
+{
+	height = new_height;
+}
+
+void ModuleWindow::SetBrightness(float new_bright)
+{
+	SDL_SetWindowBrightness(window, new_bright);
+}
+
+
+bool ModuleWindow::GetBordered()
+{
+	return bordered;
+}
+
+bool ModuleWindow::GetFullscreen()
+{
+	return fullscreen;
+}
+
+bool ModuleWindow::GetResizable()
+{
+	return resizable;
+}
+
+void ModuleWindow::SwitchBordered()
+{
+	bordered = !bordered;
+	SDL_SetWindowBordered(window, (SDL_bool)bordered);
+}
+
+void ModuleWindow::SwitchFullscreen()
+{
+	fullscreen = !fullscreen;
+	SDL_SetWindowFullscreen(window, fullscreen);
+}
+
+void ModuleWindow::SwitchResizable()
+{
+	resizable = !resizable;
+}

@@ -15,6 +15,14 @@ public:
 	void InputConfig();
 	void TexturesConfig();
 
+	//window
+	float brightness;
+	float width;
+	float height;
+	bool bordered = false;
+	bool fullscreen = false;
+	bool resizable = true;
+
 	bool depth_test = true;
 	bool cull_face = true;
 	bool lighting = true;

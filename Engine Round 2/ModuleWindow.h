@@ -22,6 +22,22 @@ public:
 
 	float GetScreenWidth();
 	float GetScreenHeight();
+	float GetBrightness();
+	//float GetOpacity();
+
+
+	void SetScreenWidth(float new_width);
+	void SetScreenHeight(float new_height);
+	void SetBrightness(float new_bright);
+	//void SetOpacity(float new_op);
+
+	bool GetBordered();
+	bool GetFullscreen();
+	bool GetResizable();
+
+	void SwitchBordered();
+	void SwitchFullscreen();
+	void SwitchResizable();
 
 public:
 	//The window we'll be rendering to
@@ -34,6 +50,11 @@ private:
 
 	float width = 0.0f;
 	float height = 0.0f;
+
+public:
+	bool bordered = true;
+	bool fullscreen = false;
+	bool resizable = true;
 };
 
 #endif // __ModuleWindow_H__
