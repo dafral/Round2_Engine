@@ -139,40 +139,47 @@ void ModuleCamera3D::CalculateViewMatrix()
 
 void ModuleCamera3D::MoveCamera()
 {
+	float speed = sensitivity;
+
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) speed = sensitivity * 2;
+
 	//Forwards & Backwards
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
 	{
-		Position -= Z * sensitivity;
-		Reference -= Z * sensitivity;
+		Position -= Z * speed;
+		Reference -= Z * speed;
 	}
+
 	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
 	{
-		Position += Z * sensitivity;
-		Reference += Z * sensitivity;
+		Position += Z * speed;
+		Reference += Z * speed;
 	}
 
 	//Left & Right
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
-		Position -= X * sensitivity;
-		Reference -= X * sensitivity;
+		Position -= X * speed;
+		Reference -= X * speed;
 	}
+
 	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		Position += X * sensitivity;
-		Reference += X * sensitivity;
+		Position += X * speed;
+		Reference += X * speed;
 	}
 
 	//Up & Down
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
 	{
-		Position += Y * sensitivity;
-		Reference += Y * sensitivity;
+		Position += Y * speed;
+		Reference += Y * speed;
 	}
+
 	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
 	{
-		Position -= Y * sensitivity;
-		Reference -= Y * sensitivity;
+		Position -= Y * speed;
+		Reference -= Y * speed;
 	}
 }
 
@@ -210,6 +217,21 @@ void ModuleCamera3D::RotateCamera()
 	}
 
 	Position = Reference + Z * length(Position);
+}
+
+void ModuleCamera3D::ZoomCamera(int mouse_z)
+{
+	if (mouse_z == 1)
+	{
+		Position -= Z * sensitivity;
+		Reference -= Z * sensitivity;
+	}
+
+	else if (mouse_z == -1)
+	{
+		Position += Z * sensitivity;
+		Reference += Z * sensitivity;
+	}
 }
 
 // ------------------------------------------------------------------

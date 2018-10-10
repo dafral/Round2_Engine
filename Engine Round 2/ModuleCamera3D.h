@@ -23,6 +23,7 @@ public:
 	//Camera controls
 	void MoveCamera();
 	void RotateCamera();
+	void ZoomCamera(int mouse_z);
 
 private:
 
