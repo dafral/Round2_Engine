@@ -25,6 +25,9 @@ public:
 	void RotateCamera();
 	void ZoomCamera(int mouse_z);
 
+	float GetSensitivity();
+	void SetSensitivity(float new_sen);
+
 private:
 
 	void CalculateViewMatrix();

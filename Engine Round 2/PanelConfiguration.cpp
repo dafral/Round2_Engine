@@ -137,7 +137,19 @@ void PanelConfiguration::InputConfig()
 {
 	if (ImGui::CollapsingHeader("Input"))
 	{
+		ImGui::Text("Mouse coords:\nX: %d\tY: %d", App->input->GetMouseX(), App->input->GetMouseY());
 
+		ImGui::Separator();
+
+		ImGui::Text("Camera configuration");
+		ImGui::Checkbox("Invert X axis", &App->camera->orb_x_inverted);
+		ImGui::Checkbox("Invert Y axis", &App->camera->orb_y_inverted);
+		ImGui::Checkbox("Invert zoom", &App->camera->wheel_inverted);
+
+		sensitivity = App->camera->GetSensitivity();
+
+		if (ImGui::SliderFloat("Camera sensitivity", &sensitivity, 0.10f, 1.00f))
+			App->camera->SetSensitivity(sensitivity);
 	}
 }
 

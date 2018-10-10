@@ -221,17 +221,29 @@ void ModuleCamera3D::RotateCamera()
 
 void ModuleCamera3D::ZoomCamera(int mouse_z)
 {
-	if (mouse_z == 1)
+	if (mouse_z == -1)
 	{
-		Position -= Z * sensitivity;
-		Reference -= Z * sensitivity;
+		wheel_inverted ? Position -= Z * sensitivity : Position += Z * sensitivity;
+		wheel_inverted ? Reference -= Z * sensitivity : Position += Z * sensitivity;
 	}
 
-	else if (mouse_z == -1)
+	else if (mouse_z == 1)
 	{
-		Position += Z * sensitivity;
-		Reference += Z * sensitivity;
+		wheel_inverted ? Position += Z * sensitivity : Position -= Z * sensitivity;
+		wheel_inverted ? Reference += Z * sensitivity : Position -= Z * sensitivity;
 	}
+}
+
+// ------------------------------------------------------------------
+
+float ModuleCamera3D::GetSensitivity()
+{
+	return sensitivity;
+}
+
+void ModuleCamera3D::SetSensitivity(float new_sen)
+{
+	sensitivity = new_sen;
 }
 
 // ------------------------------------------------------------------

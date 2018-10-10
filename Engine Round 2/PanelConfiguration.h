@@ -23,6 +23,9 @@ public:
 	bool fullscreen = false;
 	bool resizable = true;
 
+	//input
+	float sensitivity;
+
 	bool depth_test = true;
 	bool cull_face = true;
 	bool lighting = true;
