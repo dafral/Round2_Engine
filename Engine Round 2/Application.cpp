@@ -46,6 +46,7 @@ Application::~Application()
 bool Application::Init()
 {
 	bool ret = true;
+	fps_timer.Start();
 
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
@@ -80,6 +81,21 @@ void Application::PrepareUpdate()
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	fps_counter++;
+
+	if (fps_timer.Read() >= 1000) // 1 sec
+	{
+		last_frame_fps = fps_counter;
+		fps_counter = 0;
+		fps_timer.Start();
+	}
+
+	// FPS cap
+	int frame_ms = (1000 / App->editor->configuration->GetFPSCap()) - ms_timer.Read();
+	if (frame_ms > 0) SDL_Delay(frame_ms);
+
+	App->editor->configuration->AddFps(last_frame_fps);
+	App->editor->configuration->AddMs(ms_timer.Read());
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

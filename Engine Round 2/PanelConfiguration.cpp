@@ -19,6 +19,9 @@ void PanelConfiguration::Draw()
 {
 	if (ImGui::BeginDock("Configuration", &active))
 	{
+		ApplicationConfig();
+		ImGui::Separator();
+
 		RendererConfig();
 		ImGui::Separator();
 
@@ -34,9 +37,56 @@ void PanelConfiguration::Draw()
 	ImGui::EndDock();
 }
 
+void PanelConfiguration::AddFps(float fps)
+{
+	if (fps_buffer.size() > 50)
+		fps_buffer.erase(fps_buffer.begin());
+
+	fps_buffer.push_back(fps);
+}
+
+void PanelConfiguration::AddMs(float ms)
+{
+	if (ms_buffer.size() > 50)
+		ms_buffer.erase(ms_buffer.begin());
+
+	ms_buffer.push_back(ms);
+}
+
+int PanelConfiguration::GetFPSCap()
+{
+	if (fps_cap == 0) return 60;
+	else return fps_cap;
+}
+
+void PanelConfiguration::ApplicationConfig()
+{
+	if (ImGui::CollapsingHeader("Application"))
+	{
+		char title[25];
+
+		ImGui::SliderInt(" Max FPS", &fps_cap, 0, 100);
+
+		ImGui::Text("Limit Framerate:");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "%i", fps_cap);
+
+		//fps
+		sprintf_s(title, 25, "Framerate %.1f", fps_buffer[fps_buffer.size() - 1]);
+		ImGui::PlotHistogram("##Framerate", &fps_buffer[0], fps_buffer.size(), 0, title, 0.0f, 100.0f, ImVec2(300, 120));
+
+		ImGui::SameLine();
+
+		// dt
+		sprintf_s(title, 25, "Miliseconds %.1f", ms_buffer[ms_buffer.size() - 1]);
+		ImGui::PlotHistogram("##Dt", &ms_buffer[0], ms_buffer.size(), 0, title, 0.0f, 100.0f, ImVec2(300, 120));
+	}
+}
+
 void PanelConfiguration::RendererConfig()
 {
-	if (ImGui::CollapsingHeader("Renderer")) {
+	if (ImGui::CollapsingHeader("Renderer"))
+	{
 
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{

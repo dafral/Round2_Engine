@@ -10,10 +10,21 @@ public:
 	virtual ~PanelConfiguration();
 
 	void Draw();
+
+	void ApplicationConfig();
 	void RendererConfig();
 	void WindowConfig();
 	void InputConfig();
 	void TexturesConfig();
+
+	void AddFps(float fps);
+	void AddMs(float ms);
+	int GetFPSCap();
+
+	//application
+	std::vector<float> fps_buffer;
+	std::vector<float> ms_buffer;
+	int fps_cap = 0;
 
 	//window
 	float brightness;
