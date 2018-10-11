@@ -32,6 +32,9 @@ void PanelConfiguration::Draw()
 		ImGui::Separator();
 
 		TexturesConfig();
+		ImGui::Separator();
+
+		AboutConfig();
 	}
 
 	ImGui::EndDock();
@@ -208,5 +211,83 @@ void PanelConfiguration::TexturesConfig()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 
+	}
+}
+
+void PanelConfiguration::AboutConfig()
+{
+	if (ImGui::CollapsingHeader("About"))
+	{
+		//Software
+		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Software");
+		ImGui::Separator();
+
+		ImGui::Text("Glew version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GLEW_VERSION));
+
+		ImGui::Text("GLSL: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+		ImGui::Text("SDL version: ");
+		ImGui::SameLine();
+		SDL_version version;
+		SDL_VERSION(&version);
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%d.%d.%d", version.major, version.minor, version.patch);
+
+		ImGui::Text("OpenGL version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_VERSION));
+
+		ImGui::Separator();
+
+		//Hardware
+		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Hardware");
+		ImGui::Separator();
+
+		//CPU 
+		ImGui::Text("Number of logical CPU cores : ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%d (Cache: %dkb)", SDL_GetCPUCount(), SDL_GetCPUCacheLineSize());
+
+		//RAM
+		ImGui::Text("Number of system RAM: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%dGb", SDL_GetCPUCount());
+
+		//CAPS
+		ImGui::Text("Caps: ");
+		ImGui::SameLine();
+		if (SDL_Has3DNow)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "3DNow");
+		ImGui::SameLine();
+		if (SDL_HasAVX)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "AVX");
+		ImGui::SameLine();
+		if (SDL_HasAltiVec)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "AltiVec");
+		ImGui::SameLine();
+		if (SDL_HasMMX)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "MMX");
+		ImGui::SameLine();
+		if (SDL_HasRDTSC)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "RDTSC");
+
+		if (SDL_HasSSE)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "\t\tSSE");
+		ImGui::SameLine();
+		if (SDL_HasSSE2)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "SSE2");
+		ImGui::SameLine();
+		if (SDL_HasSSE3)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "SSE3");
+		ImGui::SameLine();
+		if (SDL_HasSSE41)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "SSE41");
+		ImGui::SameLine();
+		if (SDL_HasSSE42)ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "SSE42");
+
+		//GPU
+		ImGui::Text("Vendor: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_VENDOR));
+		ImGui::Text("Renderer: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_RENDERER));
+		ImGui::Text("Version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glGetString(GL_VERSION));
 	}
 }

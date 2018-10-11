@@ -16,6 +16,7 @@ public:
 	void WindowConfig();
 	void InputConfig();
 	void TexturesConfig();
+	void AboutConfig();
 
 	void AddFps(float fps);
 	void AddMs(float ms);
