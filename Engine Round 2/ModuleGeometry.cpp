@@ -168,7 +168,7 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 		error = ilGetError();
 	}
 
-	App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
+	App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex.id_texture);
 	ilDeleteImages(1, &imageID);
 }
 
