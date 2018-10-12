@@ -59,6 +59,10 @@ void PanelProperties::Draw()
 		ImGui::Text("%d x %d", tWidth, tHeight);
 
 		ImGui::Text("Texture Snapshot: ");
+		if (tSnap != nullptr) 
+		{
+			ImGui::Image(tSnap, ImVec2(200.0f, 200.0f));
+		}
 
 	}
 
@@ -73,7 +77,7 @@ void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertic
 	gNumTriangles = nTriangles;
 }
 
-void PanelProperties::SaveTextureInfo(const char* file_name, int width, int height)
+void PanelProperties::SaveTextureInfo(const char* file_name, int width, int height, ImTextureID snapshot)
 {
 	tName = file_name;
 
@@ -84,4 +88,6 @@ void PanelProperties::SaveTextureInfo(const char* file_name, int width, int heig
 
 	tWidth = width;
 	tHeight = height;
+
+	tSnap = snapshot;
 }

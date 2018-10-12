@@ -3,6 +3,7 @@
 
 #include "Panel.h"
 #include <string>
+#include "ImGui/imgui.h"
 
 class PanelProperties : public Panel
 {
@@ -13,7 +14,7 @@ public:
 	void Draw();
 
 	void SaveMeshInfo(const char* file_name, int nMesh, int nVertices, int nTriangles);
-	void SaveTextureInfo(const char* file_name, int width, int height);
+	void SaveTextureInfo(const char* file_name, int width, int height, ImTextureID snapshot);
 
 	//Mesh info
 	const char* gName = " ";
@@ -26,6 +27,7 @@ public:
 	std::string tType;
 	int tWidth = 0;
 	int tHeight = 0;
+	ImTextureID tSnap = nullptr;
 
 };
 
