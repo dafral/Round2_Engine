@@ -51,6 +51,9 @@ bool ModuleGeometry::CleanUp()
 
 void ModuleGeometry::LoadGeometry(const char* path)
 {
+	DeleteGeometry();
+	DeleteTextures();
+
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	int totalvertices = 0;
 
@@ -197,13 +200,22 @@ void ModuleGeometry::Draw()
 
 void ModuleGeometry::DeleteGeometry()
 {
-	while (meshes.size() > 0)
-	{
-		meshes.pop_back();
+	if (meshes.size() > 0) {
+		while (meshes.size() > 0)
+		{
+			meshes.pop_back();
+		}
+
+		CONSOLELOG("Old geometry deleted");
 	}
 }
 
 void ModuleGeometry::DeleteTextures()
 {
-	tex.id_texture = NULL;
+	if (tex.id_texture != NULL) {
+
+		tex.id_texture = NULL;
+		CONSOLELOG("Old textures deleted");
+
+	}
 }
