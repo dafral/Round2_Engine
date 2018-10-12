@@ -25,11 +25,11 @@ bool ModuleEditor::Init()
 	ImGui_ImplSdl_Init(App->window->window);
 	ImGui::InitDock();
 
+	panels.push_back(scene = new PanelScene(true));
 	panels.push_back(configuration = new PanelConfiguration(true));
 	panels.push_back(properties = new PanelProperties(true));
 	panels.push_back(console = new PanelConsole(true));
-	panels.push_back(scene = new PanelScene(true));
-
+	
 	return true;
 }
 
@@ -144,7 +144,7 @@ void ModuleEditor::Draw()
 
 		// Setting position on the screen
 		ImGui::SetWindowPos(ImVec2(w_offset, h_offset));
-		ImGui::SetWindowSize(ImVec2(App->window->GetScreenWidth() - w_offset, App->window->GetScreenHeight() - h_offset));
+		ImGui::SetWindowSize(ImVec2(App->window->screen_surface->w - w_offset, App->window->screen_surface->h - h_offset));
 
 		// Dock
 		ImGui::BeginDockspace();

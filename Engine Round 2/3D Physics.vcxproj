@@ -97,7 +97,6 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleGeometry.h" />
-    <ClInclude Include="ModulePhysics3D.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="myPrimitives.h" />
     <ClInclude Include="p2List.h" />
@@ -114,7 +113,6 @@
     <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="PhysBody3D.h" />
-    <ClInclude Include="Primitive.h" />
     <ClInclude Include="TextureMSAA.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
@@ -135,7 +133,6 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleGeometry.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModulePhysics3D.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
@@ -144,7 +141,6 @@
     <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
-    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />

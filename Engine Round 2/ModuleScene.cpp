@@ -45,16 +45,20 @@ void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleScene::Draw()
 {
-	// Plane
-	prPlane p(0, 1, 0, 0);
-	p.axis = true;
-	p.wire = false;
-	p.color = White;
-	p.Render();
 
 	// Cube
-	//myCube cube;
-	//cube.DrawCubeElements();
+	myCube cube;
+	cube.Draw();
+
+	/*
+	// Sphere
+	mySphere sphere(4.0f, 12, 24);
+	sphere.Draw();
+	*/
+
+	// Plane
+	myPlane plane(12.0f);
+	plane.Draw();
 }
 
 

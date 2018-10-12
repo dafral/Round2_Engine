@@ -20,22 +20,15 @@ void PanelScene::Draw()
 		//Get size of the window
 		ImVec2 size = ImGui::GetContentRegionAvail();
 
-		//Render the texture
 		glEnable(GL_TEXTURE_2D);
-
 		if (App->camera->GetSceneTexture() != nullptr)
 		{
+			App->camera->GetSceneTexture()->Render();
 			ImGui::Image((void*)App->camera->GetSceneTexture()->GetTextureID(), size, ImVec2(0, 1), ImVec2(1, 0));
+			App->camera->GetSceneTexture()->Unbind();
 		}
-
 		glDisable(GL_TEXTURE_2D);
 	}
 
 	ImGui::EndDock();
-
-	if (App->camera->GetSceneTexture() != nullptr)
-	{
-		App->camera->GetSceneTexture()->Render();
-		App->camera->GetSceneTexture()->Unbind();
-	}
 }

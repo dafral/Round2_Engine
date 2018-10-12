@@ -40,7 +40,6 @@ bool ModuleRenderer3D::Init()
 		{
 			CONSOLELOG("Glew library could not be initialized! Error: %s\n", gluErrorString(err));
 			ret = false;
-
 		}
 
 		else
@@ -160,6 +159,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		App->DebugDraw();
 		EndDebugDraw();
 	}*/
+
 
 	App->scene_intro->Draw();
 	App->geometry->Draw();
