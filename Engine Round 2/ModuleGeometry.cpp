@@ -56,6 +56,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	int totalvertices = 0;
+	int totalindices = 0;
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
@@ -81,6 +82,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			if (new_mesh->HasFaces())
 			{
 				m.num_indices = new_mesh->mNumFaces * 3;
+				totalindices += m.num_indices;
 				m.indices = new uint[m.num_indices]; // assume each face is a triangle
 
 				for (uint i = 0; i < new_mesh->mNumFaces; i++)
@@ -117,7 +119,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			meshes.push_back(m);
 		}
 
-		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices);
+		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices/3));
 		aiReleaseImport(scene);
 	}
 	else
@@ -166,6 +168,7 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 		error = ilGetError();
 	}
 
+	App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT));
 	ilDeleteImages(1, &imageID);
 }
 
