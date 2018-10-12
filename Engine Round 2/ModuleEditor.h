@@ -6,7 +6,6 @@
 
 class Panel;
 class PanelConfiguration;
-class PanelAbout;
 class PanelProperties;
 class PanelConsole;
 class PanelScene;
@@ -28,7 +27,6 @@ public:
 public:
 
 	PanelConfiguration* configuration = nullptr;
-	PanelAbout* about = nullptr;
 	PanelProperties* properties = nullptr;
 	PanelConsole* console = nullptr;
 	PanelScene* scene = nullptr;
