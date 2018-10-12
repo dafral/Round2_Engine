@@ -26,7 +26,7 @@ bool ModuleInput::Init()
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
-		LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+		CONSOLELOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -125,11 +125,11 @@ update_status ModuleInput::PreUpdate(float dt)
 				std::string extension = str.substr(dot_pos + 1, 3);
 
 				if (extension == "fbx" || extension == "FBX") {
-					LOG("Dropped file: %s", dropped_file);
+					CONSOLELOG("Dropped file: %s", dropped_file);
 					App->geometry->LoadGeometry(dropped_file);
 				}
 				else if (extension == "png" || extension == "PNG") {
-					LOG("Dropped texture: %s", dropped_file);
+					CONSOLELOG("Dropped texture: %s", dropped_file);
 					App->geometry->LoadTexture(dropped_file);
 				}
 				else {

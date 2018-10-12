@@ -58,7 +58,7 @@ bool Application::Init()
 	}
 
 	// After all Init calls we call Start() in all modules
-	CONSOLELOG("Application Start --------------");
+	CONSOLELOG("-------------- Application Start --------------");
 	item = list_modules.getFirst();
 
 	while(item != NULL && ret == true)

@@ -29,7 +29,7 @@ bool ModuleRenderer3D::Init()
 	context = SDL_GL_CreateContext(App->window->window);
 	if(context == NULL)
 	{
-		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
+		CONSOLELOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
 
@@ -38,18 +38,18 @@ bool ModuleRenderer3D::Init()
 		GLenum err = glewInit();
 		if (err != GL_NO_ERROR)
 		{
-			LOG("Glew library could not be initialized! Error: %s\n", gluErrorString(err));
+			CONSOLELOG("Glew library could not be initialized! Error: %s\n", gluErrorString(err));
 			ret = false;
 
 		}
 
 		else
 		{
-			LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-			LOG("Vendor: %s", glGetString(GL_VENDOR));
-			LOG("Renderer: %s", glGetString(GL_RENDERER));
-			LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-			LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+			CONSOLELOG("Using Glew %s", glewGetString(GLEW_VERSION));
+			CONSOLELOG("Vendor: %s", glGetString(GL_VENDOR));
+			CONSOLELOG("Renderer: %s", glGetString(GL_RENDERER));
+			CONSOLELOG("OpenGL version supported %s", glGetString(GL_VERSION));
+			CONSOLELOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 			ret = true;
 		}
@@ -59,7 +59,7 @@ bool ModuleRenderer3D::Init()
 	{
 		//Use Vsync
 		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
-			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+			CONSOLELOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix
 		glMatrixMode(GL_PROJECTION);
@@ -69,7 +69,7 @@ bool ModuleRenderer3D::Init()
 		GLenum error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLELOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 
@@ -81,7 +81,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLELOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		
@@ -98,7 +98,7 @@ bool ModuleRenderer3D::Init()
 		error = glGetError();
 		if(error != GL_NO_ERROR)
 		{
-			LOG("Error initializing OpenGL! %s\n", gluErrorString(error));
+			CONSOLELOG("Error initializing OpenGL! %s\n", gluErrorString(error));
 			ret = false;
 		}
 		

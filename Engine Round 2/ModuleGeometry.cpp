@@ -67,7 +67,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 			memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices * 3);
 
 			totalvertices += m.num_vertices;
-			LOG("New mesh with %d vertices", m.num_vertices);
+			CONSOLELOG("New mesh with %d vertices", m.num_vertices);
 
 			// load buffer for vertices
 			glGenBuffers(1, (GLuint*) &(m.id_vertices));
@@ -118,7 +118,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 		aiReleaseImport(scene);
 	}
 	else
-		LOG("Error loading scene %s", path);
+		CONSOLELOG("Error loading scene %s", path);
 }
 
 void ModuleGeometry::LoadTexture(const char* full_path)
@@ -142,7 +142,7 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 		if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
 		{
 			error = ilGetError();
-			LOG("Texture conversion failed: %d %s", error, iluErrorString(error));
+			CONSOLELOG("Texture conversion failed: %d %s", error, iluErrorString(error));
 		}
 		else
 		{
