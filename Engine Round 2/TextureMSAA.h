@@ -19,17 +19,16 @@ public:
 
 private:
 
-	uint framebuffer_id;
-	uint texture_id;
-	uint depthbuffer_id;
+	uint framebuffer_msaa_id;
+	uint renderbuffer_depth_id;
+	uint renderbuffer_color_id;
 
-	/*uint rbo_id;
-	uint rbo_color_id;*/
+	uint framebuffer_id;
+	uint renderbuffer_id;
+
+	uint texture_id;
 
 	unsigned int width;
 	unsigned int height;
-
-	/*int max_msaa_samples;
-	int current_msaa_samples;*/
 };
 

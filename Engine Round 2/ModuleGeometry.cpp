@@ -196,8 +196,6 @@ void ModuleGeometry::Draw()
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		glDisable(GL_TEXTURE_2D);
 	}
 }
 

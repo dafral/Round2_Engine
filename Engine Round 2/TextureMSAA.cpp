@@ -23,8 +23,8 @@ bool TextureMSAA::Create(uint width, uint height)
 	// ---------------------------------------------------------------
 
 	// The framebuffer, which regroups 0, 1, or more textures, and 0 or 1 depth buffer.
-	glGenFramebuffers(1, &framebuffer_id);
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
+	glGenFramebuffers(1, &framebuffer_msaa_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_msaa_id);
 
 	// ---------------------------------------------------------------
 	// Create the texture which will contain the RGB output 
@@ -35,34 +35,53 @@ bool TextureMSAA::Create(uint width, uint height)
 	glGenTextures(1, &texture_id);
 	// "Bind" the newly created texture: all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, texture_id);
-	// Give an empty image to OpenGL (the last "0")
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	// Poor filtering. Needed!
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	// Give an empty image to OpenGL (the last "0")
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 	
 	// ---------------------------------------------------------------
-	// We also need a depth buffer.This is optional, depending 
-	// on what you actually need to draw in your texture; but 
-	// since we’re going to render Suzanne, we need depth - testing.
+	// We also need a depth buffer. This is optional, depending 
+	// on what you actually need to draw in your texture.
 	// ---------------------------------------------------------------
 
+	// The color buffer
+	glGenRenderbuffers(1, &renderbuffer_color_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_color_id);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 0, GL_RGB8, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 	// The depth buffer
-	glGenRenderbuffers(1, &depthbuffer_id);
-	glBindRenderbuffer(GL_RENDERBUFFER, depthbuffer_id);
+	glGenRenderbuffers(1, &renderbuffer_depth_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_depth_id);
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 0, GL_DEPTH_COMPONENT, width, height);
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// Attach MSAA render buffer objects to frame buffer object attachment points
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, renderbuffer_color_id);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer_depth_id);
 
 	// ---------------------------------------------------------------
 	// Finally, we configure our framebuffer
 	// ---------------------------------------------------------------
 
-	// Set "renderedTexture" as our colour attachement #0
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture_id, 0);
+	// Create a normal (no MSAA) frame buffer object to hold a render-to-texture
+	glGenFramebuffers(1, &framebuffer_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
 
-	// Set the list of draw buffers.
-	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
-	glDrawBuffers(1, DrawBuffers); // "1" is the size of DrawBuffers
+	glGenRenderbuffers(1, &renderbuffer_id);
+	glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer_id);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	// Attach a texture to FBO color attachement point
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+
+	// Attach a rbo to FBO depth attachement point
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer_id);
 
 	// ---------------------------------------------------------------
 	// Something may have gone wrong during the process. This is 
@@ -78,13 +97,13 @@ bool TextureMSAA::Create(uint width, uint height)
 
 void TextureMSAA::Bind()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_id);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer_msaa_id);
 	glViewport(0, 0, width, height);
 }
 
 void TextureMSAA::Render()
 {
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_id);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_msaa_id);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_id);
 	glBlitFramebuffer(0, 0, width, height,  // src rect
 					  0, 0, width, height,  // dst rect
