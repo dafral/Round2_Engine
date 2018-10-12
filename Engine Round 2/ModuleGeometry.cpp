@@ -204,8 +204,14 @@ void ModuleGeometry::DeleteGeometry()
 	if (meshes.size() > 0) {
 		while (meshes.size() > 0)
 		{
+			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_uvs);
+			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_indices);
+			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_vertices);
+
 			meshes.pop_back();
 		}
+
+		App->editor->properties->EraseGeometryInfo();
 
 		CONSOLELOG("Old geometry deleted");
 	}
@@ -213,9 +219,13 @@ void ModuleGeometry::DeleteGeometry()
 
 void ModuleGeometry::DeleteTextures()
 {
-	if (tex.id_texture != NULL) {
-
+	if (tex.id_texture != NULL) 
+	{
+		glDeleteTextures(1, &tex.id_texture);
 		tex.id_texture = NULL;
+
+		App->editor->properties->EraseTextureInfo();
+
 		CONSOLELOG("Old textures deleted");
 
 	}
