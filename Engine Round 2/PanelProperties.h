@@ -15,6 +15,8 @@ public:
 
 	void SaveMeshInfo(const char* file_name, int nMesh, int nVertices, int nTriangles);
 	void SaveTextureInfo(const char* file_name, int width, int height, ImTextureID snapshot);
+	void EraseGeometryInfo();
+	void EraseTextureInfo();
 
 	//Mesh info
 	const char* gName = " ";

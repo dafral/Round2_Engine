@@ -77,6 +77,23 @@ void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertic
 	gNumTriangles = nTriangles;
 }
 
+void PanelProperties::EraseGeometryInfo()
+{
+	gName = " ";
+	gNumMesh = 0;
+	gNumVert = 0;
+	gNumTriangles = 0;
+}
+
+void PanelProperties::EraseTextureInfo()
+{
+	tName = " ";
+	tType = " ";
+	tWidth = 0;
+	tHeight = 0;
+	tSnap = nullptr;
+}
+
 void PanelProperties::SaveTextureInfo(const char* file_name, int width, int height, ImTextureID snapshot)
 {
 	tName = file_name;
