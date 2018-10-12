@@ -194,3 +194,16 @@ void ModuleGeometry::Draw()
 		glDisable(GL_TEXTURE_2D);
 	}
 }
+
+void ModuleGeometry::DeleteGeometry()
+{
+	while (meshes.size() > 0)
+	{
+		meshes.pop_back();
+	}
+}
+
+void ModuleGeometry::DeleteTextures()
+{
+	tex.id_texture = NULL;
+}

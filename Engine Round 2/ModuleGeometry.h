@@ -35,6 +35,8 @@ public:
 
 	void LoadGeometry(const char* path);
 	void LoadTexture(const char* path);
+	void DeleteGeometry();
+	void DeleteTextures();
 	void Draw();
 
 private:

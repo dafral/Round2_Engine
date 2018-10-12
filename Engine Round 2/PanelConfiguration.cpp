@@ -210,7 +210,11 @@ void PanelConfiguration::TexturesConfig()
 {
 	if (ImGui::CollapsingHeader("Textures"))
 	{
-
+		if (ImGui::Button("Delete Texture"))
+		{
+			App->geometry->DeleteTextures();
+		}
+		
 	}
 }
 
