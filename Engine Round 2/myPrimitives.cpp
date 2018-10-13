@@ -148,6 +148,12 @@ void myPlane::Draw() const
 		glPolygonMode(GL_BACK, GL_LINE);
 		glPopMatrix();
 	}
+	else if (App->editor->configuration->points)
+	{
+		glPolygonMode(GL_FRONT, GL_POINT);
+		glPolygonMode(GL_BACK, GL_POINT);
+		glPopMatrix();
+	}
 	else
 	{
 		glPolygonMode(GL_FRONT, GL_FILL);

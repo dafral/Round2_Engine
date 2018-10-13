@@ -70,6 +70,8 @@ void PanelConfiguration::ApplicationConfig()
 
 		ImGui::SliderInt(" Max FPS", &fps_cap, 0, 100);
 
+		if(ImGui::Checkbox("Vsync", &vsync)) App->renderer3D->SetVsync(vsync);
+
 		ImGui::Text("Limit Framerate:");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.f, 1.f, 0.f, 1.f), "%i", fps_cap);
@@ -139,17 +141,41 @@ void PanelConfiguration::RendererConfig()
 		{
 			if (wireframe)
 			{
-				glPolygonMode(GL_FRONT, GL_LINE);
-				glPolygonMode(GL_BACK, GL_LINE);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 				glPopMatrix();
+				points = false;
 			}
 			else
 			{
-				glPolygonMode(GL_FRONT, GL_FILL);
-				glPolygonMode(GL_BACK, GL_FILL);
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 				glPopMatrix();
 			}
 		}
+
+		if (ImGui::Checkbox("Points", &points))
+		{
+			if (points)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+				glPopMatrix();
+				wireframe = false;
+			}
+			else
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				glPopMatrix();
+			}
+		}
+
+		if (ImGui::Checkbox("Color", &color))
+		{
+			if (color) glEnable(GL_COLOR);
+			else glDisable(GL_COLOR);
+		}
+
+		ImGui::ColorPicker3("Geometry color", App->renderer3D->color_hue);
+
+
 	}
 }
 

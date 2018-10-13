@@ -196,3 +196,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 	glLoadIdentity();
 }
 
+void ModuleRenderer3D::SetVsync(bool vsync)
+{
+	SDL_GL_SetSwapInterval(vsync);
+}
+
+

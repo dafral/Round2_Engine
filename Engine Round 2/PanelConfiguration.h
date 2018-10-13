@@ -26,6 +26,7 @@ public:
 	std::vector<float> fps_buffer;
 	std::vector<float> ms_buffer;
 	int fps_cap = 0;
+	bool vsync = true;
 
 	//window
 	float brightness;
@@ -46,6 +47,8 @@ public:
 	bool blend = true;
 	bool dither = true;
 	bool wireframe = false;
+	bool points = false;
+	bool color = true;
 };
 
 
