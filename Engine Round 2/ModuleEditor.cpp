@@ -44,11 +44,6 @@ update_status ModuleEditor::Update(float dt)
 {	
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::EndMenu();
-		}
-
 		if (ImGui::BeginMenu("Create"))
 		{
 			ImGui::Button("Cube");
@@ -89,7 +84,9 @@ update_status ModuleEditor::Update(float dt)
 		{
 			if (ImGui::BeginMenu("About the engine"))
 			{
-				ImGui::Text("Prueba");
+				ImGui::Text("In order to load a fbx file, drag and drop it on the engine window. You can do the same with textures.");
+				ImGui::Text("Remember that the only files supported by the engines are FBX files for the 3D models and DDS/PNG files for the textures.");
+				ImGui::Text("You can find some example files inside the 3D Models folder.");
 				ImGui::EndMenu();
 			}
 

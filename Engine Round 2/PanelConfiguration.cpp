@@ -92,6 +92,8 @@ void PanelConfiguration::RendererConfig()
 {
 	if (ImGui::CollapsingHeader("Renderer"))
 	{
+		ImGui::Checkbox("Grid", &grid);
+		ImGui::Separator();
 
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{
@@ -137,35 +139,8 @@ void PanelConfiguration::RendererConfig()
 			else glDisable(GL_DITHER);
 		}
 
-		if (ImGui::Checkbox("Wireframe", &wireframe))
-		{
-			if (wireframe)
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-				glPopMatrix();
-				points = false;
-			}
-			else
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				glPopMatrix();
-			}
-		}
-
-		if (ImGui::Checkbox("Points", &points))
-		{
-			if (points)
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-				glPopMatrix();
-				wireframe = false;
-			}
-			else
-			{
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-				glPopMatrix();
-			}
-		}
+		ImGui::Checkbox("Wireframe Mode", &wireframe);
+		ImGui::Checkbox("Points Mode", &points);
 
 		if (ImGui::Checkbox("Color", &color))
 		{
