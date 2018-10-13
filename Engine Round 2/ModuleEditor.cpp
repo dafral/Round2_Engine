@@ -141,10 +141,12 @@ void ModuleEditor::Draw()
 	{
 		float h_offset = 6.0f;
 		float w_offset = 0.0f;
+		int w = SDL_GetWindowSurface(App->window->window)->w;
+		int h = SDL_GetWindowSurface(App->window->window)->h;
 
 		// Setting position on the screen
 		ImGui::SetWindowPos(ImVec2(w_offset, h_offset));
-		ImGui::SetWindowSize(ImVec2(App->window->screen_surface->w - w_offset, App->window->screen_surface->h - h_offset));
+		ImGui::SetWindowSize(ImVec2(w - w_offset, h - h_offset));
 
 		// Dock
 		ImGui::BeginDockspace();
