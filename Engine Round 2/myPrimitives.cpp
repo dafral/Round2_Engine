@@ -131,16 +131,19 @@ void myPlane::Draw() const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glPushMatrix();
-	glTranslatef(0 - size/2 + 0.5, 0, 0 - size/2 + 0.5); 
+	if (App->editor->configuration->grid)
+	{
+		glPushMatrix();
+		glTranslatef(0 - size / 2 + 0.5, 0, 0 - size / 2 + 0.5);
 
-	glPolygonMode(GL_FRONT, GL_LINE);
-	glPolygonMode(GL_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_LINE);
+		glPolygonMode(GL_BACK, GL_LINE);
 
-	glColor3f(0.0, 100.0, 255.0);
-	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
-	glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-	glColor3f(255.0, 255.0, 255.0);
+		glColor3f(0.0, 100.0, 255.0);
+		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+		glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
+		glColor3f(App->renderer3D->color_hue[0], App->renderer3D->color_hue[1], App->renderer3D->color_hue[2]);
+	}
 
 	if (App->editor->configuration->wireframe)
 	{

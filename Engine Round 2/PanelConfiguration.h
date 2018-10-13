@@ -39,6 +39,8 @@ public:
 	//input
 	float sensitivity;
 
+	//render
+	bool grid = true;
 	bool depth_test = true;
 	bool cull_face = true;
 	bool lighting = true;
