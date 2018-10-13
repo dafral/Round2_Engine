@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleGeometry.h"
 #include "PanelProperties.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -115,6 +116,13 @@ void ModuleGeometry::LoadGeometry(const char* path)
 				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)m.id_uvs);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * m.num_uvs * 3, m.texture_coords, GL_STATIC_DRAW);
 			}
+
+			AABB box;
+			box.SetNegativeInfinity();
+			box.Enclose((float3*)new_mesh->mVertices, new_mesh->mNumVertices);
+
+			vec3 midpoint = (box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z);
+			App->camera->Position = midpoint + (App->camera->Z *  box.Size().Length() * 1.2f);
 
 			meshes.push_back(m);
 		}
