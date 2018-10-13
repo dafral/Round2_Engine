@@ -28,5 +28,5 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
-	float color_hue[3];
+	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
 };

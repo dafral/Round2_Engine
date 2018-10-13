@@ -149,8 +149,6 @@ void PanelConfiguration::RendererConfig()
 		}
 
 		ImGui::ColorPicker3("Geometry color", App->renderer3D->color_hue);
-
-
 	}
 }
 

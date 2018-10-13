@@ -24,6 +24,7 @@ bool ModuleEditor::Init()
 {
 	ImGui_ImplSdl_Init(App->window->window);
 	ImGui::InitDock();
+	ImGui::StyleColorsDark();
 
 	panels.push_back(scene = new PanelScene(true));
 	panels.push_back(configuration = new PanelConfiguration(true));

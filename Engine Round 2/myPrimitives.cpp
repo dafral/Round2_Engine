@@ -139,7 +139,7 @@ void myPlane::Draw() const
 		glPolygonMode(GL_FRONT, GL_LINE);
 		glPolygonMode(GL_BACK, GL_LINE);
 
-		glColor3f(0.0, 100.0, 255.0);
+		glColor3f(169.0, 169.0, 169.0);
 		glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 		glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
 		glColor3f(App->renderer3D->color_hue[0], App->renderer3D->color_hue[1], App->renderer3D->color_hue[2]);
