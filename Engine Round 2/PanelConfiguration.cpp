@@ -17,7 +17,7 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
-	if (ImGui::BeginDock("Configuration", &active))
+	if (ImGui::BeginDock("Configuration", NULL))
 	{
 		ApplicationConfig();
 		ImGui::Separator();

@@ -5,7 +5,7 @@
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
-#include "imgui_impl_sdl.h"
+#include "ImGui/imgui_impl_sdl.h"
 
 #include "PanelConfiguration.h"
 #include "PanelProperties.h"
@@ -60,26 +60,19 @@ update_status ModuleEditor::Update(float dt)
 
 		if (ImGui::BeginMenu("View"))
 		{
-			bool scene = true;
-			
-			ImGui::Checkbox("Scene", &scene);
-
 			if (ImGui::Checkbox("Configuration", App->editor->configuration->getActive()))
 			{
 				App->editor->configuration->switchActive();
-				ImGui::CloseCurrentPopup();
 			}
 			
 			if (ImGui::Checkbox("Properties", App->editor->properties->getActive()))
 			{
 				App->editor->properties->switchActive();
-				ImGui::CloseCurrentPopup();
 			}
 
 			if (ImGui::Checkbox("Console", App->editor->console->getActive()))
 			{
 				App->editor->console->switchActive();
-				ImGui::CloseCurrentPopup();
 			}
 
 			ImGui::EndMenu();
@@ -154,7 +147,7 @@ void ModuleEditor::Draw()
 		for (std::vector<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
 		{
 			if ((*it)->active == true)
-			{
+			{ 
 				Panel* panel = (*it);
 				panel->Draw();
 			}

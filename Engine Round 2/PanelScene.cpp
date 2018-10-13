@@ -15,7 +15,7 @@ PanelScene::~PanelScene()
 
 void PanelScene::Draw()
 {
-	if (ImGui::BeginDock("Scene", &active))
+	if (ImGui::BeginDock("Scene", NULL))
 	{
 		//Get size of the window
 		ImVec2 size = ImGui::GetContentRegionAvail();
