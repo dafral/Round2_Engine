@@ -241,6 +241,22 @@ void PanelConfiguration::AboutConfig()
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "%s", glewGetString(GL_VERSION));
 
+		ImGui::Text("Assimp version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "3.1.1");
+
+		ImGui::Text("DevIL version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "1.8.0");
+
+		ImGui::Text("MathGeoLib version: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "1.5");
+
+		ImGui::Text("ImguiDock: ");
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1.00f, 0.40f, 0.00f, 1.00f), "1.0");
+
 		ImGui::Separator();
 
 		//Hardware
