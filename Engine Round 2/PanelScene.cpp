@@ -22,8 +22,8 @@ void PanelScene::Draw()
 {
 	if (ImGui::BeginDock("Scene", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
-		float width = GetSystemMetrics(SM_CXSCREEN) / 4;
-		float height = GetSystemMetrics(SM_CYSCREEN) / 4;
+		float width = GetSystemMetrics(SM_CXSCREEN) / 3;
+		float height = GetSystemMetrics(SM_CYSCREEN) / 3;
 
 		float aspect_ratio = width / height;
 
