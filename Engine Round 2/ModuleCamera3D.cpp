@@ -170,13 +170,13 @@ void ModuleCamera3D::MoveCamera()
 	}
 
 	//Up & Down
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
 	{
 		Position += Y * speed;
 		Reference += Y * speed;
 	}
 
-	else if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
 	{
 		Position -= Y * speed;
 		Reference -= Y * speed;
