@@ -46,11 +46,7 @@ update_status ModuleEditor::Update(float dt)
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Create"))
-		{
-			ImGui::Button("Cube");
-			ImGui::Button("Sphere");
-			ImGui::Button("Plane");
-			
+		{		
 			ImGui::EndMenu();
 		}
 

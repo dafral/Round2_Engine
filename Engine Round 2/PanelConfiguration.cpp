@@ -116,11 +116,11 @@ void PanelConfiguration::RendererConfig()
 			else glDisable(GL_LIGHTING);
 		}
 
-		if (ImGui::Checkbox("Color Material", &color_material))
-		{
-			if (color_material) glEnable(GL_COLOR_MATERIAL);
-			else glDisable(GL_COLOR_MATERIAL);
-		}
+		//if (ImGui::Checkbox("Color Material", &color_material))
+		//{
+		//	if (color_material) glEnable(GL_COLOR_MATERIAL);
+		//	else glDisable(GL_COLOR_MATERIAL);
+		//}
 
 		if (ImGui::Checkbox("Texture 2D", &texture_2d))
 		{
@@ -162,20 +162,6 @@ void PanelConfiguration::WindowConfig()
 		float brightness =  App->window->GetBrightness();
 		if (ImGui::SliderFloat("Brightness", &brightness, 0, 1))
 			App->window->SetBrightness(brightness);
-
-		int width = App->window->GetScreenWidth();
-		if (ImGui::SliderInt("Width", &width, 900, 1920))
-		{
-			App->window->SetScreenWidth(width);
-			App->renderer3D->OnResize(App->window->GetScreenWidth(), App->window->GetScreenHeight());
-		}
-
-		int height = App->window->GetScreenHeight();
-		if (ImGui::SliderInt("Height", &height, 600, 1080))
-		{
-			App->window->SetScreenHeight(height);
-			App->renderer3D->OnResize(App->window->GetScreenWidth(), App->window->GetScreenHeight());
-		}
 
 		if (ImGui::Checkbox("Fullscreen", &fullscreen))
 			App->window->SwitchFullscreen();
