@@ -9,6 +9,11 @@ PanelProperties::PanelProperties(bool active = true) : Panel(active)
 PanelProperties::~PanelProperties()
 {}
 
+void PanelProperties::Init() 
+{
+	ImGui::SetNextDock("Properties", ImGuiDockSlot_Left);
+}
+
 void PanelProperties::Draw()
 {
 	if (ImGui::BeginDock("Properties", NULL))

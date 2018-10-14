@@ -33,8 +33,8 @@ bool ModuleGeometry::Start()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
-	LoadGeometry(".\\Round2 Engine\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
-	LoadTexture(".\\Round2 Engine\\3D models\\Model 1 - Baker House\\Baker_House.dds");
+	LoadGeometry(".\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
+	LoadTexture(".\\3D models\\Model 1 - Baker House\\Baker_House.dds");
 	return true;
 }
 

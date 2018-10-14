@@ -20,6 +20,7 @@ public:
 	PanelProperties(bool active);
 	virtual ~PanelProperties();
 
+	void Init();
 	void Draw();
 
 	void SaveTransformationInfo(aiVector3D pos, aiQuaternion rot, aiVector3D scale);

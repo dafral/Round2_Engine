@@ -15,6 +15,11 @@ PanelConfiguration::~PanelConfiguration()
 
 }
 
+void PanelConfiguration::Init()
+{
+	ImGui::SetNextDock("Scene", ImGuiDockSlot_Right);
+}
+
 void PanelConfiguration::Draw()
 {
 	if (ImGui::BeginDock("Configuration", NULL))

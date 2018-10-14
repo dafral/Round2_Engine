@@ -15,6 +15,11 @@ PanelConsole::~PanelConsole()
 
 }
 
+void PanelConsole::Init()
+{
+	ImGui::SetNextDock("Scene", ImGuiDockSlot_Bottom);
+}
+
 void PanelConsole::Draw()
 {
 	if (ImGui::BeginDock("Console", NULL))

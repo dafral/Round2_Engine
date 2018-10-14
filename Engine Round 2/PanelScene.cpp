@@ -13,6 +13,11 @@ PanelScene::PanelScene(bool active = true) : Panel(active)
 PanelScene::~PanelScene()
 {}
 
+void PanelScene::Init()
+{
+	ImGui::SetNextWindowPos(ImVec2(0, 12));
+}
+
 void PanelScene::Draw()
 {
 	if (ImGui::BeginDock("Scene", NULL))

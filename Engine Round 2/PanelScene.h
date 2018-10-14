@@ -9,6 +9,7 @@ public:
 	PanelScene(bool active);
 	virtual ~PanelScene();
 
+	void Init();
 	void Draw();
 };
 

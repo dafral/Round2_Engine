@@ -9,6 +9,7 @@ public:
 	PanelConsole(bool active);
 	virtual ~PanelConsole();
 
+	void Init();
 	void Draw();
 
 	void ConsoleLog(const char* log);

@@ -9,6 +9,7 @@ public:
 	PanelConfiguration(bool active);
 	virtual ~PanelConfiguration();
 
+	void Init();
 	void Draw();
 
 	void ApplicationConfig();
@@ -25,7 +26,7 @@ public:
 	//application
 	std::vector<float> fps_buffer;
 	std::vector<float> ms_buffer;
-	int fps_cap = 0;
+	int fps_cap = 60;
 	bool vsync = true;
 
 	//window
