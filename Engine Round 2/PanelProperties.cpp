@@ -15,7 +15,11 @@ void PanelProperties::Draw()
 	{
 		//Transformation information
 
-		ImGui::Text("Transformation");
+		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Transformation");
+
+		ImGui::Text("Position: X %f  Y %f  Z %f", position.x, position.y, position.z);
+		ImGui::Text("Rotation: X %f  Y %f  Z %f", rotation.x, rotation.y, rotation.z);
+		ImGui::Text("Scale: X %f  Y %f  Z %f", scale.x, scale.y, scale.z);
 
 		ImGui::Separator();
 
@@ -66,6 +70,13 @@ void PanelProperties::Draw()
 	}
 
 	ImGui::EndDock();
+}
+
+void PanelProperties::SaveTransformationInfo(aiVector3D pos, aiQuaternion rot, aiVector3D scl)
+{
+	position = (pos.x, pos.y, pos.z);
+	rotation = (rot.GetEuler().x * RADTODEG , rot.GetEuler().y * RADTODEG, rot.GetEuler().z * RADTODEG);
+	scale = (scl.x, scl.y, scl.z);
 }
 
 void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertices, int nTriangles)

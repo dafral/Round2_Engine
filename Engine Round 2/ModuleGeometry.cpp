@@ -4,16 +4,10 @@
 #include "PanelProperties.h"
 #include "MathGeoLib/MathGeoLib.h"
 
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/cfileio.h"
-
 #include "Devil/include/IL/il.h"
 #include "Devil/include/IL/ilu.h"
 #include "Devil/include/IL/ilut.h"
 
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
 #pragma comment (lib, "Devil/libx86/ILU.lib")
 #pragma comment (lib, "Devil/libx86/ILUT.lib")
@@ -63,6 +57,8 @@ void ModuleGeometry::LoadGeometry(const char* path)
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
+		GetTransformation(scene->mRootNode);
+
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
 			Mesh m;	
@@ -241,4 +237,27 @@ void ModuleGeometry::DeleteTextures()
 		CONSOLELOG("Old textures deleted");
 
 	}
+}
+
+void ModuleGeometry::GetTransformation(aiNode* scene)
+{
+	aiVector3D pos, scale;
+	aiQuaternion rot;
+
+	aiMatrix4x4 matrix = scene->mTransformation;
+
+	if (scene->mNumChildren > 0)
+	{
+		for (int i = 0; i < scene->mNumChildren; i++)
+		{
+			GetTransformation(scene->mChildren[i]);
+			matrix *= scene->mChildren[i]->mTransformation;
+		}
+	}
+
+	matrix.Decompose(scale, rot, pos);
+
+	App->editor->properties->SaveTransformationInfo(pos, rot, scale);
+
+
 }
