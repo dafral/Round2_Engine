@@ -47,8 +47,8 @@ void ModuleScene::Draw()
 {
 
 	// Cube
-	myCube cube;
-	cube.Draw();
+	/*myCube cube;
+	cube.Draw();*/
 
 	/*
 	// Sphere

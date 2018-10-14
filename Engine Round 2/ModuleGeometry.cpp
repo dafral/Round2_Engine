@@ -39,6 +39,8 @@ bool ModuleGeometry::Start()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
+	LoadGeometry(".\\Round2 Engine\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
+	LoadTexture(".\\Round2 Engine\\3D models\\Model 1 - Baker House\\Baker_House.dds");
 	return true;
 }
 
@@ -126,7 +128,7 @@ void ModuleGeometry::LoadGeometry(const char* path)
 
 			meshes.push_back(m);
 		}
-
+		
 		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices/3));
 		aiReleaseImport(scene);
 	}
