@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include <vector>
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -10,6 +11,25 @@
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
+struct Texture
+{
+	uint id_texture = 0;
+};
+
+struct Mesh
+{
+	uint id_vertices = 0; // id in VRAM
+	uint num_indices = 0;
+	uint* indices = nullptr;
+
+	uint id_indices = 0; // id in VRAM
+	uint num_vertices = 0;
+	float* vertices = nullptr;
+
+	uint id_uvs = 0; // id in VRAM
+	uint num_uvs = 0;
+	float* texture_coords = nullptr;
+};
 
 class ModuleGeometry : public Module
 {

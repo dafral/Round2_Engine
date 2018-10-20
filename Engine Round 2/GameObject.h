@@ -3,22 +3,25 @@
 
 #include "Globals.h"
 #include "Component.h"
+#include <string>
 
 #include "MathGeoLib/MathGeoLib.h"
 #include "MathGeoLib/MathGeoLibFwd.h"
 #include "MathGeoLib/MathBuildConfig.h"
 #include "MathGeoLib/Math/float3.h"
 
-
 class GameObject
 {
 public:
+
+	GameObject();
+	~GameObject();
 
 	void Update();
 	ComponentType* CreateComponent(ComponentType type);
 
 	bool active = true;
-	char* name;
+	std::string name;
 	std::vector<Component*> components;
 };
 
