@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "p2DynArray.h"
 #include "Globals.h"
+#include "GameObject.h"
 #include <vector>
 
 #include "glew/include/glew.h"
@@ -30,6 +31,8 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 	
 	void Draw();
+
+	std::vector<GameObject*> game_objects;
 
 };
 
