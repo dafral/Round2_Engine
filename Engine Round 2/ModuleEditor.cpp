@@ -11,6 +11,7 @@
 #include "PanelProperties.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
+#include "PanelInspector.h"
 
 //Constructor
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -30,6 +31,7 @@ bool ModuleEditor::Init()
 	panels.push_back(configuration = new PanelConfiguration(true));
 	panels.push_back(properties = new PanelProperties(true));
 	panels.push_back(console = new PanelConsole(true));
+	panels.push_back(inspector = new PanelInspector(true));
 	
 	return true;
 }
@@ -63,6 +65,11 @@ update_status ModuleEditor::Update(float dt)
 			}
 
 			if (ImGui::Checkbox("Console", App->editor->console->getActive()))
+			{
+				App->editor->console->switchActive();
+			}
+
+			if (ImGui::Checkbox("Inspector", App->editor->inspector->getActive()))
 			{
 				App->editor->console->switchActive();
 			}
