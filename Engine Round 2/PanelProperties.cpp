@@ -79,9 +79,9 @@ void PanelProperties::Draw()
 
 void PanelProperties::SaveTransformationInfo(aiVector3D pos, aiQuaternion rot, aiVector3D scl)
 {
-	position = (pos.x, pos.y, pos.z);
+	/*position = (pos.x, pos.y, pos.z);
 	rotation = (rot.GetEuler().x * RADTODEG , rot.GetEuler().y * RADTODEG, rot.GetEuler().z * RADTODEG);
-	scale = (scl.x, scl.y, scl.z);
+	scale = (scl.x, scl.y, scl.z);*/
 }
 
 void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertices, int nTriangles)

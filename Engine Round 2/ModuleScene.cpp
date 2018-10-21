@@ -21,6 +21,8 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(0.0f, 10.0f, 10.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
+	App->renderer3D->LoadGeometry(".\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
+
 	return ret;
 }
 

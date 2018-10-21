@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleEditor.h"
+#include "PanelProperties.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -162,7 +164,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 
 
 	App->scene_intro->Draw();
-	App->geometry->Draw();
+	Draw();
 	App->editor->Draw();
 
 	App->camera->GetSceneTexture()->Bind();
@@ -199,6 +201,163 @@ void ModuleRenderer3D::OnResize(int width, int height)
 void ModuleRenderer3D::SetVsync(bool vsync)
 {
 	SDL_GL_SetSwapInterval(vsync);
+}
+
+//----------------------------------------------------------------
+
+void ModuleRenderer3D::Draw()
+{
+	for (int i = 0; i < comp_meshes.size(); i++)
+	{
+		//glEnable(GL_TEXTURE_2D);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, comp_meshes[i]->id_vertices);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, comp_meshes[i]->id_indices);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, comp_meshes[i]->id_uvs);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+
+		//glBindTexture(GL_TEXTURE_2D, (GLuint)tex.id_texture);
+		glDrawElements(GL_TRIANGLES, comp_meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		//glBindTexture(GL_TEXTURE_2D, 0);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		//glDisable(GL_TEXTURE_2D);
+	}
+}
+
+void ModuleRenderer3D::LoadGeometry(const char* path)
+{
+	DeleteGeometry();
+	App->geometry->DeleteTextures();
+
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	int totalvertices = 0;
+	int totalindices = 0;
+
+	if (scene != nullptr && scene->HasMeshes())
+	{
+		GetTransformation(scene->mRootNode);
+
+		for (int i = 0; i < scene->mNumMeshes; i++)
+		{
+			ComponentMesh* m = new ComponentMesh;
+			aiMesh* new_mesh = scene->mMeshes[i];
+
+			// copy vertices
+			m->num_vertices = new_mesh->mNumVertices;
+			m->vertices = new float[m->num_vertices * 3];
+			memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
+
+			totalvertices += m->num_vertices;
+			CONSOLELOG("New mesh with %d vertices", m->num_vertices);
+
+			// load buffer for vertices
+			glGenBuffers(1, (GLuint*) &(m->id_vertices));
+			glBindBuffer(GL_ARRAY_BUFFER, m->id_vertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_vertices * 3, m->vertices, GL_STATIC_DRAW);
+
+			// copy indices
+			if (new_mesh->HasFaces())
+			{
+				m->num_indices = new_mesh->mNumFaces * 3;
+				totalindices += m->num_indices;
+				m->indices = new uint[m->num_indices]; // assume each face is a triangle
+
+				for (uint i = 0; i < new_mesh->mNumFaces; i++)
+				{
+					if (new_mesh->mFaces[i].mNumIndices != 3)
+					{
+						CONSOLELOG("WARNING, geometry face with != 3 indices!");
+					}
+					else
+					{
+						memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+					}
+				}
+
+				// load buffer for indices
+				glGenBuffers(1, (GLuint*) &(m->id_indices));
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->id_indices);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->num_indices, m->indices, GL_STATIC_DRAW);
+			}
+
+			// copy uvs
+			if (new_mesh->HasTextureCoords(0))
+			{
+				m->num_uvs = new_mesh->mNumVertices;
+				m->texture_coords = new float[m->num_uvs * 3];
+				memcpy(m->texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * m->num_uvs * 3);
+
+				// load buffer for uvs
+				glGenBuffers(1, (GLuint*) &(m->id_uvs));
+				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)m->id_uvs);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * m->num_uvs * 3, m->texture_coords, GL_STATIC_DRAW);
+			}
+
+			AABB box;
+			box.SetNegativeInfinity();
+			box.Enclose((float3*)new_mesh->mVertices, new_mesh->mNumVertices);
+
+			vec3 midpoint = (box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z);
+			App->camera->Position = midpoint + (App->camera->Z *  box.Size().Length() * 1.2f);
+
+			comp_meshes.push_back(m);
+			//delete(m);
+		}
+
+		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices / 3));
+		aiReleaseImport(scene);
+	}
+	else
+		CONSOLELOG("Error loading scene %s", path);
+}
+
+void ModuleRenderer3D::DeleteGeometry()
+{
+	if (comp_meshes.size() > 0) {
+		while (comp_meshes.size() > 0)
+		{
+			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_uvs);
+			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_indices);
+			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_vertices);
+
+			comp_meshes.pop_back();
+		}
+
+		App->editor->properties->EraseGeometryInfo();
+
+		CONSOLELOG("Old geometry deleted");
+	}
+}
+
+void ModuleRenderer3D::GetTransformation(aiNode* scene)
+{
+	aiVector3D pos, scale;
+	aiQuaternion rot;
+
+	aiMatrix4x4 matrix = scene->mTransformation;
+
+	if (scene->mNumChildren > 0)
+	{
+		for (int i = 0; i < scene->mNumChildren; i++)
+		{
+			GetTransformation(scene->mChildren[i]);
+			matrix *= scene->mChildren[i]->mTransformation;
+		}
+	}
+
+	matrix.Decompose(scale, rot, pos);
+
+	App->editor->properties->SaveTransformationInfo(pos, rot, scale);
 }
 
 

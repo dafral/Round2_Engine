@@ -33,7 +33,7 @@ bool ModuleGeometry::Start()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
-	LoadGeometry(".\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
+	
 	LoadTexture(".\\3D models\\Model 1 - Baker House\\Baker_House.dds");
 	return true;
 }
@@ -46,91 +46,7 @@ bool ModuleGeometry::CleanUp()
 	return true;
 }
 
-void ModuleGeometry::LoadGeometry(const char* path)
-{
-	DeleteGeometry();
-	DeleteTextures();
 
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	int totalvertices = 0;
-	int totalindices = 0;
-
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		GetTransformation(scene->mRootNode);
-
-		for (int i = 0; i < scene->mNumMeshes; i++)
-		{
-			Mesh m;	
-			aiMesh* new_mesh = scene->mMeshes[i];
-
-			// copy vertices
-			m.num_vertices = new_mesh->mNumVertices;
-			m.vertices = new float[m.num_vertices * 3];
-			memcpy(m.vertices, new_mesh->mVertices, sizeof(float) * m.num_vertices * 3);
-
-			totalvertices += m.num_vertices;
-			CONSOLELOG("New mesh with %d vertices", m.num_vertices);
-
-			// load buffer for vertices
-			glGenBuffers(1, (GLuint*) &(m.id_vertices));
-			glBindBuffer(GL_ARRAY_BUFFER, m.id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m.num_vertices * 3, m.vertices, GL_STATIC_DRAW);
-
-			// copy indices
-			if (new_mesh->HasFaces())
-			{
-				m.num_indices = new_mesh->mNumFaces * 3;
-				totalindices += m.num_indices;
-				m.indices = new uint[m.num_indices]; // assume each face is a triangle
-
-				for (uint i = 0; i < new_mesh->mNumFaces; i++)
-				{
-					if (new_mesh->mFaces[i].mNumIndices != 3)
-					{
-						CONSOLELOG("WARNING, geometry face with != 3 indices!");
-					}
-					else
-					{
-						memcpy(&m.indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-					}
-				}
-
-				// load buffer for indices
-				glGenBuffers(1, (GLuint*) &(m.id_indices));
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m.id_indices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m.num_indices, m.indices, GL_STATIC_DRAW);
-			}
-
-			// copy uvs
-			if (new_mesh->HasTextureCoords(0))
-			{
-				m.num_uvs = new_mesh->mNumVertices;
-				m.texture_coords = new float[m.num_uvs * 3];
-				memcpy(m.texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * m.num_uvs * 3);
-
-				// load buffer for uvs
-				glGenBuffers(1, (GLuint*) &(m.id_uvs));
-				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)m.id_uvs);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * m.num_uvs * 3, m.texture_coords, GL_STATIC_DRAW);
-			}
-
-			AABB box;
-			box.SetNegativeInfinity();
-			box.Enclose((float3*)new_mesh->mVertices, new_mesh->mNumVertices);
-
-			vec3 midpoint = (box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z);
-			App->camera->Position = midpoint + (App->camera->Z *  box.Size().Length() * 1.2f);
-
-			meshes.push_back(m);
-		}
-		
-		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices/3));
-		aiReleaseImport(scene);
-	}
-	else
-		CONSOLELOG("Error loading scene %s", path);
-}
 
 void ModuleGeometry::LoadTexture(const char* full_path)
 {
@@ -180,7 +96,7 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 
 void ModuleGeometry::Draw()
 {
-	for (int i = 0; i < meshes.size(); i++)
+	/*for (int i = 0; i < meshes.size(); i++)
 	{
 		glEnable(GL_TEXTURE_2D);
 
@@ -204,26 +120,10 @@ void ModuleGeometry::Draw()
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		glDisable(GL_TEXTURE_2D);
-	}
+	}*/
 }
 
-void ModuleGeometry::DeleteGeometry()
-{
-	if (meshes.size() > 0) {
-		while (meshes.size() > 0)
-		{
-			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_uvs);
-			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_indices);
-			glDeleteBuffers(1, &meshes[meshes.size() - 1].id_vertices);
 
-			meshes.pop_back();
-		}
-
-		App->editor->properties->EraseGeometryInfo();
-
-		CONSOLELOG("Old geometry deleted");
-	}
-}
 
 void ModuleGeometry::DeleteTextures()
 {
@@ -239,25 +139,3 @@ void ModuleGeometry::DeleteTextures()
 	}
 }
 
-void ModuleGeometry::GetTransformation(aiNode* scene)
-{
-	aiVector3D pos, scale;
-	aiQuaternion rot;
-
-	aiMatrix4x4 matrix = scene->mTransformation;
-
-	if (scene->mNumChildren > 0)
-	{
-		for (int i = 0; i < scene->mNumChildren; i++)
-		{
-			GetTransformation(scene->mChildren[i]);
-			matrix *= scene->mChildren[i]->mTransformation;
-		}
-	}
-
-	matrix.Decompose(scale, rot, pos);
-
-	App->editor->properties->SaveTransformationInfo(pos, rot, scale);
-
-
-}

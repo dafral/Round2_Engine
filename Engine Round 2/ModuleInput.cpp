@@ -126,7 +126,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				if (extension == "fbx" || extension == "FBX") {
 					CONSOLELOG("Dropped file: %s", dropped_file);
-					App->geometry->LoadGeometry(dropped_file);
+					App->renderer3D->LoadGeometry(dropped_file);
 				}
 				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") {
 					CONSOLELOG("Dropped texture: %s", dropped_file);

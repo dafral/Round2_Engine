@@ -4,8 +4,19 @@
 #include "glmath.h"
 #include "Light.h"
 #include "ModuleGeometry.h"
+#include "Component.h"
+
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
+
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 #define MAX_LIGHTS 8
+
+class Component;
+class ComponentMesh;
 
 class ModuleRenderer3D : public Module
 {
@@ -21,6 +32,13 @@ public:
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
 
+	void LoadGeometry(const char* path);
+	void DeleteGeometry();
+	void GetTransformation(aiNode* scenenode);
+	//ComponentMesh* CreateComponentMesh();
+
+	void Draw();
+
 public:
 
 	Light lights[MAX_LIGHTS];
@@ -29,4 +47,5 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
+	std::vector<ComponentMesh*> comp_meshes;
 };
