@@ -1,6 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleGeometry.h"
+#include "ModuleMaterial.h"
 #include "PanelProperties.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -13,14 +13,14 @@
 #pragma comment (lib, "Devil/libx86/ILUT.lib")
 
 //Constructor
-ModuleGeometry::ModuleGeometry(Application* app, bool start_enabled) : Module(app, start_enabled)
+ModuleMaterial::ModuleMaterial(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
 
 // Destructor
-ModuleGeometry::~ModuleGeometry()
+ModuleMaterial::~ModuleMaterial()
 {}
 
-bool ModuleGeometry::Start()
+bool ModuleMaterial::Start()
 {
 	// Stream log messages to Debug window
 	struct aiLogStream stream;
@@ -33,12 +33,10 @@ bool ModuleGeometry::Start()
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
 
-	
-	LoadTexture(".\\3D models\\Model 1 - Baker House\\Baker_House.dds");
 	return true;
 }
 
-bool ModuleGeometry::CleanUp()
+bool ModuleMaterial::CleanUp()
 {
 	// detach log stream
 	aiDetachAllLogStreams();
@@ -47,8 +45,7 @@ bool ModuleGeometry::CleanUp()
 }
 
 
-
-void ModuleGeometry::LoadTexture(const char* full_path)
+void ModuleMaterial::LoadTexture(const char* full_path)
 {
 	ILuint imageID;
 	ILenum error;
@@ -56,8 +53,10 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
 
-	if (ilLoadImage(full_path))
+	if (ilLoadImage(""))
 	{
+		ComponentMaterial* tex = new ComponentMaterial;
+
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
 
@@ -74,8 +73,8 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 		else
 		{
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-			glGenTextures(1, &tex.id_texture);
-			glBindTexture(GL_TEXTURE_2D, tex.id_texture);
+			glGenTextures(1, (GLuint*)tex->id_texture);
+			glBindTexture(GL_TEXTURE_2D, (GLuint)tex->id_texture);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -84,33 +83,36 @@ void ModuleGeometry::LoadTexture(const char* full_path)
 
 			//Texture Specifications
 			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+			
+			comp_mats.push_back(tex);
+			App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex->id_texture);
 		}
 	}
 	else {
 		error = ilGetError();
 	}
 
-	App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex.id_texture);
+	
 	ilDeleteImages(1, &imageID);
 }
 
-void ModuleGeometry::Draw()
+void ModuleMaterial::Draw()
 {
-	/*for (int i = 0; i < meshes.size(); i++)
+	for (int i = 0; i < comp_mats.size(); i++)
 	{
 		glEnable(GL_TEXTURE_2D);
 
-		glEnableClientState(GL_VERTEX_ARRAY);
+		/*glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, meshes[i].id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i].id_indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i].id_indices);*/
 
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		/*glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, meshes[i].id_uvs);
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);*/
 
-		glBindTexture(GL_TEXTURE_2D, (GLuint)tex.id_texture);
-		glDrawElements(GL_TRIANGLES, meshes[i].num_indices, GL_UNSIGNED_INT, NULL);
+		glBindTexture(GL_TEXTURE_2D, (GLuint)comp_mats[i]->id_texture);
+		//glDrawElements(GL_TRIANGLES, meshes[i].num_indices, GL_UNSIGNED_INT, NULL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -120,22 +122,27 @@ void ModuleGeometry::Draw()
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
 		glDisable(GL_TEXTURE_2D);
-	}*/
+	}
 }
 
 
 
-void ModuleGeometry::DeleteTextures()
+void ModuleMaterial::DeleteTextures()
 {
-	if (tex.id_texture != NULL) 
-	{
-		glDeleteTextures(1, &tex.id_texture);
-		tex.id_texture = NULL;
+	if (comp_mats.size() > 0) {
+		while (comp_mats.size() > 0)
+		{
+			glDeleteTextures(1, &comp_mats[comp_mats.size() - 1]->id_texture);
+			comp_mats[comp_mats.size() - 1]->id_texture = NULL;
+
+			App->editor->properties->EraseTextureInfo();
+
+			comp_mats.pop_back();
+		}
 
 		App->editor->properties->EraseTextureInfo();
 
 		CONSOLELOG("Old textures deleted");
-
 	}
 }
 

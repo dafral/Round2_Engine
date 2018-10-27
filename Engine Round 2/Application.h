@@ -10,7 +10,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
-#include "ModuleGeometry.h"
+#include "ModuleMaterial.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
@@ -25,7 +25,7 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
-	ModuleGeometry* geometry;
+	ModuleMaterial* material;
 
 	ImGuiTextBuffer consoleText;
 

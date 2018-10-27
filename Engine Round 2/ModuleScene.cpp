@@ -22,6 +22,7 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	App->renderer3D->LoadGeometry(".\\3D models\\Model 1 - Baker House\\Baker_House.fbx");
+	App->material->LoadTexture(".\\3D models\\Model 1 - Baker House\\Baker_House.dds");
 
 	return ret;
 }

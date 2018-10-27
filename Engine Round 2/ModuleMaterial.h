@@ -2,18 +2,16 @@
 #include "Module.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "Component.h"
 #include <vector>
 
-struct Texture
-{
-	uint id_texture = 0;
-};
+class ComponentMaterial;
 
-class ModuleGeometry : public Module
+class ModuleMaterial : public Module
 {
 public:
-	ModuleGeometry(Application* app, bool start_enabled = true);
-	~ModuleGeometry();
+	ModuleMaterial(Application* app, bool start_enabled = true);
+	~ModuleMaterial();
 
 	bool Start();
 	/*update_status Update(float dt);*/
@@ -26,5 +24,5 @@ public:
 
 private:
 
-	Texture tex;
+	std::vector<ComponentMaterial*> comp_mats;
 };

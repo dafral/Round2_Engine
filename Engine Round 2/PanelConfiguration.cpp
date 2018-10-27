@@ -200,7 +200,7 @@ void PanelConfiguration::TexturesConfig()
 	{
 		if (ImGui::Button("Delete Texture"))
 		{
-			App->geometry->DeleteTextures();
+			App->material->DeleteTextures();
 		}
 		
 	}

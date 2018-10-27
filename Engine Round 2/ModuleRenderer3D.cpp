@@ -237,7 +237,7 @@ void ModuleRenderer3D::Draw()
 void ModuleRenderer3D::LoadGeometry(const char* path)
 {
 	DeleteGeometry();
-	App->geometry->DeleteTextures();
+	App->material->DeleteTextures();
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 	int totalvertices = 0;

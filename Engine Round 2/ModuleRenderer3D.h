@@ -3,7 +3,7 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
-#include "ModuleGeometry.h"
+#include "ModuleMaterial.h"
 #include "Component.h"
 
 #include "Assimp/include/cimport.h"

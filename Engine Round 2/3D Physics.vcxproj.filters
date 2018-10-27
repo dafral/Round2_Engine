@@ -144,9 +144,6 @@
     <ClInclude Include="myPrimitives.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleGeometry.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ImGui\imgui_dock.h">
       <Filter>Sources\ImGui</Filter>
     </ClInclude>
@@ -339,6 +336,9 @@
     <ClInclude Include="Component.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleMaterial.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -397,9 +397,6 @@
     </ClCompile>
     <ClCompile Include="myPrimitives.cpp">
       <Filter>Sources\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleGeometry.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ImGui\imgui_dock.cpp">
       <Filter>Sources\ImGui</Filter>
@@ -514,6 +511,9 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleMaterial.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
