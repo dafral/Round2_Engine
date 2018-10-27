@@ -64,5 +64,13 @@ void ModuleScene::Draw()
 	plane.Draw();
 }
 
+GameObject* ModuleScene::CreateGameObject()
+{
+	GameObject* new_gobj = new GameObject;
+	game_objects.push_back(new_gobj);
+
+	return new_gobj;
+}
+
 
 
