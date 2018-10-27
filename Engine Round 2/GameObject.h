@@ -18,7 +18,10 @@ public:
 	~GameObject();
 
 	void Update();
+
 	void AddComponent(Component* component);
+	const Component* FindComponentWithType(ComponentType type);
+	void DeleteComponentWithType(ComponentType type);
 
 	bool active = true;
 	std::string name;
