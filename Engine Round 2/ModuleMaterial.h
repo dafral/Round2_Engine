@@ -20,6 +20,8 @@ public:
 	void LoadTexture(const char* path);
 	void DeleteTextures();
 
+	ComponentMaterial* CreateComponentMaterial();
+
 	void Draw();
 
 private:

@@ -360,4 +360,12 @@ void ModuleRenderer3D::GetTransformation(aiNode* scene)
 	App->editor->properties->SaveTransformationInfo(pos, rot, scale);
 }
 
+ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
+{
+	ComponentMesh* new_comp = new ComponentMesh;
+	comp_meshes.push_back(new_comp);
+
+	return new_comp;
+}
+
 

@@ -146,3 +146,10 @@ void ModuleMaterial::DeleteTextures()
 	}
 }
 
+ComponentMaterial* ModuleMaterial::CreateComponentMaterial()
+{
+	ComponentMaterial* new_comp = new ComponentMaterial;
+	comp_mats.push_back(new_comp);
+
+	return new_comp;
+}

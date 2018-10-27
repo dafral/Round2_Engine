@@ -35,7 +35,8 @@ public:
 	void LoadGeometry(const char* path);
 	void DeleteGeometry();
 	void GetTransformation(aiNode* scenenode);
-	//ComponentMesh* CreateComponentMesh();
+	
+	ComponentMesh* CreateComponentMesh();
 
 	void Draw();
 
