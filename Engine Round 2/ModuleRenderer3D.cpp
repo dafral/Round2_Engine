@@ -234,7 +234,7 @@ void ModuleRenderer3D::Draw()
 	}
 }
 
-void ModuleRenderer3D::LoadGeometry(const char* path)
+void ModuleRenderer3D::LoadGeometry(const char* path, GameObject* game_obj)
 {
 	DeleteGeometry();
 	App->material->DeleteTextures();
@@ -249,7 +249,8 @@ void ModuleRenderer3D::LoadGeometry(const char* path)
 
 		for (int i = 0; i < scene->mNumMeshes; i++)
 		{
-			ComponentMesh* m = new ComponentMesh;
+			ComponentMesh* m = CreateComponentMesh();
+			game_obj->AddComponent(m);
 			aiMesh* new_mesh = scene->mMeshes[i];
 
 			// copy vertices
@@ -310,8 +311,6 @@ void ModuleRenderer3D::LoadGeometry(const char* path)
 			vec3 midpoint = (box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z);
 			App->camera->Position = midpoint + (App->camera->Z *  box.Size().Length() * 1.2f);
 
-			comp_meshes.push_back(m);
-			//delete(m);
 		}
 
 		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices / 3));

@@ -17,7 +17,7 @@ public:
 	/*update_status Update(float dt);*/
 	bool CleanUp();
 
-	void LoadTexture(const char* path);
+	void LoadTexture(const char* path, GameObject* game_obj);
 	void DeleteTextures();
 
 	ComponentMaterial* CreateComponentMaterial();

@@ -45,7 +45,7 @@ bool ModuleMaterial::CleanUp()
 }
 
 
-void ModuleMaterial::LoadTexture(const char* full_path)
+void ModuleMaterial::LoadTexture(const char* full_path, GameObject* game_obj)
 {
 	ILuint imageID;
 	ILenum error;
@@ -55,7 +55,8 @@ void ModuleMaterial::LoadTexture(const char* full_path)
 
 	if (ilLoadImage(""))
 	{
-		ComponentMaterial* tex = new ComponentMaterial;
+		ComponentMaterial* tex = CreateComponentMaterial();
+		game_obj->AddComponent(tex);
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -84,7 +85,6 @@ void ModuleMaterial::LoadTexture(const char* full_path)
 			//Texture Specifications
 			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 			
-			comp_mats.push_back(tex);
 			App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex->id_texture);
 		}
 	}

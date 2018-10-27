@@ -18,7 +18,7 @@ public:
 	~GameObject();
 
 	void Update();
-	Component* CreateComponent(ComponentType type);
+	void AddComponent(Component* component);
 
 	bool active = true;
 	std::string name;

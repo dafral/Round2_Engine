@@ -32,7 +32,7 @@ public:
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
 
-	void LoadGeometry(const char* path);
+	void LoadGeometry(const char* path, GameObject* game_obj);
 	void DeleteGeometry();
 	void GetTransformation(aiNode* scenenode);
 	

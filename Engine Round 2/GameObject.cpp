@@ -6,25 +6,10 @@ GameObject::GameObject()
 GameObject::~GameObject()
 {}
 
-Component* GameObject::CreateComponent(ComponentType type)
+void GameObject::AddComponent(Component* component)
 {
-	switch (type) 
+	if (component != nullptr)
 	{
-
-		case TRANSFORM:
-		{
-			return nullptr;
-		}
-
-		case MESH:
-		{
-			return App->renderer3D->CreateComponentMesh();
-		}
-
-		case MATERIAL:
-		{
-			return App->material->CreateComponentMaterial();
-		}		
-
+		components.push_back(component);
 	}
 }

@@ -126,11 +126,11 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				if (extension == "fbx" || extension == "FBX") {
 					CONSOLELOG("Dropped file: %s", dropped_file);
-					App->renderer3D->LoadGeometry(dropped_file);
+					//App->renderer3D->LoadGeometry(dropped_file);
 				}
 				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") {
 					CONSOLELOG("Dropped texture: %s", dropped_file);
-					App->material->LoadTexture(dropped_file);
+					//App->material->LoadTexture(dropped_file);
 				}
 				else {
 					CONSOLELOG("Invalid type of file dropped. This engine only supports FBX and PNG/DDS files!");
