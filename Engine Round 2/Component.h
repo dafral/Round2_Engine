@@ -17,6 +17,9 @@ enum ComponentType
 class Component
 {
 public:
+	Component(ComponentType type) : type(type) {};
+	virtual ~Component() {};
+
 	void virtual Enable() {};
 	void virtual Update() {};
 	void virtual Disable() {};
@@ -29,14 +32,37 @@ public:
 class ComponentTransform : public Component
 {
 public:
-	//float3 position;
-	//float3 rotation;
-	//float3 scale;
+	ComponentTransform() : Component(TRANSFORM)
+	{
+		position = { 0.0f, 0.0f, 0.0f };
+		scale = { 1.0f, 1.0f, 1.0f };
+		rotation = { 0.0f, 0.0f, 0.0f, 0.0f };
+	}
+
+	~ComponentTransfrom() {};
+
+	const float3 GetPosition() { return position; };
+	const float3 GetScale() { return scale; };
+	const Quat GetRotation() { return rotation; };
+
+	float3 position;
+	Quat rotation;
+	float3 scale;
+
+	float4x4 transform;
 };
 
 class ComponentMesh : public Component
 {
 public:
+
+	ComponentMesh() : Component(MESH) {};
+	~ComponentMesh()
+	{
+		delete[] indices;
+		delete[] vertices;
+		delete[] texture_coords;
+	};
 
 	uint id_vertices = 0; // id in VRAM
 	uint num_indices = 0;
@@ -55,6 +81,10 @@ public:
 class ComponentMaterial : public Component
 {
 public:
+	ComponentMaterial() : Component(MATERIAL) {};
+	~ComponentMaterial() {};
+
+
 	uint id_texture = 0;
 };
 
