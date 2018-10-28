@@ -5,6 +5,10 @@
 #include "GameObject.h"
 #include <vector>
 
+#include "MathGeoLib/Math/float3.h"
+#include "MathGeoLib/Math/float4x4.h"
+#include "MathGeoLib/Math/Quat.h"
+
 class GameObject;
 
 enum ComponentType
@@ -37,9 +41,8 @@ public:
 		position = { 0.0f, 0.0f, 0.0f };
 		scale = { 1.0f, 1.0f, 1.0f };
 		rotation = { 0.0f, 0.0f, 0.0f, 0.0f };
-	}
-
-	~ComponentTransfrom() {};
+	};
+	~ComponentTransform() {};
 
 	const float3 GetPosition() { return position; };
 	const float3 GetScale() { return scale; };
