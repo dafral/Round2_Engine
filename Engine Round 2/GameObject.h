@@ -4,28 +4,28 @@
 #include "Globals.h"
 #include "Component.h"
 #include <string>
+#include <vector>
 
-#include "MathGeoLib/MathGeoLib.h"
-#include "MathGeoLib/MathGeoLibFwd.h"
-#include "MathGeoLib/MathBuildConfig.h"
-#include "MathGeoLib/Math/float3.h"
+class Component;
 
 class GameObject
 {
 public:
 
-	GameObject();
+	GameObject(std::string name, GameObject* parent);
 	~GameObject();
 
-	void Update();
+	void AddChildren(GameObject* children);
 
-	void AddComponent(Component* component);
-	const Component* FindComponentWithType(ComponentType type);
-	void DeleteComponentWithType(ComponentType type);
+public:
 
-	bool active = true;
 	std::string name;
-	std::vector<Component*> components;
+	GameObject* parent;
+
+	bool is_visible = true;
+	bool is_static = true;
+
+	std::vector<GameObject*> childrens;
 };
 
-#endif
+#endif // ! __GAMEOBJECT_H__

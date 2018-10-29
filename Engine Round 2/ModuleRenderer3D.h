@@ -3,20 +3,13 @@
 #include "Globals.h"
 #include "glmath.h"
 #include "Light.h"
-#include "ModuleMaterial.h"
-#include "Component.h"
 
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/cfileio.h"
-
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
+#include "Component_Mesh.h"
+#include <vector>
 
 #define MAX_LIGHTS 8
 
-class Component;
-class ComponentMesh;
+class GameObject;
 
 class ModuleRenderer3D : public Module
 {
@@ -31,22 +24,17 @@ public:
 
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
-
-	void LoadGeometry(const char* path, GameObject* game_obj);
-	void DeleteGeometry();
-	void GetTransformation(aiNode* scenenode);
 	
-	ComponentMesh* CreateComponentMesh();
-
-	void Draw();
+	Component_Mesh* CreateComponentMesh(GameObject* my_go, uint id_ver, uint id_ind, uint num_ind, uint id_uvs);
 
 public:
-
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
-	std::vector<ComponentMesh*> comp_meshes;
+
+private:
+	std::vector<Component_Mesh*> meshes;
 };

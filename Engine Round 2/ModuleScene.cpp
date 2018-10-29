@@ -1,10 +1,9 @@
-#include "Globals.h"
-#include "ModuleScene.h"
+
 #include "Application.h"
 #include "ModuleScene.h"
 #include "myPrimitives.h"
 
-#include "glew\include\glew.h"
+#include "Component.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -21,10 +20,7 @@ bool ModuleScene::Start()
 	App->camera->Move(vec3(0.0f, 10.0f, 10.0f));
 	App->camera->LookAt(vec3(0, 0, 0));
 
-	GameObject* house = CreateGameObject();
-
-	App->renderer3D->LoadGeometry(".\\3D models\\Model 1 - Baker House\\Baker_House.fbx", house);
-	App->material->LoadTexture(".\\3D models\\Model 1 - Baker House\\Baker_House.dds", house);
+	root_node = CreateGameObject("root", nullptr);
 
 	return ret;
 }
@@ -40,38 +36,33 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	return UPDATE_CONTINUE;
-}
+	root_node ->Update();
 
-void ModuleScene::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-{
-	
+	return UPDATE_CONTINUE;
 }
 
 void ModuleScene::Draw()
 {
-
-	// Cube
-	/*myCube cube;
-	cube.Draw();*/
-
-	/*
-	// Sphere
-	mySphere sphere(4.0f, 12, 24);
-	sphere.Draw();
-	*/
-
 	// Plane
 	myPlane plane(12.0f);
 	plane.Draw();
 }
 
-GameObject* ModuleScene::CreateGameObject()
-{
-	GameObject* new_gobj = new GameObject;
-	game_objects.push_back(new_gobj);
+// ===========================================================================
+// Game objects
+// ===========================================================================
 
-	return new_gobj;
+GameObject* ModuleScene::CreateGameObject(std::string name, GameObject* parent)
+{
+	GameObject* new_go = new GameObject(name, parent);
+
+	if (parent != nullptr) 
+		parent->AddChildren(new_go);
+
+	// We have to create a component transform by default 
+	// HERE
+	
+	return new_go;
 }
 
 

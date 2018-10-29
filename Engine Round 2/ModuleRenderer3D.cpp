@@ -3,19 +3,13 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleEditor.h"
 #include "PanelProperties.h"
+#include "ModuleScene.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
-#pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
-#pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
-#pragma comment (lib, "glew/lib/glew32.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{
-}
+{}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -155,20 +149,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	/*if (debug_draw == true)
-	{
-		BeginDebugDraw();
-		App->DebugDraw();
-		EndDebugDraw();
-	}*/
-
-
-	App->scene_intro->Draw();
-	Draw();
+	App->scene->Draw();
+	//Draw of all meshes
 	App->editor->Draw();
 
 	App->camera->GetSceneTexture()->Bind();
-
 	SDL_GL_SwapWindow(App->window->window);
 	
 	return UPDATE_CONTINUE;
@@ -183,7 +168,6 @@ bool ModuleRenderer3D::CleanUp()
 
 	return true;
 }
-
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
@@ -203,168 +187,121 @@ void ModuleRenderer3D::SetVsync(bool vsync)
 	SDL_GL_SetSwapInterval(vsync);
 }
 
-//----------------------------------------------------------------
+// =====================================================================
+// Component mesh
+// =====================================================================
 
-void ModuleRenderer3D::Draw()
+Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 {
-	for (int i = 0; i < comp_meshes.size(); i++)
-	{
-		//glEnable(GL_TEXTURE_2D);
-
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, comp_meshes[i]->id_vertices);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, comp_meshes[i]->id_indices);
-
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, comp_meshes[i]->id_uvs);
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-
-		//glBindTexture(GL_TEXTURE_2D, (GLuint)tex.id_texture);
-		glDrawElements(GL_TRIANGLES, comp_meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		//glBindTexture(GL_TEXTURE_2D, 0);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		//glDisable(GL_TEXTURE_2D);
-	}
+	Component_Mesh* cmesh = new Component_Mesh();
+	cmesh->my_go = my_go;
+	meshes.push_back(cmesh);	
+	return cmesh;
 }
 
-void ModuleRenderer3D::LoadGeometry(const char* path, GameObject* game_obj)
-{
-	DeleteGeometry();
-	App->material->DeleteTextures();
+// =====================================================================
+// Loading Scene
+// =====================================================================
 
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	int totalvertices = 0;
-	int totalindices = 0;
+void ModuleRenderer3D::LoadScene(char* full_path)
+{
+	// Getting scene name
+	std::string aux = full_path;
+
+	int dot_pos = aux.find_last_of(".");
+	int bar_pos = aux.find_last_of("\\");
+	int name_length = dot_pos - bar_pos - 1;
+
+	std::string scene_name = scene_name.substr(bar_pos + 1, name_length);
+
+	// Creating the parent (empty game object) 
+	GameObject* empty_go = App->scene->CreateGameObject(scene_name, App->scene->root_node);
+
+	// Loading scene
+	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
+	aiNode* node = scene->mRootNode;
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		GetTransformation(scene->mRootNode);
+		LoadMesh(empty_go, scene, node);
+		CONSOLELOG("Scene %s loaded.", full_path);
+	}
+	else
+	{
+		CONSOLELOG("Error loading scene %s.", full_path);
+	}
 
-		for (int i = 0; i < scene->mNumMeshes; i++)
+	// Releasing scene
+	aiReleaseImport(scene);
+}
+
+void ModuleRenderer3D::LoadMesh(GameObject* parent, aiScene* scene, aiNode* node)
+{
+	if (node->mNumMeshes <= 0)
+	{
+		// Recursion
+		for (int i = 0; i < node->mNumChildren; i++)
+			LoadMesh(parent, scene, node->mChildren[i]);
+	}
+	else
+	{
+		for (int i = 0; i < node->mNumMeshes; i++)
 		{
-			ComponentMesh* m = CreateComponentMesh();
-			game_obj->AddComponent(m);
-			aiMesh* new_mesh = scene->mMeshes[i];
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[i]];
 
-			// copy vertices
-			m->num_vertices = new_mesh->mNumVertices;
-			m->vertices = new float[m->num_vertices * 3];
-			memcpy(m->vertices, new_mesh->mVertices, sizeof(float) * m->num_vertices * 3);
+			// Creating a Game Object (child of parent) for each mesh.
+			GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), parent);
+			Component_Mesh* cmesh = CreateComponentMesh(go);
 
-			totalvertices += m->num_vertices;
-			CONSOLELOG("New mesh with %d vertices", m->num_vertices);
+			// Vertices
+			cmesh->num_vertices = new_mesh->mNumVertices;
+			cmesh->vertices = new float[cmesh->num_vertices * 3];
+			memcpy(cmesh->vertices, new_mesh->mVertices, sizeof(float) * cmesh->num_vertices * 3);
 
-			// load buffer for vertices
-			glGenBuffers(1, (GLuint*) &(m->id_vertices));
-			glBindBuffer(GL_ARRAY_BUFFER, m->id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * m->num_vertices * 3, m->vertices, GL_STATIC_DRAW);
-
-			// copy indices
+			// Indices
 			if (new_mesh->HasFaces())
 			{
-				m->num_indices = new_mesh->mNumFaces * 3;
-				totalindices += m->num_indices;
-				m->indices = new uint[m->num_indices]; // assume each face is a triangle
-
+				cmesh->num_indices = new_mesh->mNumFaces * 3;
+				cmesh->indices = new uint[cmesh->num_indices];
 				for (uint i = 0; i < new_mesh->mNumFaces; i++)
 				{
-					if (new_mesh->mFaces[i].mNumIndices != 3)
+					if (new_mesh->mFaces[i].mNumIndices != 3) 
 					{
 						CONSOLELOG("WARNING, geometry face with != 3 indices!");
 					}
-					else
+					else 
 					{
-						memcpy(&m->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+						memcpy(&cmesh->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 					}
 				}
-
-				// load buffer for indices
-				glGenBuffers(1, (GLuint*) &(m->id_indices));
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m->id_indices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * m->num_indices, m->indices, GL_STATIC_DRAW);
 			}
 
-			// copy uvs
+			// UVs
 			if (new_mesh->HasTextureCoords(0))
 			{
-				m->num_uvs = new_mesh->mNumVertices;
-				m->texture_coords = new float[m->num_uvs * 3];
-				memcpy(m->texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * m->num_uvs * 3);
-
-				// load buffer for uvs
-				glGenBuffers(1, (GLuint*) &(m->id_uvs));
-				glBindBuffer(GL_ARRAY_BUFFER, (GLuint)m->id_uvs);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * m->num_uvs * 3, m->texture_coords, GL_STATIC_DRAW);
+				cmesh->num_uvs = new_mesh->mNumVertices;
+				cmesh->texture_coords = new float[cmesh->num_uvs * 3];
+				memcpy(cmesh->texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * cmesh->num_uvs * 3);
 			}
 
-			AABB box;
-			box.SetNegativeInfinity();
-			box.Enclose((float3*)new_mesh->mVertices, new_mesh->mNumVertices);
+			// Check if we already loaded this mesh in memory
+			Component_Mesh* aux = IsMeshLoaded(cmesh);
+			if (aux == nullptr)
+			{
+				LoadBuffers(cmesh, new_mesh);
+			}
+			else
+			{
+				cmesh->id_indices = aux->id_indices;
+				cmesh->id_vertices = aux->id_vertices;
+				cmesh->id_uvs = aux->id_uvs;
+			}
 
-			vec3 midpoint = (box.CenterPoint().x, box.CenterPoint().y, box.CenterPoint().z);
-			App->camera->Position = midpoint + (App->camera->Z *  box.Size().Length() * 1.2f);
+			// Import mesh HERE
 
-		}
-
-		App->editor->properties->SaveMeshInfo(path, scene->mNumMeshes, totalvertices, (totalindices / 3));
-		aiReleaseImport(scene);
-	}
-	else
-		CONSOLELOG("Error loading scene %s", path);
-}
-
-void ModuleRenderer3D::DeleteGeometry()
-{
-	if (comp_meshes.size() > 0) {
-		while (comp_meshes.size() > 0)
-		{
-			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_uvs);
-			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_indices);
-			glDeleteBuffers(1, (GLuint*)comp_meshes[comp_meshes.size() - 1]->id_vertices);
-
-			comp_meshes.pop_back();
-		}
-
-		App->editor->properties->EraseGeometryInfo();
-
-		CONSOLELOG("Old geometry deleted");
-	}
-}
-
-void ModuleRenderer3D::GetTransformation(aiNode* scene)
-{
-	aiVector3D pos, scale;
-	aiQuaternion rot;
-
-	aiMatrix4x4 matrix = scene->mTransformation;
-
-	if (scene->mNumChildren > 0)
-	{
-		for (int i = 0; i < scene->mNumChildren; i++)
-		{
-			GetTransformation(scene->mChildren[i]);
-			matrix *= scene->mChildren[i]->mTransformation;
+			// Recursion
+			for (int i = 0; i < node->mNumChildren; i++)
+				LoadMesh(go, scene, node->mChildren[i]);
 		}
 	}
-
-	matrix.Decompose(scale, rot, pos);
-
-	App->editor->properties->SaveTransformationInfo(pos, rot, scale);
 }
-
-ComponentMesh* ModuleRenderer3D::CreateComponentMesh()
-{
-	ComponentMesh* new_comp = new ComponentMesh;
-	comp_meshes.push_back(new_comp);
-
-	return new_comp;
-}
-
-
