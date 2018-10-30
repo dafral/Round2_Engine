@@ -156,6 +156,7 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
+    <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleMaterial.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="myPrimitives.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
+    <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleMaterial.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />

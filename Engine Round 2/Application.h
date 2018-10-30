@@ -11,6 +11,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 #include "ModuleMaterial.h"
+#include "ModuleFileSystem.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
@@ -26,6 +27,7 @@ public:
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
 	ModuleMaterial* material;
+	ModuleFileSystem* filesystem;
 
 	ImGuiTextBuffer consoleText;
 
