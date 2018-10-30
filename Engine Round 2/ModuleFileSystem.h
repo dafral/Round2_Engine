@@ -10,9 +10,13 @@ public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
 
-
+	const char* GetRootPath();
 	std::string CreateFolder(const char* path, const char* name);
 
+	std::string assets_path;
+	std::string library_path;
+	std::string library_mesh_path;
+	std::string library_material_path;
 
 };
 
