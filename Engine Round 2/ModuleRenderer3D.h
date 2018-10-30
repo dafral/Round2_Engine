@@ -4,12 +4,15 @@
 #include "glmath.h"
 #include "Light.h"
 
-#include "Component_Mesh.h"
 #include <vector>
 
 #define MAX_LIGHTS 8
 
 class GameObject;
+class Component_Mesh;
+struct aiMesh;
+struct aiScene;
+struct aiNode;
 
 class ModuleRenderer3D : public Module
 {
@@ -25,7 +28,11 @@ public:
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
 	
-	Component_Mesh* CreateComponentMesh(GameObject* my_go, uint id_ver, uint id_ind, uint num_ind, uint id_uvs);
+	Component_Mesh* CreateComponentMesh(GameObject* my_go);
+	void LoadScene(char* full_path);
+	void LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node);
+	void LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh);
+	Component_Mesh* IsMeshLoaded(const Component_Mesh* curr_mesh);
 
 public:
 	Light lights[MAX_LIGHTS];

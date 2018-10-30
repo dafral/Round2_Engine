@@ -1,9 +1,9 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleEditor.h"
 #include "PanelProperties.h"
 #include "ModuleScene.h"
+#include "Component_Mesh.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -235,7 +235,7 @@ void ModuleRenderer3D::LoadScene(char* full_path)
 	aiReleaseImport(scene);
 }
 
-void ModuleRenderer3D::LoadMesh(GameObject* parent, aiScene* scene, aiNode* node)
+void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node)
 {
 	if (node->mNumMeshes <= 0)
 	{
@@ -303,5 +303,65 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, aiScene* scene, aiNode* node
 			for (int i = 0; i < node->mNumChildren; i++)
 				LoadMesh(go, scene, node->mChildren[i]);
 		}
+	}
+}
+
+Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_component)
+{
+	Component_Mesh* ret = nullptr;
+
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		bool loaded = true;
+
+		// vertices
+		if (meshes[i]->num_vertices == new_component->num_vertices)
+		{
+			for (unsigned int j = 0; j < meshes[i]->num_vertices * 3; j++)
+				if (meshes[i]->vertices[j] != new_component->vertices[j])
+					loaded = false;
+		}
+		else loaded = false;
+
+		// indices
+		if (meshes[i]->num_indices == new_component->num_indices)
+		{
+			for (unsigned int j = 0; j < meshes[i]->num_indices; j++)
+				if (meshes[i]->indices[j] != new_component->indices[j])
+					loaded = false;
+		}
+		else loaded = false;
+
+		if (loaded == true)
+		{
+			ret = meshes[i];
+			break;
+		}
+	}
+
+	return ret;
+}
+
+void ModuleRenderer3D::LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh)
+{
+	// Load buffer for vertices
+	glGenBuffers(1, (GLuint*) &(cmesh->id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, cmesh->id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*cmesh->num_vertices * 3, cmesh->vertices, GL_STATIC_DRAW);
+
+	// Load buffer for indices
+	if (new_mesh->HasFaces())
+	{
+		glGenBuffers(1, (GLuint*) &(cmesh->id_indices));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cmesh->id_indices);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * cmesh->num_indices, cmesh->indices, GL_STATIC_DRAW);
+	}
+
+	// Load buffer for UVs
+	if (new_mesh->HasTextureCoords(0))
+	{
+		glGenBuffers(1, (GLuint*) &(cmesh->id_uvs));
+		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)cmesh->id_uvs);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * cmesh->num_uvs * 3, cmesh->texture_coords, GL_STATIC_DRAW);
 	}
 }
