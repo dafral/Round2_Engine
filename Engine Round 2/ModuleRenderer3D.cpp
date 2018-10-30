@@ -4,9 +4,17 @@
 #include "PanelProperties.h"
 #include "ModuleScene.h"
 #include "Component_Mesh.h"
+#include "GameObject.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
+
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
+
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -150,7 +158,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	App->scene->Draw();
-	//Draw of all meshes
+	DrawMeshes();//Draw of all meshes
 	App->editor->Draw();
 
 	App->camera->GetSceneTexture()->Bind();
@@ -205,17 +213,8 @@ Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 
 void ModuleRenderer3D::LoadScene(char* full_path)
 {
-	// Getting scene name
-	std::string aux = full_path;
-
-	int dot_pos = aux.find_last_of(".");
-	int bar_pos = aux.find_last_of("\\");
-	int name_length = dot_pos - bar_pos - 1;
-
-	std::string scene_name = scene_name.substr(bar_pos + 1, name_length);
-
 	// Creating the parent (empty game object) 
-	GameObject* empty_go = App->scene->CreateGameObject(scene_name, App->scene->root_node);
+	GameObject* empty_go = App->scene->CreateGameObject("test", App->scene->root_node);
 
 	// Loading scene
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
@@ -314,7 +313,7 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_compone
 	{
 		bool loaded = true;
 
-		// vertices
+		// Vertices
 		if (meshes[i]->num_vertices == new_component->num_vertices)
 		{
 			for (unsigned int j = 0; j < meshes[i]->num_vertices * 3; j++)
@@ -323,7 +322,7 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_compone
 		}
 		else loaded = false;
 
-		// indices
+		// Indices
 		if (meshes[i]->num_indices == new_component->num_indices)
 		{
 			for (unsigned int j = 0; j < meshes[i]->num_indices; j++)
@@ -363,5 +362,25 @@ void ModuleRenderer3D::LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh)
 		glGenBuffers(1, (GLuint*) &(cmesh->id_uvs));
 		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)cmesh->id_uvs);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * cmesh->num_uvs * 3, cmesh->texture_coords, GL_STATIC_DRAW);
+	}
+}
+
+void ModuleRenderer3D::DrawMeshes()
+{
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		glEnableClientState(GL_VERTEX_ARRAY);
+
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_vertices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->id_indices);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
+
+		glVertexPointer(3, GL_FLOAT, 0, NULL);		
+		glDrawElements(GL_TRIANGLES, meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glDisableClientState(GL_VERTEX_ARRAY);
 	}
 }

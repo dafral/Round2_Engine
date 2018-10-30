@@ -36,8 +36,6 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
-	root_node ->Update();
-
 	return UPDATE_CONTINUE;
 }
 

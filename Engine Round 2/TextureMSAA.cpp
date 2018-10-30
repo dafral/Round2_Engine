@@ -3,6 +3,9 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 
+#include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+
 TextureMSAA::TextureMSAA()
 {}
 

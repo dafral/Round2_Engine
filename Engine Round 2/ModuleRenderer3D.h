@@ -32,6 +32,7 @@ public:
 	void LoadScene(char* full_path);
 	void LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node);
 	void LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh);
+	void DrawMeshes();
 	Component_Mesh* IsMeshLoaded(const Component_Mesh* curr_mesh);
 
 public:

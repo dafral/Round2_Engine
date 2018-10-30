@@ -124,15 +124,18 @@ update_status ModuleInput::PreUpdate(float dt)
 				int dot_pos = str.find_last_of(".");
 				std::string extension = str.substr(dot_pos + 1, 3);
 
-				if (extension == "fbx" || extension == "FBX") {
+				if (extension == "fbx" || extension == "FBX") 
+				{
 					CONSOLELOG("Dropped file: %s", dropped_file);
-					//App->renderer3D->LoadGeometry(dropped_file);
+					App->renderer3D->LoadScene(dropped_file);
 				}
-				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") {
+				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") 
+				{
 					CONSOLELOG("Dropped texture: %s", dropped_file);
 					//App->material->LoadTexture(dropped_file);
 				}
-				else {
+				else 
+				{
 					CONSOLELOG("Invalid type of file dropped. This engine only supports FBX and PNG/DDS files!");
 				}
 
