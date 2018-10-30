@@ -10,9 +10,8 @@ public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
 
-	update_status PreUpdate(float dt);
-	update_status Update(float dt);
-	//std::string CreateFolder(const char* path, const char* name);
+
+	std::string CreateFolder(const char* path, const char* name);
 
 
 };
