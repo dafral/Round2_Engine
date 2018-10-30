@@ -43,6 +43,9 @@
     <Filter Include="Sources\Engine Structure">
       <UniqueIdentifier>{339294b9-a99b-44d6-a262-2c1e549dca58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Importers">
+      <UniqueIdentifier>{e60cc30f-57ee-48ae-bd1d-fae71ad84858}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -342,6 +345,12 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="MeshImporter.h">
+      <Filter>Sources\Modules\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Sources\Modules\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -517,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshImporter.cpp">
+      <Filter>Sources\Modules\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

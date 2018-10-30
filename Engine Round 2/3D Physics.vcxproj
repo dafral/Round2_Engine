@@ -93,6 +93,7 @@
     <ClInclude Include="ImGui\stb_rect_pack.h" />
     <ClInclude Include="ImGui\stb_textedit.h" />
     <ClInclude Include="ImGui\stb_truetype.h" />
+    <ClInclude Include="Importer.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB2D.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="MathGeoLib\Math\sse_mathfun.h" />
     <ClInclude Include="MathGeoLib\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\Time\Clock.h" />
+    <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="MathGeoLib\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\Time\Clock.cpp" />
+    <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="ModuleCamera3D.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleMaterial.cpp" />
