@@ -387,3 +387,8 @@ void ModuleRenderer3D::DrawMeshes()
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 }
+
+std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
+{
+	return &meshes;
+}

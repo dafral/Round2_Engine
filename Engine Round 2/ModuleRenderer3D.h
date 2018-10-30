@@ -34,6 +34,7 @@ public:
 	void LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh);
 	void DrawMeshes();
 	Component_Mesh* IsMeshLoaded(const Component_Mesh* curr_mesh);
+	std::vector<Component_Mesh*>* GetMeshesVector();
 
 public:
 	Light lights[MAX_LIGHTS];
