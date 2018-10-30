@@ -284,7 +284,7 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 			}
 
 			// Check if we already loaded this mesh in memory
-			Component_Mesh* aux = IsMeshLoaded(cmesh);
+			Component_Mesh* aux = nullptr;
 			if (aux == nullptr)
 			{
 				LoadBuffers(cmesh, new_mesh);
@@ -370,17 +370,20 @@ void ModuleRenderer3D::DrawMeshes()
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
-
 		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_vertices);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->id_indices);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
 
-		glVertexPointer(3, GL_FLOAT, 0, NULL);		
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 		glDrawElements(GL_TRIANGLES, meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	}
 }
