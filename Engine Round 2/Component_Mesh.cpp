@@ -1,6 +1,11 @@
 #include "Component_Mesh.h"
 #include "glew/include/glew.h"
 
+float* Component_Mesh::GetVertices()
+{
+	return vertices;
+}
+
 uint Component_Mesh::GetIdVertices()
 {
 	return id_vertices;
@@ -11,6 +16,11 @@ uint Component_Mesh::GetNumVertices()
 	return num_vertices;
 }
 
+uint* Component_Mesh::GetIndices()
+{
+	return indices;
+}
+
 uint Component_Mesh::GetIdIndices()
 {
 	return id_indices;
@@ -19,6 +29,11 @@ uint Component_Mesh::GetIdIndices()
 uint Component_Mesh::GetNumIndices()
 {
 	return num_indices;
+}
+
+float* Component_Mesh::GetTexCoords()
+{
+	return texture_coords;
 }
 
 uint Component_Mesh::GetIdUVs()

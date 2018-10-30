@@ -17,7 +17,9 @@
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{}
+{
+	mesh_importer = new MeshImporter;
+}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -171,7 +173,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 bool ModuleRenderer3D::CleanUp()
 {
 	CONSOLELOG("Destroying 3D Renderer");
-
+	
+	RELEASE(mesh_importer);
 	SDL_GL_DeleteContext(context);
 
 	return true;
@@ -297,6 +300,7 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 			}
 
 			// Import mesh HERE
+			mesh_importer->Save(App->filesystem->library_mesh_path.c_str(), cmesh);
 
 			// Recursion
 			for (int i = 0; i < node->mNumChildren; i++)

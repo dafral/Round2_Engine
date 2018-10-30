@@ -24,10 +24,13 @@ public://THIS NEEDS TO BE PRIVATE
 	float* texture_coords = nullptr;
 
 public:
+	float* GetVertices();
 	uint GetIdVertices();
 	uint GetNumVertices();
+	uint* GetIndices();
 	uint GetIdIndices();
 	uint GetNumIndices();
+	float* GetTexCoords();
 	uint GetIdUVs();
 	uint GetNumUVs();
 	void LoadToMemory();

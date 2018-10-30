@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "MeshImporter.h"
 #include "glmath.h"
 #include "Light.h"
 
@@ -43,6 +44,7 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
+	MeshImporter* mesh_importer;
 
 private:
 	std::vector<Component_Mesh*> meshes;

@@ -67,3 +67,50 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	return new_mesh;
 }
 
+bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
+{
+	bool ret = true;
+
+	//
+	std::string name = "prueba";
+
+	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
+	uint size = sizeof(double) + sizeof(ranges) +
+		sizeof(uint) * mesh->GetNumIndices() +
+		sizeof(float) * mesh->GetNumVertices() * 3 +
+		sizeof(float) * mesh->GetNumUVs() * 3;
+
+	// Allocate data
+	char* data = new char[size];
+	char* cursor = data;
+
+	// Store ranges
+	uint bytes = sizeof(ranges);
+	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+
+	// Store indices
+	bytes = sizeof(uint) * mesh->GetNumIndices();
+	memcpy(cursor, mesh->GetIndices(), bytes);
+	cursor += bytes;
+
+	// Store vertices
+	bytes = sizeof(float) * mesh->GetNumVertices() * 3;
+	memcpy(cursor, mesh->GetVertices(), bytes);
+	cursor += bytes;
+
+	// Store UVs
+	bytes = sizeof(float) * mesh->GetNumUVs() * 3;
+	memcpy(cursor, mesh->GetTexCoords(), bytes);
+
+	//fopen
+	if (App->filesystem->SaveFile(path, data, name.c_str(), "mymesh", size) == false)
+	{
+		return false;
+	}
+
+	RELEASE_ARRAY(data);
+
+	return ret;
+}
+

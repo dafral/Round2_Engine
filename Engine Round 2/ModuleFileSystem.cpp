@@ -57,3 +57,31 @@ const char* ModuleFileSystem::GetRootPath()
 {
 	return SDL_GetBasePath();
 }
+
+bool ModuleFileSystem::SaveFile(const char * path, const char* file_content, const char* name, const char* extension, int size)
+{
+	bool ret = false;
+
+	std::string file = path;
+	file += name;
+	file += ".";
+	file += extension;
+
+	std::ofstream;
+	FILE* new_file = fopen(file.c_str(), "wb");
+
+	if (new_file)
+	{
+		fwrite(file_content, sizeof(char), size, new_file);
+		CONSOLELOG("File %s saved!", name);
+		ret = true;
+	}
+	else
+	{
+		CONSOLELOG("Error saving file %s: ", name);
+	}
+
+	fclose(new_file);
+
+	return ret;
+}
