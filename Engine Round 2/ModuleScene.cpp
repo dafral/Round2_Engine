@@ -1,4 +1,3 @@
-
 #include "Application.h"
 #include "ModuleScene.h"
 #include "myPrimitives.h"
@@ -21,10 +20,6 @@ bool ModuleScene::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	root_node = CreateGameObject("root", nullptr);
-
-	std::string prueba = App->filesystem->library_mesh_path;
-	prueba += "\Baker_House.mymesh";
-	App->renderer3D->mesh_importer->Load(prueba.c_str());
 
 	return ret;
 }

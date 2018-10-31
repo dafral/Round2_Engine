@@ -160,8 +160,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	App->scene->Draw();
-	int prueba = App->renderer3D->meshes.size();
-	DrawMeshes();//Draw of all meshes
+	DrawMeshes();
 	App->editor->Draw();
 
 	App->camera->GetSceneTexture()->Bind();
@@ -209,6 +208,34 @@ Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 	cmesh->my_go = my_go;
 	meshes.push_back(cmesh);	
 	return cmesh;
+}
+
+void ModuleRenderer3D::DrawMeshes()
+{
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_vertices);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->id_indices);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
+		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+		glDrawElements(GL_TRIANGLES, meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	}
+}
+
+std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
+{
+	return &meshes;
 }
 
 // =====================================================================
@@ -288,7 +315,8 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 			}
 
 			// Check if we already loaded this mesh in memory
-			Component_Mesh* aux = nullptr;
+			Component_Mesh* aux = IsMeshLoaded(cmesh);
+
 			if (aux == nullptr)
 			{
 				LoadBuffers(cmesh, new_mesh);
@@ -310,33 +338,32 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 	}
 }
 
-Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_component)
+Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_mesh)
 {
 	Component_Mesh* ret = nullptr;
+	bool is_loaded = true;
 
 	for (int i = 0; i < meshes.size(); i++)
 	{
-		bool loaded = true;
-
 		// Vertices
-		if (meshes[i]->num_vertices == new_component->num_vertices)
+		if (meshes[i]->num_vertices == new_mesh->num_vertices)
 		{
 			for (unsigned int j = 0; j < meshes[i]->num_vertices * 3; j++)
-				if (meshes[i]->vertices[j] != new_component->vertices[j])
-					loaded = false;
+				if (meshes[i]->vertices[j] != new_mesh->vertices[j])
+					is_loaded = false;
 		}
-		else loaded = false;
+		else is_loaded = false;
 
 		// Indices
-		if (meshes[i]->num_indices == new_component->num_indices)
+		if (meshes[i]->num_indices == new_mesh->num_indices)
 		{
 			for (unsigned int j = 0; j < meshes[i]->num_indices; j++)
-				if (meshes[i]->indices[j] != new_component->indices[j])
-					loaded = false;
+				if (meshes[i]->indices[j] != new_mesh->indices[j])
+					is_loaded = false;
 		}
-		else loaded = false;
+		else is_loaded = false;
 
-		if (loaded == true)
+		if (is_loaded == true)
 		{
 			ret = meshes[i];
 			break;
@@ -370,30 +397,4 @@ void ModuleRenderer3D::LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh)
 	}
 }
 
-void ModuleRenderer3D::DrawMeshes()
-{
-	for (int i = 0; i < meshes.size(); i++)
-	{
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_vertices);
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->id_indices);
 
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-		glDrawElements(GL_TRIANGLES, meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
-}
-
-std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
-{
-	return &meshes;
-}
