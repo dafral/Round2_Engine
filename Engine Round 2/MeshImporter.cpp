@@ -18,15 +18,9 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	fread(buffer, sizeof(char), size, file);
 	fclose(file);
 
-	// Copy unique id
-	double* id = new double;
-	uint bytes = sizeof(double);
-	memcpy(id, cursor, bytes);
-	cursor += bytes;
-
 	// Copy the ranges
 	uint ranges[3];		// ranges[0] = Vertices, ranges[1] = Indices, ranges[2] = Uvs
-	bytes = sizeof(ranges);
+	uint bytes = sizeof(ranges);
 	memcpy(ranges, cursor, bytes);
 	cursor += bytes;
 
@@ -56,10 +50,9 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	new_mesh->LoadToMemory();
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 
-	CONSOLELOG("New mesh with %d vertices", ranges[0] * 3);
-	CONSOLELOG("New mesh with %d indices", ranges[1]);
+	CONSOLELOG("Loading mesh with %d vertices", ranges[0] * 3);
+	CONSOLELOG("Loading mesh with %d indices", ranges[1]);
 
-	RELEASE(id);
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(uvs);
@@ -70,9 +63,8 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 {
 	bool ret = true;
-
-	//
-	std::string name = "prueba";
+	mesh->my_go->name;
+	std::string name = mesh->my_go->name;
 
 	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
 	uint size = sizeof(double) + sizeof(ranges) +
@@ -109,8 +101,12 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 		return false;
 	}
 
+	CONSOLELOG("New mesh saved with %d vertices", ranges[0] * 3);
+	CONSOLELOG("New mesh saved with %d indices", ranges[1]);
+
 	RELEASE_ARRAY(data);
 
 	return ret;
 }
+
 

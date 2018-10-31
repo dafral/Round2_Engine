@@ -10,9 +10,12 @@ public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
 
+	bool CleanUp();
+
 	const char* GetRootPath();
 	std::string CreateFolder(const char* path, const char* name);
-	bool SaveFile(const char * path, const char * file_content, const char * name, const char * extension, int size);
+	bool SaveFile(const char* path, const char* file_content, const char* name, const char* extension, int size);
+	void DeleteFilesInPath(const char* path);
 
 	std::string assets_path;
 	std::string library_path;

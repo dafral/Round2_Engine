@@ -16,7 +16,12 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 ModuleFileSystem::~ModuleFileSystem()
 {}
 
-std::string ModuleFileSystem::CreateFolder(const char * path, const char * name)
+bool ModuleFileSystem::CleanUp()
+{	
+	return true;
+}
+
+std::string ModuleFileSystem::CreateFolder(const char* path, const char * name)
 {
 	std::string ret;
 
@@ -58,7 +63,7 @@ const char* ModuleFileSystem::GetRootPath()
 	return SDL_GetBasePath();
 }
 
-bool ModuleFileSystem::SaveFile(const char * path, const char* file_content, const char* name, const char* extension, int size)
+bool ModuleFileSystem::SaveFile(const char* path, const char* file_content, const char* name, const char* extension, int size)
 {
 	bool ret = false;
 
@@ -84,4 +89,17 @@ bool ModuleFileSystem::SaveFile(const char * path, const char* file_content, con
 	fclose(new_file);
 
 	return ret;
+}
+
+void ModuleFileSystem::DeleteFilesInPath(const char* path)
+{
+	if (DeleteFile(path) == 0)
+	{
+		DWORD error = GetLastError();
+
+		if (error == ERROR_FILE_NOT_FOUND)
+		{
+			CONSOLELOG("Error deleting file (path not found)): %s", path);
+		}
+	}
 }

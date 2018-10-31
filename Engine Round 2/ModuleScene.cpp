@@ -22,6 +22,10 @@ bool ModuleScene::Start()
 
 	root_node = CreateGameObject("root", nullptr);
 
+	//std::string prueba = App->filesystem->library_mesh_path;
+	//prueba += "\Baker_House.mymesh";
+	//App->renderer3D->mesh_importer->Load(prueba.c_str());
+
 	return ret;
 }
 
