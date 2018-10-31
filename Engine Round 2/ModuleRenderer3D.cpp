@@ -160,6 +160,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
 	App->scene->Draw();
+	int prueba = App->renderer3D->meshes.size();
 	DrawMeshes();//Draw of all meshes
 	App->editor->Draw();
 

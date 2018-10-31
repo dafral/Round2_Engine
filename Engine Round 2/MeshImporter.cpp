@@ -50,8 +50,8 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	new_mesh->LoadToMemory();
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 
-	CONSOLELOG("Loading mesh with %d vertices", ranges[0] * 3);
-	CONSOLELOG("Loading mesh with %d indices", ranges[1]);
+	CONSOLELOG("Loading mesh with %d vertices", new_mesh->num_vertices * 3);
+	CONSOLELOG("Loading mesh with %d indices", new_mesh->num_indices);
 
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
