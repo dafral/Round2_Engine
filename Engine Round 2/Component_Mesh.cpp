@@ -1,101 +1,78 @@
 #include "Component_Mesh.h"
+
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
+
 #include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
 
-float* Component_Mesh::GetVertices()
+void Component_Mesh::SetFaces(aiMesh* new_mesh)
 {
-	return vertices;
-}
+	// Vertices
+	num_vertices = new_mesh->mNumVertices;
+	vertices = new float[num_vertices * 3];
+	memcpy(vertices, new_mesh->mVertices, sizeof(float) * num_vertices * 3);
 
-uint Component_Mesh::GetIdVertices()
-{
-	return id_vertices;
-}
-
-uint Component_Mesh::GetNumVertices()
-{
-	return num_vertices;
-}
-
-uint* Component_Mesh::GetIndices()
-{
-	return indices;
-}
-
-uint Component_Mesh::GetIdIndices()
-{
-	return id_indices;
-}
-
-uint Component_Mesh::GetNumIndices()
-{
-	return num_indices;
-}
-
-float* Component_Mesh::GetTexCoords()
-{
-	return texture_coords;
-}
-
-uint Component_Mesh::GetIdUVs()
-{
-	return id_uvs;
-}
-
-uint Component_Mesh::GetNumUVs()
-{
-	return num_uvs;
-}
-
-void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_indices, uint n_num_indices)
-{
-	if (n_num_vertices > 0)
+	// Indices
+	if (new_mesh->HasFaces())
 	{
-		// Vertices
-		vertices = new float[n_num_vertices * 3];
-		memcpy(vertices, n_vertices, sizeof(float) * n_num_vertices * 3);
-		num_vertices = n_num_vertices;
+		num_indices = new_mesh->mNumFaces * 3;
+		indices = new uint[num_indices];
 
-		if (n_num_indices > 0)
+		for (uint i = 0; i < new_mesh->mNumFaces; i++)
 		{
-			// Indices
-			num_indices = n_num_indices;
-			indices = new uint[n_num_indices];
-			memcpy(indices, n_indices, sizeof(uint) * n_num_indices);		
+			if (new_mesh->mFaces[i].mNumIndices != 3)
+			{
+				CONSOLELOG("WARNING, geometry face with != 3 indices!");
+			}
+			else
+			{
+				memcpy(&indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+			}
 		}
 	}
 }
 
-void Component_Mesh::SetUvs(float* n_uvs, uint n_num_uvs)
+void Component_Mesh::SetUVs(aiMesh* new_mesh)
 {
-	if (n_num_uvs > 0)
+	// UVs
+	if (new_mesh->HasTextureCoords(0))
 	{
-		// UVs
-		texture_coords = new float[n_num_uvs * 3];
-		memcpy(texture_coords, n_uvs, sizeof(float) * n_num_uvs * 3);
-		num_uvs = n_num_uvs;
+		num_uvs = new_mesh->mNumVertices;
+		texture_coords = new float[num_uvs * 3];
+		memcpy(texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * num_uvs * 3);
 	}
 }
 
-void Component_Mesh::LoadToMemory()
+void Component_Mesh::SetIDs(Component_Mesh* cmesh)
 {
-	if (id_vertices == 0 && vertices != nullptr) 
+	id_indices = cmesh->id_indices;
+	id_vertices = cmesh->id_vertices;
+	id_uvs = cmesh->id_uvs;
+}
+
+void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
+{
+	// Load buffer for vertices
+	glGenBuffers(1, (GLuint*) &(id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
+
+	// Load buffer for indices
+	if (new_mesh->HasFaces())
 	{
-		glGenBuffers(1, (GLuint*)&(id_vertices));
-		glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices * 3, vertices, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*) &(id_indices));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
 	}
 
-	if (id_indices == 0 && indices != nullptr)
+	// Load buffer for UVs
+	if (new_mesh->HasTextureCoords(0))
 	{
-		glGenBuffers(1, (GLuint*)&(id_indices));
-		glBindBuffer(GL_ARRAY_BUFFER, id_indices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_indices, indices, GL_STATIC_DRAW);
-	}
-
-	if (id_uvs == 0 && texture_coords != nullptr)
-	{
-		glGenBuffers(1, (GLuint*)&(id_uvs));
-		glBindBuffer(GL_ARRAY_BUFFER, id_uvs);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_uvs * 3, texture_coords, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*) &(id_uvs));
+		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)id_uvs);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_uvs * 3, texture_coords, GL_STATIC_DRAW);
 	}
 }

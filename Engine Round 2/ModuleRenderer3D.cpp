@@ -4,15 +4,16 @@
 #include "PanelProperties.h"
 #include "ModuleScene.h"
 #include "Component_Mesh.h"
+#include "Component_Material.h"
 #include "GameObject.h"
-
-#include "glew/include/glew.h"
-#include "SDL/include/SDL_opengl.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 #include "Assimp/include/cfileio.h"
+
+#include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
 
 #pragma comment (lib, "Assimp/libx86/assimp.lib")
 
@@ -206,6 +207,7 @@ Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 {
 	Component_Mesh* cmesh = new Component_Mesh();
 	cmesh->my_go = my_go;
+	my_go->AddComponent(cmesh);
 	meshes.push_back(cmesh);	
 	return cmesh;
 }
@@ -214,15 +216,20 @@ void ModuleRenderer3D::DrawMeshes()
 {
 	for (int i = 0; i < meshes.size(); i++)
 	{
+		Component_Material* texture = (Component_Material*)meshes[i]->my_go->FindComponentWithType(MATERIAL);
+
+		glEnable(GL_TEXTURE_2D);
 		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdVertices());
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->id_indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->GetIdIndices());
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->id_uvs);
+		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdUVs());
 		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-		glDrawElements(GL_TRIANGLES, meshes[i]->num_indices, GL_UNSIGNED_INT, NULL);
+
+		if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->GetTextureId());
+		glDrawElements(GL_TRIANGLES, meshes[i]->GetNumIndices(), GL_UNSIGNED_INT, NULL);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -230,6 +237,7 @@ void ModuleRenderer3D::DrawMeshes()
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisable(GL_TEXTURE_2D);
 	}
 }
 
@@ -242,10 +250,10 @@ std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
 // Loading Scene
 // =====================================================================
 
-void ModuleRenderer3D::LoadScene(char* full_path)
+void ModuleRenderer3D::LoadScene(const char* full_path, const char* file_name)
 {
 	// Creating the parent (empty game object) 
-	GameObject* empty_go = App->scene->CreateGameObject("test", App->scene->root_node);
+	GameObject* empty_go = App->scene->CreateGameObject(file_name, App->scene->root_node);
 
 	// Loading scene
 	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
@@ -283,50 +291,15 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 			GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), parent);
 			Component_Mesh* cmesh = CreateComponentMesh(go);
 
-			// Vertices
-			cmesh->num_vertices = new_mesh->mNumVertices;
-			cmesh->vertices = new float[cmesh->num_vertices * 3];
-			memcpy(cmesh->vertices, new_mesh->mVertices, sizeof(float) * cmesh->num_vertices * 3);
-
-			// Indices
-			if (new_mesh->HasFaces())
-			{
-				cmesh->num_indices = new_mesh->mNumFaces * 3;
-				cmesh->indices = new uint[cmesh->num_indices];
-				for (uint i = 0; i < new_mesh->mNumFaces; i++)
-				{
-					if (new_mesh->mFaces[i].mNumIndices != 3) 
-					{
-						CONSOLELOG("WARNING, geometry face with != 3 indices!");
-					}
-					else 
-					{
-						memcpy(&cmesh->indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
-					}
-				}
-			}
-
-			// UVs
-			if (new_mesh->HasTextureCoords(0))
-			{
-				cmesh->num_uvs = new_mesh->mNumVertices;
-				cmesh->texture_coords = new float[cmesh->num_uvs * 3];
-				memcpy(cmesh->texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * cmesh->num_uvs * 3);
-			}
+			// Setting values cmesh
+			cmesh->SetFaces(new_mesh);
+			cmesh->SetUVs(new_mesh);
 
 			// Check if we already loaded this mesh in memory
 			Component_Mesh* aux = IsMeshLoaded(cmesh);
 
-			if (aux == nullptr)
-			{
-				LoadBuffers(cmesh, new_mesh);
-			}
-			else
-			{
-				cmesh->id_indices = aux->id_indices;
-				cmesh->id_vertices = aux->id_vertices;
-				cmesh->id_uvs = aux->id_uvs;
-			}
+			if (meshes.size() == 1 || aux == nullptr) cmesh->LoadBuffers(new_mesh);
+			else cmesh->SetIDs(aux);
 
 			// Import mesh HERE
 			mesh_importer->Save(App->filesystem->library_mesh_path.c_str(), cmesh);
@@ -338,7 +311,7 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 	}
 }
 
-Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_mesh)
+Component_Mesh* ModuleRenderer3D::IsMeshLoaded(Component_Mesh* new_mesh)
 {
 	Component_Mesh* ret = nullptr;
 	bool is_loaded = true;
@@ -346,19 +319,19 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_mesh)
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		// Vertices
-		if (meshes[i]->num_vertices == new_mesh->num_vertices)
+		if (meshes[i]->GetNumVertices() == new_mesh->GetNumVertices())
 		{
-			for (unsigned int j = 0; j < meshes[i]->num_vertices * 3; j++)
-				if (meshes[i]->vertices[j] != new_mesh->vertices[j])
+			for (unsigned int j = 0; j < meshes[i]->GetNumVertices() * 3; j++)
+				if (meshes[i]->GetVertices()[j] != new_mesh->GetVertices()[j])
 					is_loaded = false;
 		}
 		else is_loaded = false;
 
 		// Indices
-		if (meshes[i]->num_indices == new_mesh->num_indices)
+		if (meshes[i]->GetNumIndices() == new_mesh->GetNumIndices())
 		{
-			for (unsigned int j = 0; j < meshes[i]->num_indices; j++)
-				if (meshes[i]->indices[j] != new_mesh->indices[j])
+			for (unsigned int j = 0; j < meshes[i]->GetNumIndices(); j++)
+				if (meshes[i]->GetIndices()[j] != new_mesh->GetIndices()[j])
 					is_loaded = false;
 		}
 		else is_loaded = false;
@@ -371,30 +344,6 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(const Component_Mesh* new_mesh)
 	}
 
 	return ret;
-}
-
-void ModuleRenderer3D::LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh)
-{
-	// Load buffer for vertices
-	glGenBuffers(1, (GLuint*) &(cmesh->id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, cmesh->id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*cmesh->num_vertices * 3, cmesh->vertices, GL_STATIC_DRAW);
-
-	// Load buffer for indices
-	if (new_mesh->HasFaces())
-	{
-		glGenBuffers(1, (GLuint*) &(cmesh->id_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, cmesh->id_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * cmesh->num_indices, cmesh->indices, GL_STATIC_DRAW);
-	}
-
-	// Load buffer for UVs
-	if (new_mesh->HasTextureCoords(0))
-	{
-		glGenBuffers(1, (GLuint*) &(cmesh->id_uvs));
-		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)cmesh->id_uvs);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * cmesh->num_uvs * 3, cmesh->texture_coords, GL_STATIC_DRAW);
-	}
 }
 
 

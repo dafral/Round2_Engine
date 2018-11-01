@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleEditor.h"
+#include "PanelInspector.h"
 
 #define MAX_KEYS 300
 
@@ -118,21 +120,27 @@ update_status ModuleInput::PreUpdate(float dt)
 			// In case if dropped file
 			case SDL_DROPFILE: 
 			{
-				char* dropped_file = e.drop.file;
-				std::string str = e.drop.file;
+				std::string full_path = e.drop.file;
 
-				int dot_pos = str.find_last_of(".");
-				std::string extension = str.substr(dot_pos + 1, 3);
+				int dot_pos = full_path.find_last_of(".");
+				int bar_pos = full_path.find_last_of("\\");
+				int name_length = dot_pos - bar_pos - 1;
+
+				std::string extension = full_path.substr(dot_pos + 1, 3);
+				std::string file_name = full_path.substr(bar_pos + 1, name_length);
 
 				if (extension == "fbx" || extension == "FBX") 
 				{
-					CONSOLELOG("Dropped file: %s", dropped_file);
-					App->renderer3D->LoadScene(dropped_file);
+					CONSOLELOG("Dropped file: %s", full_path.c_str());
+					App->renderer3D->LoadScene(full_path.c_str(), file_name.c_str());
 				}
 				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") 
 				{
-					CONSOLELOG("Dropped texture: %s", dropped_file);
-					//App->material->LoadTexture(dropped_file);
+					CONSOLELOG("Dropped texture: %s", full_path.c_str());
+
+					if(App->editor->inspector->GetSelectedGO() != nullptr)
+						App->material->LoadTexture(full_path.c_str(), App->editor->inspector->GetSelectedGO());
+					else CONSOLELOG("You MUST select a GameObject to load a texture.");
 				}
 				else 
 				{
@@ -140,7 +148,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				}
 
 				// Free dropped_filedir memory
-				SDL_free(dropped_file);
+				SDL_free(e.drop.file);
 				break;
 			}
 		}

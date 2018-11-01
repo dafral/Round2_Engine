@@ -29,12 +29,12 @@ public:
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
 	
-	Component_Mesh* CreateComponentMesh(GameObject* my_go);
-	void LoadScene(char* full_path);
+	void LoadScene(const char* full_path, const char* file_name);
 	void LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node);
-	void LoadBuffers(Component_Mesh* cmesh, aiMesh* new_mesh);
+
+	Component_Mesh* CreateComponentMesh(GameObject* my_go);
+	Component_Mesh* IsMeshLoaded(Component_Mesh* curr_mesh);
 	void DrawMeshes();
-	Component_Mesh* IsMeshLoaded(const Component_Mesh* curr_mesh);
 	std::vector<Component_Mesh*>* GetMeshesVector();
 
 public:

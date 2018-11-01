@@ -4,7 +4,7 @@ enum Component_Type
 {
 	TRANSFORM, 
 	MESH, 
-	TEXTURE
+	MATERIAL
 };
 
 class GameObject;

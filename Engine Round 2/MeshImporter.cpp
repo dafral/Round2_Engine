@@ -45,14 +45,14 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	// Create mesh --------------
 	Component_Mesh* new_mesh = new Component_Mesh;
 
-	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
+	/*new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
 	new_mesh->LoadToMemory();
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 
 	CONSOLELOG("Loading mesh with %d vertices", new_mesh->num_vertices * 3);
 	CONSOLELOG("Loading mesh with %d indices", new_mesh->num_indices);
-
+*/
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(uvs);

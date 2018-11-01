@@ -3,6 +3,8 @@
 #include "Globals.h"
 #include "Component.h"
 
+struct aiMesh;
+
 // 0..1
 class Component_Mesh : public Component
 {
@@ -10,7 +12,7 @@ public:
 	Component_Mesh() : Component(MESH) {};
 	virtual ~Component_Mesh() {};
 
-public://THIS NEEDS TO BE PRIVATE
+private:
 	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
@@ -24,18 +26,20 @@ public://THIS NEEDS TO BE PRIVATE
 	float* texture_coords = nullptr;
 
 public:
-	float* GetVertices();
-	uint GetIdVertices();
-	uint GetNumVertices();
-	uint* GetIndices();
-	uint GetIdIndices();
-	uint GetNumIndices();
-	float* GetTexCoords();
-	uint GetIdUVs();
-	uint GetNumUVs();
-	void LoadToMemory();
+	uint GetIdVertices() { return id_vertices; };
+	uint GetNumVertices() { return num_vertices; };
+	float* GetVertices() { return vertices; };
+	
+	uint GetIdIndices() { return id_indices; };
+	uint GetNumIndices() { return num_indices; };
+	uint* GetIndices() { return indices; };
 
-	void SetFaces(float* vertices, uint num_vertices, uint* indices, uint num_indices);
-	void SetUvs(float* uvs, uint num_uvs);
+	uint GetIdUVs() { return id_uvs; };
+	uint GetNumUVs() { return num_uvs; };
+	float* GetTexCoords() { return texture_coords; };
 
+	void SetFaces(aiMesh* new_mesh);
+	void SetUVs(aiMesh* new_mesh);
+	void SetIDs(Component_Mesh* cmesh);
+	void LoadBuffers(aiMesh* new_mesh);
 };

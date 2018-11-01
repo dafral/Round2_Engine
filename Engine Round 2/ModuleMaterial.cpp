@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "ModuleMaterial.h"
 #include "PanelProperties.h"
-#include "MathGeoLib/MathGeoLib.h"
+#include "Component_Material.h"
+#include "GameObject.h"
 
 #include "Devil/include/IL/il.h"
 #include "Devil/include/IL/ilu.h"
@@ -45,86 +46,57 @@ bool ModuleMaterial::CleanUp()
 }
 
 
-void ModuleMaterial::LoadTexture(const char* full_path, GameObject* game_obj)
+void ModuleMaterial::LoadTexture(const char* full_path, GameObject* go)
 {
-	//ILuint imageID;
-	//ILenum error;
+	ILuint imageID;
+	ILenum error;
 
-	//ilGenImages(1, &imageID);
-	//ilBindImage(imageID);
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
 
-	//if (ilLoadImage(""))
-	//{
-	//	ComponentMaterial* tex = CreateComponentMaterial();
-	//	game_obj->AddComponent(tex);
+	if (ilLoadImage(full_path))
+	{
+		Component_Material* tex = CreateComponentMaterial(go);
 
-	//	ILinfo ImageInfo;
-	//	iluGetImageInfo(&ImageInfo);
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
 
-	//	//Flip the image if it is upside-down
-	//	if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
-	//		iluFlipImage();
-	//	}
+		//Flip the image if it is upside-down
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
+			iluFlipImage();
+		}
 
-	//	if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
-	//	{
-	//		error = ilGetError();
-	//		CONSOLELOG("Texture conversion failed: %d %s", error, iluErrorString(error));
-	//	}
-	//	else
-	//	{
-	//		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	//		glGenTextures(1, (GLuint*)tex->id_texture);
-	//		glBindTexture(GL_TEXTURE_2D, (GLuint)tex->id_texture);
+		if (!ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE))
+		{
+			error = ilGetError();
+			CONSOLELOG("Texture conversion failed: %d %s", error, iluErrorString(error));
+		}
+		else
+		{
+			tex->LoadBuffers();	
+			App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex->GetTextureId());
+		}
+	}
+	else {
+		error = ilGetError();
+	}
 
-	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-	//		//Texture Specifications
-	//		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-	//		
-	//		App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex->id_texture);
-	//	}
-	//}
-	//else {
-	//	error = ilGetError();
-	//}
-
-	//
-	//ilDeleteImages(1, &imageID);
+	
+	ilDeleteImages(1, &imageID);
 }
 
-void ModuleMaterial::Draw()
+// =====================================================================
+// Component material
+// =====================================================================
+
+Component_Material* ModuleMaterial::CreateComponentMaterial(GameObject* my_go)
 {
-	//for (int i = 0; i < comp_mats.size(); i++)
-	//{
-	//	glEnable(GL_TEXTURE_2D);
-
-	//	/*glEnableClientState(GL_VERTEX_ARRAY);
-	//	glBindBuffer(GL_ARRAY_BUFFER, meshes[i].id_vertices);
-	//	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i].id_indices);*/
-
-	//	/*glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	//	glBindBuffer(GL_ARRAY_BUFFER, meshes[i].id_uvs);
-	//	glTexCoordPointer(3, GL_FLOAT, 0, NULL);*/
-
-	//	glBindTexture(GL_TEXTURE_2D, (GLuint)comp_mats[i]->id_texture);
-	//	//glDrawElements(GL_TRIANGLES, meshes[i].num_indices, GL_UNSIGNED_INT, NULL);
-
-	//	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	//	glBindTexture(GL_TEXTURE_2D, 0);
-	//	glDisableClientState(GL_VERTEX_ARRAY);
-	//	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	//	glDisable(GL_TEXTURE_2D);
-	//}
+	Component_Material* cmaterial = new Component_Material();
+	cmaterial->my_go = my_go;
+	my_go->AddComponent(cmaterial);
+	materials.push_back(cmaterial);
+	return cmaterial;
 }
-
 
 
 void ModuleMaterial::DeleteTextures()

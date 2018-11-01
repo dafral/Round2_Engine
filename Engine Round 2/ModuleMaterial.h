@@ -5,7 +5,8 @@
 #include "Component.h"
 #include <vector>
 
-class ComponentMaterial;
+class Component_Material;
+class GameObject;
 
 class ModuleMaterial : public Module
 {
@@ -14,17 +15,14 @@ public:
 	~ModuleMaterial();
 
 	bool Start();
-	/*update_status Update(float dt);*/
 	bool CleanUp();
 
 	void LoadTexture(const char* path, GameObject* game_obj);
 	void DeleteTextures();
 
-	ComponentMaterial* CreateComponentMaterial();
-
-	void Draw();
+	Component_Material* CreateComponentMaterial(GameObject* my_go);
 
 private:
+	std::vector<Component_Material*> materials;
 
-	std::vector<ComponentMaterial*> comp_mats;
 };

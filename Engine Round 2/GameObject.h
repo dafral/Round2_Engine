@@ -15,7 +15,9 @@ public:
 	GameObject(std::string name, GameObject* parent);
 	~GameObject();
 
-	void AddChildren(GameObject* children);
+	void AddChildren(GameObject* children); 
+	void AddComponent(Component* component);
+	Component* FindComponentWithType(Component_Type type);
 
 public:
 
@@ -26,6 +28,7 @@ public:
 	bool is_static = true;
 
 	std::vector<GameObject*> childrens;
+	std::vector<Component*> components;
 };
 
 #endif // ! __GAMEOBJECT_H__
