@@ -18,17 +18,22 @@ public:
 	void AddChildren(GameObject* children); 
 	void AddComponent(Component* component);
 	Component* FindComponentWithType(Component_Type type);
+	void SetStatic(bool new_static) { is_static = new_static; };
+	void SetVisible(bool new_visible) { is_visible = new_visible; };
+	bool GetStatic() { return is_static; };
+	bool GetVisible() { return is_visible; };
 
 public:
 
 	std::string name;
 	GameObject* parent;
 
-	bool is_visible = true;
-	bool is_static = true;
-
 	std::vector<GameObject*> childrens;
 	std::vector<Component*> components;
+
+private:
+	bool is_visible = true;
+	bool is_static = false;
 };
 
 #endif // ! __GAMEOBJECT_H__

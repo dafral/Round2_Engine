@@ -1,7 +1,14 @@
+#include "Application.h"
+#include "ModuleEditor.h"
+#include "PanelInspector.h"
 #include "PanelProperties.h"
+#include "GameObject.h"
+#include "Component_Transform.h"
+#include "Component_Mesh.h"
+#include "Component_Material.h"
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
-#include "glew/include/glew.h"
 
 PanelProperties::PanelProperties(bool active = true) : Panel(active)
 {}
@@ -18,108 +25,95 @@ void PanelProperties::Draw()
 {
 	if (ImGui::BeginDock("Properties", NULL))
 	{
-		//Transformation information
+		GameObject* go = App->editor->inspector->GetSelectedGO();
 
-		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Transformation");
-
-		ImGui::Text("Position: X %f  Y %f  Z %f", position.x, position.y, position.z);
-		ImGui::Text("Rotation: X %f  Y %f  Z %f", rotation.x, rotation.y, rotation.z);
-		ImGui::Text("Scale: X %f  Y %f  Z %f", scale.x, scale.y, scale.z);
-
-		ImGui::Separator();
-
-		//Geometry information
-
-		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Geometry");
-
-		ImGui::Text("File path: ");
-		ImGui::SameLine();
-		ImGui::Text(gName);
-
-		ImGui::Text("Number of meshes: ");
-		ImGui::SameLine();
-		ImGui::Text("%d", gNumMesh);
-
-		ImGui::Text("Number of vertices: ");
-		ImGui::SameLine();
-		ImGui::Text("%d", gNumVert);
-
-		ImGui::Text("Number of triangles: ");
-		ImGui::SameLine();
-		ImGui::Text("%d", gNumTriangles);
-
-		ImGui::Separator();
-
-		//Texture information
-
-		ImGui::TextColored(ImVec4(1.00f, 1.00f, 0.00f, 1.00f), "Texture");
-
-		ImGui::Text("Texture path: ");
-		ImGui::SameLine();
-		ImGui::Text(tName);
-
-		ImGui::Text("Texture format: ");
-		ImGui::SameLine();
-		ImGui::Text(tType.c_str());
-
-		ImGui::Text("Texture Dimensions: ");
-		ImGui::SameLine();
-		ImGui::Text("%d x %d", tWidth, tHeight);
-
-		ImGui::Text("Texture Snapshot: ");
-		if (tSnap != nullptr) 
+		if (active && go != nullptr)
 		{
-			ImGui::Image(tSnap, ImVec2(200.0f, 200.0f));
-		}
+			Component_Transform* ctrans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
+			Component_Mesh* cmesh = (Component_Mesh*)go->FindComponentWithType(MESH);
+			Component_Material* cmaterial = (Component_Material*)go->FindComponentWithType(MATERIAL);
 
+			GOInfo(go);
+
+			ImGui::Separator();
+
+			TransInfo(ctrans, go->GetStatic());
+
+			ImGui::Separator();
+
+			MeshInfo(cmesh);
+
+			ImGui::Separator();
+
+			MaterialInfo(cmaterial);
+		}
 	}
 
 	ImGui::EndDock();
 }
 
-void PanelProperties::SaveTransformationInfo(aiVector3D pos, aiQuaternion rot, aiVector3D scl)
+void PanelProperties::GOInfo(GameObject* go)
 {
-	/*position = (pos.x, pos.y, pos.z);
-	rotation = (rot.GetEuler().x * RADTODEG , rot.GetEuler().y * RADTODEG, rot.GetEuler().z * RADTODEG);
-	scale = (scl.x, scl.y, scl.z);*/
+	bool is_static = go->GetStatic();
+	bool is_visible = go->GetVisible();
+
+	ImGui::Text("Name: %s", go->name.c_str());
+
+	if (ImGui::Checkbox("Static", &is_static))
+		go->SetStatic(is_static);
+
+	ImGui::SameLine();
+
+	if (ImGui::Checkbox("Visible", &is_visible))
+		go->SetVisible(is_visible);
 }
 
-void PanelProperties::SaveMeshInfo(const char* file_name, int nMesh, int nVertices, int nTriangles)
+void PanelProperties::MeshInfo(Component_Mesh* mesh)
 {
-	gName = file_name;
-	gNumMesh = nMesh;
-	gNumVert = nVertices;
-	gNumTriangles = nTriangles;
+	if (mesh != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Mesh"))
+		{
+			ImGui::Text("Vertices: %d", mesh->GetNumVertices());
+			ImGui::Text("Triangles: %d", mesh->GetNumIndices() / 3);
+		}
+	}
 }
 
-void PanelProperties::EraseGeometryInfo()
+void PanelProperties::MaterialInfo(Component_Material* material)
 {
-	gName = " ";
-	gNumMesh = 0;
-	gNumVert = 0;
-	gNumTriangles = 0;
+	if (material != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Texture"))
+		{
+			//ImGui::Text("Texture name: %s", texture_name.c_str());
+			//ImGui::Text("Texture dimensions: %d x %d", go->GetTextureWidth(), go->GetTextureHeight());
+		}
+	}
 }
 
-void PanelProperties::EraseTextureInfo()
+void PanelProperties::TransInfo(Component_Transform* trans, bool is_static)
 {
-	tName = " ";
-	tType = " ";
-	tWidth = 0;
-	tHeight = 0;
-	tSnap = nullptr;
-}
+	if (trans != nullptr)
+	{
+		if (ImGui::CollapsingHeader("Transform"))
+		{
+			float3 position = trans->GetPosition();
+			float3 scale = trans->GetScale();
+			Quat rotation = trans->GetRotation();
 
-void PanelProperties::SaveTextureInfo(const char* file_name, int width, int height, ImTextureID snapshot)
-{
-	tName = file_name;
+			float3 euler_rotation = RadToDeg(rotation.ToEulerXYZ());
 
-	std::string str = file_name;
-	int dot_pos = str.find_last_of(".");
-	tType = str.substr(dot_pos + 1, 3);
-	
+			ImGui::Text("    X         Y        Z");
 
-	tWidth = width;
-	tHeight = height;
+			if (ImGui::DragFloat3("Position", (float*)&position, 0.1f))
+				if (!is_static) trans->SetPosition(position);
 
-	tSnap = snapshot;
+			if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
+				if (!is_static) trans->SetRotation(DegToRad(euler_rotation));
+
+			if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
+				if (!is_static) trans->SetScale(scale);
+		}
+	}
 }

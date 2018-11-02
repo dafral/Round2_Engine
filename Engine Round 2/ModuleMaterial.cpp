@@ -8,7 +8,12 @@
 #include "Devil/include/IL/il.h"
 #include "Devil/include/IL/ilu.h"
 #include "Devil/include/IL/ilut.h"
+#include "Assimp/include/cimport.h"
+#include "Assimp/include/scene.h"
+#include "Assimp/include/postprocess.h"
+#include "Assimp/include/cfileio.h"
 
+#pragma comment (lib, "Assimp/libx86/assimp.lib")
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
 #pragma comment (lib, "Devil/libx86/ILU.lib")
 #pragma comment (lib, "Devil/libx86/ILUT.lib")
@@ -74,7 +79,6 @@ void ModuleMaterial::LoadTexture(const char* full_path, GameObject* go)
 		else
 		{
 			tex->LoadBuffers();	
-			App->editor->properties->SaveTextureInfo(full_path, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), (void*)tex->GetTextureId());
 		}
 	}
 	else {

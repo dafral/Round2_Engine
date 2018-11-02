@@ -3,6 +3,7 @@
 #include "myPrimitives.h"
 
 #include "Component.h"
+#include "Component_Transform.h"
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -57,7 +58,9 @@ GameObject* ModuleScene::CreateGameObject(std::string name, GameObject* parent)
 		parent->AddChildren(new_go);
 
 	// We have to create a component transform by default 
-	// HERE
+	Component_Transform* trans = new Component_Transform();
+	trans->my_go = new_go;
+	new_go->AddComponent(trans);
 	
 	return new_go;
 }

@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "Component_Mesh.h"
 #include "Component_Material.h"
+#include "Component_Transform.h"
 #include "GameObject.h"
 
 #include "Assimp/include/cimport.h"
@@ -216,28 +217,38 @@ void ModuleRenderer3D::DrawMeshes()
 {
 	for (int i = 0; i < meshes.size(); i++)
 	{
-		Component_Material* texture = (Component_Material*)meshes[i]->my_go->FindComponentWithType(MATERIAL);
+		if (meshes[i]->my_go->GetVisible())
+		{
+			glPushMatrix();
 
-		glEnable(GL_TEXTURE_2D);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdVertices());
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->GetIdIndices());
+			Component_Material* texture = (Component_Material*)meshes[i]->my_go->FindComponentWithType(MATERIAL);
+			Component_Transform* trans = (Component_Transform*)meshes[i]->my_go->FindComponentWithType(TRANSFORM);
 
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdUVs());
-		glTexCoordPointer(3, GL_FLOAT, 0, NULL);
+			if (trans != nullptr) glMultMatrixf(trans->GetGlobalTransform().ptr());
 
-		if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->GetTextureId());
-		glDrawElements(GL_TRIANGLES, meshes[i]->GetNumIndices(), GL_UNSIGNED_INT, NULL);
+			glEnable(GL_TEXTURE_2D);
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdVertices());
+			glVertexPointer(3, GL_FLOAT, 0, NULL);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->GetIdIndices());
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+			glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdUVs());
+			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisable(GL_TEXTURE_2D);
+			if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->GetTextureId());
+			glDrawElements(GL_TRIANGLES, meshes[i]->GetNumIndices(), GL_UNSIGNED_INT, NULL);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisableClientState(GL_VERTEX_ARRAY);
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glDisable(GL_TEXTURE_2D);
+
+			glPopMatrix();
+		}
 	}
 }
 
@@ -294,6 +305,26 @@ void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode
 			// Setting values cmesh
 			cmesh->SetFaces(new_mesh);
 			cmesh->SetUVs(new_mesh);
+
+			// Changing transform
+			Component_Transform* trans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
+
+			if (node != nullptr)
+			{
+				aiVector3D translation;
+				aiVector3D scaling;
+				aiQuaternion rotation;
+
+				node->mTransformation.Decompose(scaling, rotation, translation);
+
+				float3 pos(translation.x, translation.y, translation.z);
+				float3 scale(scaling.x, scaling.y, scaling.z);
+				Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+
+				trans->SetPosition(pos);
+				trans->SetRotation(rot);
+				trans->SetScale(scale);
+			}
 
 			// Check if we already loaded this mesh in memory
 			Component_Mesh* aux = IsMeshLoaded(cmesh);

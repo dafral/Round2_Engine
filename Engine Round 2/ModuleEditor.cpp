@@ -38,6 +38,7 @@ bool ModuleEditor::Init()
 
 update_status ModuleEditor::PreUpdate(float dt)
 {
+	ImGuiIO& io = ImGui::GetIO();
 	ImGui_ImplSdl_NewFrame(App->window->window);
 
 	return UPDATE_CONTINUE;

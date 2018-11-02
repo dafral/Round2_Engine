@@ -357,6 +357,9 @@
     <ClInclude Include="Component_Material.h">
       <Filter>Sources\Engine Structure</Filter>
     </ClInclude>
+    <ClInclude Include="Component_Transform.h">
+      <Filter>Sources\Engine Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -543,6 +546,9 @@
       <Filter>Sources\Engine Structure</Filter>
     </ClCompile>
     <ClCompile Include="Component_Material.cpp">
+      <Filter>Sources\Engine Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Transform.cpp">
       <Filter>Sources\Engine Structure</Filter>
     </ClCompile>
   </ItemGroup>

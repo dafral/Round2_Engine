@@ -55,6 +55,7 @@ void Component_Mesh::SetIDs(Component_Mesh* cmesh)
 
 void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
 {
+
 	// Load buffer for vertices
 	glGenBuffers(1, (GLuint*) &(id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
