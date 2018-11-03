@@ -79,7 +79,7 @@ void ModuleMaterial::LoadTexture(const char* full_path, GameObject* go)
 		else
 		{
 			tex->LoadBuffers();	
-			App->renderer3D->material_importer->SaveAsDDS();
+			/*App->renderer3D->material_importer->SaveAsDDS();*/
 		}
 	}
 	else {

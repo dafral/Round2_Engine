@@ -89,7 +89,7 @@ void PanelProperties::MaterialInfo(Component_Material* material)
 		if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Text("Dimensions: %d x %d", material->GetTextureWidth(), material->GetTextureHeight());
-			ImGui::Image(material->GetTextureSnap(), ImVec2(150.0f, 1500.0f));
+			ImGui::Image(material->GetTextureSnap(), ImVec2(150.0f, 150.0f));
 		}
 	}
 }

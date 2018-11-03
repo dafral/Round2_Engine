@@ -16,8 +16,8 @@ void Component_Material::LoadBuffers()
 
 	width = ilGetInteger(IL_IMAGE_WIDTH);
 	height = ilGetInteger(IL_IMAGE_HEIGHT);
-	snap = (void*)texture_id;
-
+	
 	//Texture Specifications
 	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());	
+	snap = (void*)texture_id;
 }

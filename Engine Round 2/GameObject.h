@@ -18,8 +18,8 @@ public:
 	void AddChildren(GameObject* children); 
 	void AddComponent(Component* component);
 	Component* FindComponentWithType(Component_Type type);
-	void SetStatic(bool new_static) { is_static = new_static; };
-	void SetVisible(bool new_visible) { is_visible = new_visible; };
+	void SetStatic(bool new_static);
+	void SetVisible(bool new_visible);
 	bool GetStatic() { return is_static; };
 	bool GetVisible() { return is_visible; };
 

@@ -27,3 +27,25 @@ Component* GameObject::FindComponentWithType(Component_Type type)
 
 	return nullptr;
 }
+
+void GameObject::SetStatic(bool new_static) 
+{
+	is_static = new_static; 
+
+	// Recursion
+	for (int i = 0; i < childrens.size(); i++)
+	{
+		childrens[i]->SetStatic(new_static);
+	}
+};
+
+void GameObject::SetVisible(bool new_visible)
+{ 
+	is_visible = new_visible; 
+
+	// Recursion
+	for (int i = 0; i < childrens.size(); i++)
+	{
+		childrens[i]->SetVisible(new_visible);
+	}
+};
