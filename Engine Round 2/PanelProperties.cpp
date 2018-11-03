@@ -59,6 +59,8 @@ void PanelProperties::GOInfo(GameObject* go)
 
 	ImGui::Text("Name: %s", go->name.c_str());
 
+	ImGui::Separator();
+
 	if (ImGui::Checkbox("Static", &is_static))
 		go->SetStatic(is_static);
 
@@ -72,7 +74,7 @@ void PanelProperties::MeshInfo(Component_Mesh* mesh)
 {
 	if (mesh != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Mesh"))
+		if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Text("Vertices: %d", mesh->GetNumVertices());
 			ImGui::Text("Triangles: %d", mesh->GetNumIndices() / 3);
@@ -84,10 +86,10 @@ void PanelProperties::MaterialInfo(Component_Material* material)
 {
 	if (material != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Texture"))
+		if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			//ImGui::Text("Texture name: %s", texture_name.c_str());
-			//ImGui::Text("Texture dimensions: %d x %d", go->GetTextureWidth(), go->GetTextureHeight());
+			ImGui::Text("Dimensions: %d x %d", material->GetTextureWidth(), material->GetTextureHeight());
+			ImGui::Image(material->GetTextureSnap(), ImVec2(150.0f, 1500.0f));
 		}
 	}
 }
@@ -96,24 +98,21 @@ void PanelProperties::TransInfo(Component_Transform* trans, bool is_static)
 {
 	if (trans != nullptr)
 	{
-		if (ImGui::CollapsingHeader("Transform"))
-		{
-			float3 position = trans->GetPosition();
-			float3 scale = trans->GetScale();
-			Quat rotation = trans->GetRotation();
+		float3 position = trans->GetPosition();
+		float3 scale = trans->GetScale();
+		Quat rotation = trans->GetRotation();
 
-			float3 euler_rotation = RadToDeg(rotation.ToEulerXYZ());
+		float3 euler_rotation = RadToDeg(rotation.ToEulerXYZ());
 
-			ImGui::Text("    X         Y        Z");
+		ImGui::Text("    X         Y        Z");
 
-			if (ImGui::DragFloat3("Position", (float*)&position, 0.1f))
-				if (!is_static) trans->SetPosition(position);
+		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f))
+			if (!is_static) trans->SetPosition(position);
 
-			if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
-				if (!is_static) trans->SetRotation(DegToRad(euler_rotation));
+		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
+			if (!is_static) trans->SetRotation(DegToRad(euler_rotation));
 
-			if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
-				if (!is_static) trans->SetScale(scale);
-		}
+		if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
+			if (!is_static) trans->SetScale(scale);
 	}
 }
