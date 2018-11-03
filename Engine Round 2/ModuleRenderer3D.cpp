@@ -8,20 +8,11 @@
 #include "Component_Transform.h"
 #include "GameObject.h"
 
-#include "Assimp/include/cimport.h"
-#include "Assimp/include/scene.h"
-#include "Assimp/include/postprocess.h"
-#include "Assimp/include/cfileio.h"
-
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
 
-#pragma comment (lib, "Assimp/libx86/assimp.lib")
-
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{
-	mesh_importer = new MeshImporter;
-}
+{}
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
@@ -176,7 +167,6 @@ bool ModuleRenderer3D::CleanUp()
 {
 	CONSOLELOG("Destroying 3D Renderer");
 	
-	RELEASE(mesh_importer);
 	SDL_GL_DeleteContext(context);
 
 	return true;
@@ -261,86 +251,7 @@ std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
 // Loading Scene
 // =====================================================================
 
-void ModuleRenderer3D::LoadScene(const char* full_path, const char* file_name)
-{
-	// Creating the parent (empty game object) 
-	GameObject* empty_go = App->scene->CreateGameObject(file_name, App->scene->root_node);
 
-	// Loading scene
-	const aiScene* scene = aiImportFile(full_path, aiProcessPreset_TargetRealtime_MaxQuality);
-	aiNode* node = scene->mRootNode;
-
-	if (scene != nullptr && scene->HasMeshes())
-	{
-		LoadMesh(empty_go, scene, node);
-		CONSOLELOG("Scene %s loaded.", full_path);
-	}
-	else
-	{
-		CONSOLELOG("Error loading scene %s.", full_path);
-	}
-
-	// Releasing scene
-	aiReleaseImport(scene);
-}
-
-void ModuleRenderer3D::LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node)
-{
-	if (node->mNumMeshes <= 0)
-	{
-		// Recursion
-		for (int i = 0; i < node->mNumChildren; i++)
-			LoadMesh(parent, scene, node->mChildren[i]);
-	}
-	else
-	{
-		for (int i = 0; i < node->mNumMeshes; i++)
-		{
-			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[i]];
-
-			// Creating a Game Object (child of parent) for each mesh.
-			GameObject* go = App->scene->CreateGameObject(node->mName.C_Str(), parent);
-			Component_Mesh* cmesh = CreateComponentMesh(go);
-
-			// Setting values cmesh
-			cmesh->SetFaces(new_mesh);
-			cmesh->SetUVs(new_mesh);
-
-			// Changing transform
-			Component_Transform* trans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
-
-			if (node != nullptr)
-			{
-				aiVector3D translation;
-				aiVector3D scaling;
-				aiQuaternion rotation;
-
-				node->mTransformation.Decompose(scaling, rotation, translation);
-
-				float3 pos(translation.x, translation.y, translation.z);
-				float3 scale(scaling.x, scaling.y, scaling.z);
-				Quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
-
-				trans->SetPosition(pos);
-				trans->SetRotation(rot);
-				trans->SetScale(scale);
-			}
-
-			// Check if we already loaded this mesh in memory
-			Component_Mesh* aux = IsMeshLoaded(cmesh);
-
-			if (meshes.size() == 1 || aux == nullptr) cmesh->LoadBuffers(new_mesh);
-			else cmesh->SetIDs(aux);
-
-			// Import mesh HERE
-			mesh_importer->Save(App->filesystem->library_mesh_path.c_str(), cmesh);
-
-			// Recursion
-			for (int i = 0; i < node->mNumChildren; i++)
-				LoadMesh(go, scene, node->mChildren[i]);
-		}
-	}
-}
 
 Component_Mesh* ModuleRenderer3D::IsMeshLoaded(Component_Mesh* new_mesh)
 {

@@ -12,9 +12,6 @@
 
 class GameObject;
 class Component_Mesh;
-struct aiMesh;
-struct aiScene;
-struct aiNode;
 
 class ModuleRenderer3D : public Module
 {
@@ -29,9 +26,6 @@ public:
 
 	void OnResize(int width, int height);
 	void SetVsync(bool vsync);
-	
-	void LoadScene(const char* full_path, const char* file_name);
-	void LoadMesh(GameObject* parent, const aiScene* scene, aiNode* node);
 
 	Component_Mesh* CreateComponentMesh(GameObject* my_go);
 	Component_Mesh* IsMeshLoaded(Component_Mesh* curr_mesh);
@@ -45,8 +39,6 @@ public:
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
 	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
-	MeshImporter* mesh_importer;
-	MaterialImporter* material_importer;
 
 private:
 	std::vector<Component_Mesh*> meshes;

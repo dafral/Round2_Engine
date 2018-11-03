@@ -10,7 +10,8 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
-#include "ModuleMaterial.h"
+#include "MaterialImporter.h"
+#include "MeshImporter.h"
 #include "ModuleFileSystem.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
@@ -26,7 +27,8 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleEditor* editor;
-	ModuleMaterial* material;
+	MaterialImporter* material_importer;
+	MeshImporter* mesh_importer;
 	ModuleFileSystem* filesystem;
 
 	ImGuiTextBuffer consoleText;

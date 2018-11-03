@@ -138,14 +138,14 @@ update_status ModuleInput::PreUpdate(float dt)
 				if (extension == "fbx" || extension == "FBX") 
 				{
 					CONSOLELOG("Dropped file: %s", full_path.c_str());
-					App->renderer3D->LoadScene(full_path.c_str(), file_name.c_str());
+					App->mesh_importer->ImportScene(full_path.c_str(), file_name.c_str());
 				}
 				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") 
 				{
 					CONSOLELOG("Dropped texture: %s", full_path.c_str());
 
 					if(App->editor->inspector->GetSelectedGO() != nullptr)
-						App->material->LoadTexture(full_path.c_str(), App->editor->inspector->GetSelectedGO());
+						App->material_importer->Import(full_path.c_str(), App->editor->inspector->GetSelectedGO());
 					else CONSOLELOG("You MUST select a GameObject to load a texture.");
 				}
 				else 
