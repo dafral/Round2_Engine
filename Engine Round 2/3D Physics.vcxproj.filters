@@ -360,6 +360,9 @@
     <ClInclude Include="Component_Transform.h">
       <Filter>Sources\Engine Structure</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -550,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="Component_Transform.cpp">
       <Filter>Sources\Engine Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialImporter.cpp">
+      <Filter>Sources\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

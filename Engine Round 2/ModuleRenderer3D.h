@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "MeshImporter.h"
+#include "MaterialImporter.h"
 #include "glmath.h"
 #include "Light.h"
 
@@ -45,6 +46,7 @@ public:
 
 	float color_hue[3] = { 1.0f, 1.0f, 1.0f };
 	MeshImporter* mesh_importer;
+	MaterialImporter* material_importer;
 
 private:
 	std::vector<Component_Mesh*> meshes;

@@ -9,7 +9,7 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	assets_path = CreateFolder(GetRootPath(), "Assets");
 	library_path = CreateFolder(GetRootPath(), "Library");
 	library_mesh_path = CreateFolder(library_path.c_str(), "Meshes");
-	library_material_path = CreateFolder(library_path.c_str(), "Textures");
+	library_material_path = CreateFolder(library_path.c_str(), "Materials");
 
 }
 
