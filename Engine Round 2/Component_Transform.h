@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "ModuleJSON.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 // 0...1
@@ -21,6 +22,8 @@ public:
 	float4x4 GetTransform();
 	const float4x4 GetGlobalTransform();
 
+	void OnSave(JSON_Doc& config);
+	void OnLoad(JSON_Doc * config);
 private:
 	float3 position;
 	float3 scale;

@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 #include "Component.h"
+#include "ModuleJSON.h"
 
 struct aiMesh;
 
@@ -42,4 +43,7 @@ public:
 	void SetUVs(aiMesh* new_mesh);
 	void SetIDs(Component_Mesh* cmesh);
 	void LoadBuffers(aiMesh* new_mesh);
+
+	void OnSave(JSON_Doc& config);
+	void OnLoad(JSON_Doc * config);
 };

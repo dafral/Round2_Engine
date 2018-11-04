@@ -49,3 +49,21 @@ void GameObject::SetVisible(bool new_visible)
 		childrens[i]->SetVisible(new_visible);
 	}
 };
+
+// ------------------------------------------------------------------
+
+void GameObject::OnSave(JSON_Doc& config)
+{
+	Component_Transform* trans = (Component_Transform*)FindComponentWithType(TRANSFORM);
+	Component_Mesh* mesh = (Component_Mesh*)FindComponentWithType(MESH);
+	Component_Material* material = (Component_Material*)FindComponentWithType(MATERIAL);
+	if (trans)
+		trans->OnSave(*App->json->config);
+	if (mesh)
+		mesh->OnSave(*App->json->config);
+	if (material)
+		material->OnSave(*App->json->config);
+}
+void GameObject::OnLoad(JSON_Doc * config)
+{
+}

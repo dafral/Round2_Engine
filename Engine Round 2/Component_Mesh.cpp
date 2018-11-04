@@ -77,3 +77,13 @@ void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_uvs * 3, texture_coords, GL_STATIC_DRAW);
 	}
 }
+
+void Component_Mesh::OnSave(JSON_Doc& config)
+{
+
+}
+
+void Component_Mesh::OnLoad(JSON_Doc * config)
+{
+
+}

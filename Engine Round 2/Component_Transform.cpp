@@ -31,3 +31,13 @@ const float4x4 Component_Transform::GetGlobalTransform()
 
 	return ret;
 }
+
+void Component_Transform::OnSave(JSON_Doc& config)
+{
+
+}
+
+void Component_Transform::OnLoad(JSON_Doc * config)
+{
+
+}

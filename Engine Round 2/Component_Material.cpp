@@ -21,3 +21,13 @@ void Component_Material::LoadBuffers()
 	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());	
 	snap = (void*)texture_id;
 }
+
+void Component_Material::OnSave(JSON_Doc& config)
+{
+
+}
+
+void Component_Material::OnLoad(JSON_Doc * config)
+{
+
+}

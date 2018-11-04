@@ -2,6 +2,7 @@
 
 #include "Globals.h"
 #include "Component.h"
+#include "ModuleJSON.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 class Component_Camera : public Component
@@ -25,6 +26,8 @@ public:
 	void Rotate(const float dx, const float dy);
 
 	// ------------------------------------------
+	void OnSave(JSON_Doc& config);
+	void OnLoad(JSON_Doc * config);
 
 	float3 GetPosition() { return frustum.pos; };
 
