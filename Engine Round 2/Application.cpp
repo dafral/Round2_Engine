@@ -11,6 +11,7 @@ Application::Application()
 	mesh_importer = new MeshImporter(this);
 	material_importer = new MaterialImporter(this);
 	filesystem = new ModuleFileSystem(this);
+	json = new ModuleJSON(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -18,6 +19,7 @@ Application::Application()
 
 	// Main Modules
 	AddModule(filesystem);
+	AddModule(json);
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);

@@ -360,6 +360,9 @@
     <ClInclude Include="Component_Camera.h">
       <Filter>Sources\Engine Structure</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleJSON.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -553,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="Component_Camera.cpp">
       <Filter>Sources\Engine Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleJSON.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

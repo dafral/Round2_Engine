@@ -19,6 +19,9 @@ public:
 	ImTextureID GetTextureSnap() { return snap; };
 	void LoadBuffers();
 
+	void OnSave(JSON_Doc& config);
+	void OnLoad(JSON_Doc * config);
+
 private:
 	uint texture_id = 0;
 	uint width, height = 0;
