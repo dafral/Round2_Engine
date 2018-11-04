@@ -17,9 +17,6 @@ bool ModuleScene::Start()
 	CONSOLELOG("Loading Intro assets");
 	bool ret = true;
 
-	App->camera->Move(vec3(0.0f, 10.0f, 10.0f));
-	App->camera->LookAt(vec3(0, 0, 0));
-
 	root_node = CreateGameObject("root", nullptr);
 
 	return ret;

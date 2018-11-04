@@ -5,18 +5,6 @@
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	CalculateViewMatrix();
-
-	X = vec3(1.0f, 0.0f, 0.0f);
-	Y = vec3(0.0f, 1.0f, 0.0f);
-	Z = vec3(0.0f, 0.0f, 1.0f);
-
-	Position = vec3(0.0f, 0.0f, 5.0f);
-	Reference = vec3(0.0f, 0.0f, 0.0f);
-
-	positive = true;
-	x = 0;
-
 	sensitivity = 0.25;
 	orb_x_inverted = false;
 	orb_y_inverted = false;
@@ -32,6 +20,8 @@ bool ModuleCamera3D::Start()
 {
 	CONSOLELOG("Setting up the camera");
 	bool ret = true;
+
+	editor_camera = CreateComponentCamera();
 
 	scene_texture = new TextureMSAA();
 	scene_texture->Create(App->window->screen_surface->w, App->window->screen_surface->h);
@@ -52,187 +42,68 @@ bool ModuleCamera3D::CleanUp()
 
 update_status ModuleCamera3D::Update(float dt)
 {
-	MoveCamera();
+	// Editor camera -------------------------------
+
+	Move(dt);
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-		RotateCamera();
+		Rotate(dt);
 
 	// Look at Target
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		LookAt({ 0, 0, 0 });
-
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
 
 	return UPDATE_CONTINUE;
 }
 
 // -----------------------------------------------------------------
 
-void ModuleCamera3D::Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference)
+void ModuleCamera3D::LookAt(const float3 & spot)
 {
-	this->Position = Position;
-	this->Reference = Reference;
+	float3 direction = spot - editor_camera->GetFrustum().pos;
 
-	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
+	float3x3 matrix = float3x3::LookAt(editor_camera->GetFrustum().front, direction.Normalized(), editor_camera->GetFrustum().up, float3::unitY);
 
-	if(!RotateAroundReference)
-	{
-		this->Reference = this->Position;
-		this->Position += Z * 0.05f;
-	}
-
-	CalculateViewMatrix();
+	editor_camera->GetFrustum().front = matrix.MulDir(editor_camera->GetFrustum().front).Normalized();
+	editor_camera->GetFrustum().up = matrix.MulDir(editor_camera->GetFrustum().up).Normalized();
 }
 
-// -----------------------------------------------------------------
-
-void ModuleCamera3D::LookAt( const vec3 &Spot)
+void ModuleCamera3D::Rotate(float dt)
 {
-	Reference = Spot;
+	float dx = 0.0f, dy = 0.0f;
 
-	Z = normalize(Position - Reference);
-	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
-	Y = cross(Z, X);
+	orb_x_inverted ? dx = App->input->GetMouseXMotion() * sensitivity * dt : dx = -App->input->GetMouseXMotion() * sensitivity * dt;
+	orb_y_inverted ? dy = App->input->GetMouseYMotion() * sensitivity * dt : dy = -App->input->GetMouseYMotion() * sensitivity * dt;
 
-	CalculateViewMatrix();
+	editor_camera->Rotate(dx, dy);
 }
 
-
-// -----------------------------------------------------------------
-
-void ModuleCamera3D::Move(const vec3 &Movement)
+void ModuleCamera3D::Move(float dt)
 {
-	vec3 newPos(0, 0, 0);
+	float speed = 5.0f * dt;
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = 10.0f * dt;
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * sensitivity;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * sensitivity;
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) editor_camera->MoveForwards(speed);
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) editor_camera->MoveBackwards(speed);
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * sensitivity;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * sensitivity;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) editor_camera->MoveLeft(speed);
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) editor_camera->MoveRight(speed);
 
-	Position += newPos;
-	Reference += newPos;
-
-	Position += Movement;
-	Reference += Movement;
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) editor_camera->MoveUp(speed);
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) editor_camera->MoveDown(speed);
 }
 
-// -----------------------------------------------------------------
-
-float* ModuleCamera3D::GetViewMatrix()
+void ModuleCamera3D::Zoom(int mouse_z, float dt)
 {
-	return &ViewMatrix;
+	float speed = 40.0f;
+
+	if (mouse_z == 1)
+		wheel_inverted ? editor_camera->MoveForwards(speed * -sensitivity * dt) : editor_camera->MoveForwards(speed *sensitivity * dt);
+	else if (mouse_z == -1)
+		wheel_inverted ? editor_camera->MoveForwards(speed * sensitivity * dt) : editor_camera->MoveForwards(speed *-sensitivity * dt);
 }
 
-// -----------------------------------------------------------------
-
-void ModuleCamera3D::CalculateViewMatrix()
-{
-	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
-	ViewMatrixInverse = inverse(ViewMatrix);
-}
-
-// -----------------------------------------------------------------
-
-void ModuleCamera3D::MoveCamera()
-{
-	float speed = sensitivity;
-
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT) speed = sensitivity * 2;
-
-	//Forwards & Backwards
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) 
-	{
-		Position -= Z * speed;
-		Reference -= Z * speed;
-	}
-
-	else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) 
-	{
-		Position += Z * speed;
-		Reference += Z * speed;
-	}
-
-	//Left & Right
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
-	{
-		Position -= X * speed;
-		Reference -= X * speed;
-	}
-
-	else if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
-	{
-		Position += X * speed;
-		Reference += X * speed;
-	}
-
-	//Up & Down
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT)
-	{
-		Position += Y * speed;
-		Reference += Y * speed;
-	}
-
-	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT)
-	{
-		Position -= Y * speed;
-		Reference -= Y * speed;
-	}
-}
-
-void ModuleCamera3D::RotateCamera()
-{
-	int oldX;
-	int oldY;
-
-	orb_x_inverted ? oldX = App->input->GetMouseXMotion() : oldX = -App->input->GetMouseXMotion();
-	orb_y_inverted ? oldY = App->input->GetMouseYMotion() : oldY = -App->input->GetMouseYMotion();
-
-	Position -= Reference;
-
-	if (oldX != 0)
-	{
-		float DeltaX = (float)oldX * sensitivity;
-
-		X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-		Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-	}
-
-	if (oldY != 0)
-	{
-		float DeltaY = (float)oldY * sensitivity;
-
-		Y = rotate(Y, DeltaY, X);
-		Z = rotate(Z, DeltaY, X);
-
-		if (Y.y < 0.0f)
-		{
-			Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-			Y = cross(Z, X);
-		}
-	}
-
-	Position = Reference + Z * length(Position);
-}
-
-void ModuleCamera3D::ZoomCamera(int mouse_z)
-{
-	if (mouse_z == -1)
-	{
-		wheel_inverted ? Position -= Z * sensitivity : Position += Z * sensitivity;
-		wheel_inverted ? Reference -= Z * sensitivity : Position += Z * sensitivity;
-	}
-
-	else if (mouse_z == 1)
-	{
-		wheel_inverted ? Position += Z * sensitivity : Position -= Z * sensitivity;
-		wheel_inverted ? Reference += Z * sensitivity : Position -= Z * sensitivity;
-	}
-}
 
 // ------------------------------------------------------------------
 
@@ -251,4 +122,18 @@ void ModuleCamera3D::SetSensitivity(float new_sen)
 TextureMSAA* ModuleCamera3D::GetSceneTexture()
 {
 	return scene_texture;
+}
+
+// =================================================================
+// Component Camera
+// =================================================================
+
+Component_Camera* ModuleCamera3D::CreateComponentCamera()
+{
+	GameObject* my_go = new GameObject("name", App->scene->root_node);
+	Component_Camera* ccamera = new Component_Camera();
+	ccamera->my_go = my_go;
+	my_go->AddComponent(ccamera);
+	cameras.push_back(ccamera);
+	return ccamera;
 }
