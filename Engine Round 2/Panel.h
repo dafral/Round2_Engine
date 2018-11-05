@@ -1,6 +1,9 @@
 #ifndef __PANEL_H__
 #define __PANEL_H__
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_dock.h"
+
 class Panel
 {
 public:

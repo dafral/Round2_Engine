@@ -18,6 +18,8 @@ bool ModuleScene::Start()
 	bool ret = true;
 
 	root_node = CreateGameObject("root", nullptr);
+	App->camera->SetSceneCamera(App->camera->CreateComponentCamera("Scene Camera"));
+	App->camera->SetGameCamera(App->camera->CreateComponentCamera("Main Camera"));
 
 	return ret;
 }

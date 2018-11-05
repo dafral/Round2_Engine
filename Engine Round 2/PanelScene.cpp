@@ -3,9 +3,8 @@
 #include "Module.h"
 #include "ModuleCamera3D.h"
 
-#include "ImGui/imgui.h"
+#include "TextureMSAA.h"
 #include "glew/include/glew.h"
-#include "ImGui/imgui_dock.h"
 
 PanelScene::PanelScene(bool active = true) : Panel(active)
 {}

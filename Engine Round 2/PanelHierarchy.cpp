@@ -1,23 +1,22 @@
 #include "Application.h"
 #include "ModuleScene.h"
-#include "PanelInspector.h"
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_dock.h"
+#include "PanelHierarchy.h"
+#include "Component_Camera.h"
 
-PanelInspector::PanelInspector(bool active = true) : Panel(active)
+PanelHierarchy::PanelHierarchy(bool active = true) : Panel(active)
 {}
 
-PanelInspector::~PanelInspector()
+PanelHierarchy::~PanelHierarchy()
 {}
 
-void PanelInspector::Init()
+void PanelHierarchy::Init()
 {
 	ImGui::SetNextDock("Scene", ImGuiDockSlot_Left);
 }
 
-void PanelInspector::Draw()
+void PanelHierarchy::Draw()
 {
-	if (ImGui::BeginDock("Inspector", NULL))
+	if (ImGui::BeginDock("Hierarchy", NULL))
 	{
 		CreateHierarchy(App->scene->root_node);
 	}
@@ -25,7 +24,7 @@ void PanelInspector::Draw()
 	ImGui::EndDock();
 }
 
-void PanelInspector::CreateHierarchy(GameObject* curr_go)
+void PanelHierarchy::CreateHierarchy(GameObject* curr_go)
 {
 	uint flag = 0; // Deafult
 
@@ -36,7 +35,7 @@ void PanelInspector::CreateHierarchy(GameObject* curr_go)
 	if (go_selected == curr_go)
 		flag |= ImGuiTreeNodeFlags_Selected;
 
-	if (curr_go == App->scene->root_node)
+	if (curr_go == App->scene->root_node || curr_go == App->camera->GetSceneCamera()->my_go)
 	{
 		// Recursion
 		for (int i = 0; i < curr_go->childrens.size(); i++)

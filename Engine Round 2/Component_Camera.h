@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __COMPONENT_CAMERA_H__
+#define __COMPONENT_CAMERA_H__
 
 #include "Globals.h"
 #include "Component.h"
@@ -32,3 +33,5 @@ private:
 	Frustum frustum;
 	float aspect_ratio;
 };
+
+#endif // !__COMPONENT_CAMERA_H__

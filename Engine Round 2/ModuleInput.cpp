@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
-#include "PanelInspector.h"
+#include "PanelHierarchy.h"
 
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
@@ -144,8 +144,8 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					CONSOLELOG("Dropped texture: %s", full_path.c_str());
 
-					if(App->editor->inspector->GetSelectedGO() != nullptr)
-						App->material_importer->Import(full_path.c_str(), App->editor->inspector->GetSelectedGO());
+					if(App->editor->hierarchy->GetSelectedGO() != nullptr)
+						App->material_importer->Import(full_path.c_str(), App->editor->hierarchy->GetSelectedGO());
 					else CONSOLELOG("You MUST select a GameObject to load a texture.");
 				}
 				else 

@@ -1,14 +1,11 @@
 #include "Application.h"
-#include "ModuleEditor.h"
-#include "PanelInspector.h"
+#include "PanelHierarchy.h"
 #include "PanelProperties.h"
-#include "GameObject.h"
+
 #include "Component_Transform.h"
 #include "Component_Mesh.h"
 #include "Component_Material.h"
-
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_dock.h"
+#include "GameObject.h"
 
 PanelProperties::PanelProperties(bool active = true) : Panel(active)
 {}
@@ -25,7 +22,7 @@ void PanelProperties::Draw()
 {
 	if (ImGui::BeginDock("Properties", NULL))
 	{
-		GameObject* go = App->editor->inspector->GetSelectedGO();
+		GameObject* go = App->editor->hierarchy->GetSelectedGO();
 
 		if (active && go != nullptr)
 		{

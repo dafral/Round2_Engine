@@ -1,9 +1,7 @@
 #include "Application.h"
 #include "PanelConfiguration.h"
 
-#include "ImGui/imgui.h"
 #include "glew/include/glew.h"
-#include "ImGui/imgui_dock.h"
 
 PanelConfiguration::PanelConfiguration(bool active = true) : Panel(active)
 {
@@ -182,15 +180,19 @@ void PanelConfiguration::InputConfig()
 
 		ImGui::Separator();
 
+		bool x_inverted = App->camera->IsXInverted();
+		bool y_inverted = App->camera->IsYInverted();
+		bool wheel_inverted = App->camera->IsWheelInverted();
+
 		ImGui::Text("Camera configuration");
-		ImGui::Checkbox("Invert X axis", &App->camera->orb_x_inverted);
-		ImGui::Checkbox("Invert Y axis", &App->camera->orb_y_inverted);
-		ImGui::Checkbox("Invert zoom", &App->camera->wheel_inverted);
 
-		sensitivity = App->camera->GetSensitivity();
+		if (ImGui::Checkbox("Invert X axis", &x_inverted)) App->camera->SetXInverted(x_inverted);
+		if (ImGui::Checkbox("Invert Y axis", &y_inverted)) App->camera->SetYInverted(y_inverted);
+		if (ImGui::Checkbox("Invert zoom", &wheel_inverted)) App->camera->SetWheelInverted(wheel_inverted);
 
-		if (ImGui::SliderFloat("Camera sensitivity", &sensitivity, 0.10f, 1.00f))
-			App->camera->SetSensitivity(sensitivity);
+		float sensitivity = App->camera->GetSensitivity();
+
+		if (ImGui::SliderFloat("Camera sensitivity", &sensitivity, 0.10f, 1.00f)) App->camera->SetSensitivity(sensitivity);
 	}
 }
 

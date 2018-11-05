@@ -6,11 +6,11 @@
 
 class GameObject;
 
-class PanelInspector : public Panel
+class PanelHierarchy : public Panel
 {
 public:
-	PanelInspector(bool active);
-	virtual ~PanelInspector();
+	PanelHierarchy(bool active);
+	virtual ~PanelHierarchy();
 
 	void Init();
 	void Draw();

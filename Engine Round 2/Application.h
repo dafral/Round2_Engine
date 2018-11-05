@@ -17,8 +17,6 @@
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
-
-
 #include "ImGui/imgui.h"
 
 class Application

@@ -9,7 +9,7 @@ class PanelConfiguration;
 class PanelProperties;
 class PanelConsole;
 class PanelScene;
-class PanelInspector;
+class PanelHierarchy;
 
 class ModuleEditor : public Module
 {
@@ -31,7 +31,7 @@ public:
 	PanelProperties* properties = nullptr;
 	PanelConsole* console = nullptr;
 	PanelScene* scene = nullptr;
-	PanelInspector* inspector = nullptr;
+	PanelHierarchy* hierarchy = nullptr;
 
 	std::vector<Panel*> panels;
 };

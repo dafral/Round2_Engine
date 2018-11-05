@@ -37,9 +37,6 @@ public:
 	bool fullscreen = false;
 	bool resizable = true;
 
-	//input
-	float sensitivity;
-
 	//render
 	bool grid = true;
 	bool depth_test = true;

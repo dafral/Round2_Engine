@@ -1,12 +1,16 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
-#include "PanelProperties.h"
 #include "ModuleScene.h"
+
 #include "Component_Mesh.h"
 #include "Component_Material.h"
+#include "Component_Camera.h"
 #include "Component_Transform.h"
 #include "GameObject.h"
+
+#include "TextureMSAA.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -14,11 +18,9 @@
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
 
-// Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
-// Called before render is available
 bool ModuleRenderer3D::Init()
 {
 	CONSOLELOG("Creating 3D Renderer context");
@@ -138,12 +140,12 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->editor_camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->GetSceneCamera()->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->editor_camera->GetPosition().x, 
-		             App->camera->editor_camera->GetPosition().y,
-		             App->camera->editor_camera->GetPosition().z);
+	lights[0].SetPos(App->camera->GetSceneCamera()->GetPosition().x,
+		             App->camera->GetSceneCamera()->GetPosition().y,
+		             App->camera->GetSceneCamera()->GetPosition().z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -164,7 +166,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
 	CONSOLELOG("Destroying 3D Renderer");
@@ -248,12 +249,6 @@ std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
 {
 	return &meshes;
 }
-
-// =====================================================================
-// Loading Scene
-// =====================================================================
-
-
 
 Component_Mesh* ModuleRenderer3D::IsMeshLoaded(Component_Mesh* new_mesh)
 {
