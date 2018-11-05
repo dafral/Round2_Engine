@@ -48,6 +48,21 @@ update_status ModuleEditor::Update(float dt)
 {	
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if(ImGui::Button("Save"))
+			{
+
+			}
+
+			if(ImGui::Button("Load"))
+			{
+
+			}
+
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Create"))
 		{		
 			ImGui::EndMenu();

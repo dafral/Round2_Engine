@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Component.h"
+#include "ModuleJSON.h"
 #include <string>
 #include <vector>
 
@@ -23,6 +24,9 @@ public:
 	bool GetStatic() { return is_static; };
 	bool GetVisible() { return is_visible; };
 
+	void OnSave(JSON_Doc* config);
+	void OnLoad(JSON_Doc* config);
+
 public:
 
 	std::string name;
@@ -34,6 +38,7 @@ public:
 private:
 	bool is_visible = true;
 	bool is_static = false;
+	uint unique_id;
 };
 
 #endif // ! __GAMEOBJECT_H__
