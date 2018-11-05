@@ -3,10 +3,6 @@
 
 #include "Globals.h"
 #include "Component.h"
-#include "Component_Transform.h"
-#include "Component_Mesh.h"
-#include "Component_Material.h"
-#include "ModuleJSON.h"
 #include <string>
 #include <vector>
 
@@ -26,9 +22,6 @@ public:
 	void SetVisible(bool new_visible);
 	bool GetStatic() { return is_static; };
 	bool GetVisible() { return is_visible; };
-
-	void OnSave(JSON_Doc& config);
-	void OnLoad(JSON_Doc * config);
 
 public:
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "Globals.h"
-#include "ModuleJSON.h"
 #include "ImGui/imgui.h"
 
 // 0..1
