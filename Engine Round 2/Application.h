@@ -13,7 +13,6 @@
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
 #include "ModuleFileSystem.h"
-#include "ModuleJSON.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
@@ -31,7 +30,6 @@ public:
 	MaterialImporter* material_importer;
 	MeshImporter* mesh_importer;
 	ModuleFileSystem* filesystem;
-	ModuleJSON* json;
 
 	ImGuiTextBuffer consoleText;
 

@@ -160,7 +160,6 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem.h" />
-    <ClInclude Include="ModuleJSON.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="myPrimitives.h" />
     <ClInclude Include="p2List.h" />
@@ -243,7 +242,6 @@
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
-    <ClCompile Include="ModuleJSON.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
