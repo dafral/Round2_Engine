@@ -5,6 +5,7 @@
 #include "Component_Transform.h"
 #include "Component_Mesh.h"
 #include "Component_Material.h"
+#include "Component_Camera.h"
 #include "GameObject.h"
 
 PanelProperties::PanelProperties(bool active = true) : Panel(active)
@@ -29,12 +30,13 @@ void PanelProperties::Draw()
 			Component_Transform* ctrans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
 			Component_Mesh* cmesh = (Component_Mesh*)go->FindComponentWithType(MESH);
 			Component_Material* cmaterial = (Component_Material*)go->FindComponentWithType(MATERIAL);
+			Component_Camera* ccamera = (Component_Camera*)go->FindComponentWithType(CAMERA);
 
 			GOInfo(go);
 
 			ImGui::Separator();
 
-			TransInfo(ctrans, go->GetStatic());
+			TransInfo(ctrans, ccamera, go->GetStatic());
 
 			ImGui::Separator();
 
@@ -91,7 +93,7 @@ void PanelProperties::MaterialInfo(Component_Material* material)
 	}
 }
 
-void PanelProperties::TransInfo(Component_Transform* trans, bool is_static)
+void PanelProperties::TransInfo(Component_Transform* trans, Component_Camera* cam, bool is_static)
 {
 	if (trans != nullptr)
 	{
@@ -101,14 +103,16 @@ void PanelProperties::TransInfo(Component_Transform* trans, bool is_static)
 
 		float3 euler_rotation = RadToDeg(rotation.ToEulerXYZ());
 
-		ImGui::Text("    X         Y        Z");
-
 		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f))
+		{
 			if (!is_static) trans->SetPosition(position);
-
+			if (cam != nullptr) cam->TransformPos(trans->GetPosition());
+		}
 		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
+		{
 			if (!is_static) trans->SetRotation(DegToRad(euler_rotation));
-
+			if (cam != nullptr) cam->TransformRot(trans->GetRotation());
+		}
 		if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
 			if (!is_static) trans->SetScale(scale);
 	}

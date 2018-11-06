@@ -136,6 +136,33 @@ bool ModuleRenderer3D::Init()
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
+	// =============================================================
+	// Game camera 
+	// =============================================================
+
+	App->camera->GetGameTexture()->Bind();
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->GetGameCamera()->GetViewMatrix());
+
+	// light 0 on cam pos
+	lights[0].SetPos(App->camera->GetGameCamera()->GetPosition().x, App->camera->GetGameCamera()->GetPosition().y, App->camera->GetGameCamera()->GetPosition().z);
+
+	for (uint i = 0; i < MAX_LIGHTS; ++i)
+		lights[i].Render();
+
+	App->scene->Draw();
+	DrawMeshes();
+
+	// =============================================================
+	// Scene camera 
+	// =============================================================
+
+	App->camera->GetSceneTexture()->Bind();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -143,12 +170,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadMatrixf(App->camera->GetSceneCamera()->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->GetSceneCamera()->GetPosition().x,
-		             App->camera->GetSceneCamera()->GetPosition().y,
-		             App->camera->GetSceneCamera()->GetPosition().z);
+	lights[0].SetPos(App->camera->GetSceneCamera()->GetPosition().x, App->camera->GetSceneCamera()->GetPosition().y, App->camera->GetSceneCamera()->GetPosition().z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
+
+	App->scene->Draw();
+	DrawMeshes();
+
+
 
 	return UPDATE_CONTINUE;
 }
@@ -156,11 +186,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	App->scene->Draw();
-	DrawMeshes();
 	App->editor->Draw();
 
-	App->camera->GetSceneTexture()->Bind();
 	SDL_GL_SwapWindow(App->window->window);
 	
 	return UPDATE_CONTINUE;

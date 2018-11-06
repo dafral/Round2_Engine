@@ -9,9 +9,10 @@ public:
 	Component_Transform();
 	~Component_Transform();
 
-	const float3 GetPosition() { return position; };
-	const float3 GetScale() { return scale; };
-	const Quat GetRotation() { return rotation; };
+	float3 GetPosition() { return position; };
+	float3 GetScale() { return scale; };
+	Quat GetRotation() { return rotation; };
+	float3 GetEulerRotation() { return RadToDeg(rotation.ToEulerXYZ()); };
 
 	void SetPosition(float3 pos) { position = pos; };
 	void SetScale(float3 scl) { scale = scl; };

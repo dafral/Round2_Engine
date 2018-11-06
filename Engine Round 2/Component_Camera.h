@@ -1,5 +1,5 @@
-#ifndef __COMPONENT_CAMERA_H__
-#define __COMPONENT_CAMERA_H__
+#ifndef __C_CAMERA_H__
+#define __C_CAMERA_H__
 
 #include "Globals.h"
 #include "Component.h"
@@ -28,10 +28,12 @@ public:
 	// ------------------------------------------
 
 	float3 GetPosition() { return frustum.pos; };
+	void Component_Camera::TransformPos(float3 pos);
+	void Component_Camera::TransformRot(Quat rot);
 
 private:
 	Frustum frustum;
 	float aspect_ratio;
 };
 
-#endif // !__COMPONENT_CAMERA_H__
+#endif // !__C_CAMERA_H__

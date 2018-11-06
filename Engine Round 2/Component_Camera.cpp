@@ -82,6 +82,32 @@ void Component_Camera::Rotate(const float dx, const float dy)
 	}
 }
 
+void Component_Camera::TransformPos(float3 pos)
+{
+	frustum.pos = pos;
+}
+
+void Component_Camera::TransformRot(Quat rot)
+{
+	float3 new_rot = rot.ToEulerXYZ();
+
+	frustum.front = float3::unitZ;
+	frustum.up = float3::unitY;
+
+	Quat rotation_y = Quat::RotateY(new_rot.y);
+	frustum.front = rotation_y.Mul(frustum.front.Normalized());
+	frustum.up = rotation_y.Mul(frustum.up.Normalized());
+
+	Quat rotation_x = Quat::RotateAxisAngle(frustum.WorldRight(), new_rot.x);
+	frustum.front = rotation_x.Mul(frustum.front.Normalized());
+	frustum.up = rotation_x.Mul(frustum.up.Normalized());
+
+	Quat rotation_z = Quat::RotateZ(new_rot.z);
+	frustum.front = rotation_z.Mul(frustum.front.Normalized());
+	frustum.up = rotation_z.Mul(frustum.up.Normalized());
+}
+
+
 // -----------------------------------------------------------------
 
 float* Component_Camera::GetViewMatrix() const

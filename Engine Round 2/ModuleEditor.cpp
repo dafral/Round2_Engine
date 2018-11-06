@@ -12,6 +12,7 @@
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelHierarchy.h"
+#include "PanelGame.h"
 
 //Constructor
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -32,6 +33,7 @@ bool ModuleEditor::Init()
 	panels.push_back(properties = new PanelProperties(true));
 	panels.push_back(console = new PanelConsole(true));
 	panels.push_back(hierarchy = new PanelHierarchy(true));
+	panels.push_back(game = new PanelGame(true));
 	
 	return true;
 }
