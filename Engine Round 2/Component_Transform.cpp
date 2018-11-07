@@ -31,3 +31,10 @@ const float4x4 Component_Transform::GetGlobalTransform()
 
 	return ret;
 }
+
+// -----------------------------------------------------------------
+
+void Component_Transform::OnSave(JSON_Doc* filetosave)
+{
+
+}

@@ -22,6 +22,8 @@ public:
 	float4x4 GetTransform();
 	const float4x4 GetGlobalTransform();
 
+	void OnSave(JSON_Doc* filetosave);
+
 private:
 	float3 position;
 	float3 scale;

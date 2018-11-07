@@ -120,3 +120,10 @@ float* Component_Camera::GetProjectionMatrix() const
 {
 	return (float*)frustum.ProjectionMatrix().Transposed().v;
 }
+
+// -----------------------------------------------------------------
+
+void Component_Camera::OnSave(JSON_Doc* filetosave)
+{
+
+}

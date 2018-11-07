@@ -179,6 +179,7 @@
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PhysBody3D.h" />
+    <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="TextureMSAA.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
@@ -248,6 +249,7 @@
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>

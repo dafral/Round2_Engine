@@ -9,6 +9,7 @@ enum Component_Type
 };
 
 class GameObject;
+class JSON_Doc;
 
 class Component
 {
@@ -19,6 +20,8 @@ public:
 	virtual void Update() {};
 	virtual void Enable() {};
 	virtual void Disable() {};
+
+	virtual void OnSave(JSON_Doc* filetosave) {};
 
 public:
 	Component_Type type;

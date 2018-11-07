@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Globals.h"
+#include "ModuleJSON.h"
 #include "ImGui/imgui.h"
 
 // 0..1
@@ -18,6 +19,8 @@ public:
 	uint GetTextureHeight() { return height; };
 	ImTextureID GetTextureSnap() { return snap; };
 	void LoadBuffers();
+
+	void OnSave(JSON_Doc* filetosave);
 
 private:
 	uint texture_id = 0;

@@ -3,6 +3,7 @@
 
 #include "Globals.h"
 #include "Component.h"
+#include "ModuleJSON.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 class Component_Camera : public Component
@@ -30,6 +31,10 @@ public:
 	float3 GetPosition() { return frustum.pos; };
 	void Component_Camera::TransformPos(float3 pos);
 	void Component_Camera::TransformRot(Quat rot);
+
+	// -------------------------------------------
+
+	void OnSave(JSON_Doc* filetosave);
 
 private:
 	Frustum frustum;
