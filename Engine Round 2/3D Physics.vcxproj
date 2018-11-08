@@ -178,6 +178,7 @@
     <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="Parson\parson.h" />
+    <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="TextureMSAA.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="Parson\parson.c" />
+    <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="SceneImporter.cpp" />

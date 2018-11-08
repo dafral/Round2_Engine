@@ -375,6 +375,9 @@
     <ClInclude Include="SceneImporter.h">
       <Filter>Sources\Importers</Filter>
     </ClInclude>
+    <ClInclude Include="PCG\pcg_basic.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -580,6 +583,9 @@
     </ClCompile>
     <ClCompile Include="SceneImporter.cpp">
       <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="PCG\pcg_basic.c">
+      <Filter>Sources\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
