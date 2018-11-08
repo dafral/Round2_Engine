@@ -5,6 +5,7 @@
 
 class SceneImporter : public Module
 {
+public:
 	SceneImporter(Application* app, bool start_enabled = true);
 	~SceneImporter();
 

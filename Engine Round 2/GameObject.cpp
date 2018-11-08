@@ -5,8 +5,12 @@
 #include "Component_Material.h"
 #include "Component_Camera.h"
 
+#include "PCG/pcg_basic.h"
+
 GameObject::GameObject(std::string name, GameObject* parent) : name(name), parent(parent)
-{}
+{
+	unique_id = pcg32_random_r(&App->rng);
+}
 
 GameObject::~GameObject()
 {}

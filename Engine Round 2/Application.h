@@ -12,13 +12,14 @@
 #include "ModuleEditor.h"
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
-#include "SceneImporter.h"
+//#include "SceneImporter.h"
 #include "ModuleFileSystem.h"
 #include "ModuleJSON.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 
 #include "ImGui/imgui.h"
+#include "PCG/pcg_basic.h"
 
 class Application
 {
@@ -31,14 +32,15 @@ public:
 	ModuleEditor* editor;
 	MaterialImporter* material_importer;
 	MeshImporter* mesh_importer;
-	SceneImporter* scene_importer;
+	//SceneImporter* scene_importer;
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
 
-	ImGuiTextBuffer consoleText;
+	ImGuiTextBuffer consoleText; 
+	pcg32_random_t rng;
 
 private:
-
+	
 	Timer	ms_timer;
 	Timer	fps_timer;
 	float	dt;

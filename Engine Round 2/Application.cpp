@@ -1,4 +1,5 @@
 #include "Application.h"
+#include <time.h>
 
 Application::Application()
 {
@@ -12,7 +13,7 @@ Application::Application()
 	material_importer = new MaterialImporter(this);
 	filesystem = new ModuleFileSystem(this);
 	json = new ModuleJSON(this);
-	scene_importer = new SceneImporter(this);
+	//scene_importer = new SceneImporter(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -27,7 +28,7 @@ Application::Application()
 	
 	// Scenes
 	AddModule(scene);
-	AddModule(scene_importer);
+	//AddModule(scene_importer);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -51,6 +52,8 @@ bool Application::Init()
 {
 	bool ret = true;
 	fps_timer.Start();
+
+	pcg32_srandom_r(&rng, time(NULL) ^ (intptr_t)&printf, 1000);
 
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
