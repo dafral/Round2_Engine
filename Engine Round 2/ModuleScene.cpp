@@ -61,6 +61,8 @@ GameObject* ModuleScene::CreateGameObject(std::string name, GameObject* parent)
 	trans->my_go = new_go;
 	new_go->AddComponent(trans);
 	
+	gameobjects.push_back(new_go);
+
 	return new_go;
 }
 

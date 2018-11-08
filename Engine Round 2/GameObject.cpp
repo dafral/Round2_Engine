@@ -61,70 +61,29 @@ void GameObject::SetVisible(bool new_visible)
 
 // ------------------------------------------------------------------
 
-void GameObject::OnSave(JSON_Doc* config)
+void GameObject::OnSave(JSON_Doc* filetosave)
 {
 
-	std::string aux = std::string("Gameobjects.") + name + std::string(".Name");
-	config->SetString(aux.c_str(), name.c_str());
+	//Save this game object
+	filetosave->AddSectionToArray("GameObjects");
+	filetosave->MoveToSectionFromArray("GameObjects", filetosave->GetArraySize("GameObjects") - 1);
+	filetosave->SetNumber("unique ID", unique_id);
+	filetosave->SetString("name", name.c_str());
+	filetosave->SetBool("is_static", is_static);
+	if (parent != nullptr)
+		filetosave->SetNumber("parent", parent->GetUniqueID());
+	else
+		filetosave->SetNumber("parent", 0);
+	filetosave->MoveToFirstObject();
 
-	aux = std::string("Gameobjects.") + name + std::string(".Visible");
-	config->SetBool(aux.c_str(), is_visible);
+	//Save components 
 
-	aux = std::string("Gameobjects.") + name + std::string(".Static");
-	config->SetBool(aux.c_str(), is_static);
-
-	if (parent != nullptr) {
-
-		aux = std::string("Gameobjects.") + name + std::string(".Parent");
-		config->SetNumber(aux.c_str(), parent->unique_id);
+	//Save childs
+	for (std::vector<GameObject*>::iterator go = childrens.begin(); go != childrens.end(); ++go)
+	{
+		(*go)->OnSave(filetosave);
 	}
-	else {
-		aux = std::string("Gameobjects.") + name + std::string(".Parent");
-		config->SetNumber(aux.c_str(), 0);
-
-	}
-
-	//Component Transform
-	Component_Transform* trans = (Component_Transform*)FindComponentWithType(TRANSFORM);
-
-	//Position
-	aux = std::string("Gameobjects.") + name + std::string(".Pos.x");
-	config->SetNumber(aux.c_str(), trans->GetPosition().x);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Pos.y");
-	config->SetNumber(aux.c_str(), trans->GetPosition().y);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Pos.z");
-	config->SetNumber(aux.c_str(), trans->GetPosition().z);
-
-	//Rotation
-	aux = std::string("Gameobjects.") + name + std::string(".Rot.x");
-	config->SetNumber(aux.c_str(), trans->GetRotation().x);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Rot.y");
-	config->SetNumber(aux.c_str(), trans->GetRotation().y);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Rot.z");
-	config->SetNumber(aux.c_str(), trans->GetRotation().z);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Rot.w");
-	config->SetNumber(aux.c_str(), trans->GetRotation().w);
-
-	//Scale
-	aux = std::string("Gameobjects.") + name + std::string(".Scale.x");
-	config->SetNumber(aux.c_str(), trans->GetScale().x);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Scale.y");
-	config->SetNumber(aux.c_str(), trans->GetScale().y);
-
-	aux = std::string("Gameobjects.") + name + std::string(".Scale.z");
-	config->SetNumber(aux.c_str(), trans->GetScale().z);
-
-
-	//Travel Childs
-	for (int i = 0; i < childrens.size(); i++) {
-		childrens[i]->OnSave(config);
-	}
+	filetosave->MoveToFirstObject();
 
 
 };

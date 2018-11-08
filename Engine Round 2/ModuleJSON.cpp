@@ -6,6 +6,7 @@ JSON_Doc::JSON_Doc(JSON_Value * value, JSON_Object * object, const char * path)
 {
 	this->value = value;
 	this->object = object;
+	this->first_obj = object;
 	this->path = path;
 }
 
@@ -65,6 +66,9 @@ void JSON_Doc::Save()
 void JSON_Doc::CleanUp()
 {
 	json_value_free(value);
+	value = json_value_init_object();
+	object = json_value_get_object(value);
+	first_obj = object;
 }
 
 JSON_Doc JSON_Doc::GetEntry(const char * set) const
@@ -110,6 +114,21 @@ int JSON_Doc::GetArraySize(const char * field) const
 	if (array != nullptr)
 		ret = json_array_get_count(array);
 	return ret;
+}
+
+void JSON_Doc::AddSectionToArray(const std::string & array_keyword)
+{
+	JSON_Array* array = json_object_get_array(object, array_keyword.c_str());
+
+	if (array != nullptr)
+	{
+		json_array_append_value(array, json_value_init_object());
+	}
+}
+
+void JSON_Doc::MoveToFirstObject()
+{
+	object = first_obj;
 }
 
 //----------------------------------------------------------------------------------

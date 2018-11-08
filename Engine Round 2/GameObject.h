@@ -23,6 +23,7 @@ public:
 	void SetVisible(bool new_visible);
 	bool GetStatic() { return is_static; };
 	bool GetVisible() { return is_visible; };
+	uint GetUniqueID() { return unique_id; };
 
 	void OnSave(JSON_Doc* config);
 	void OnLoad(JSON_Doc* config);

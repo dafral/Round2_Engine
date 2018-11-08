@@ -9,6 +9,7 @@ public:
 	SceneImporter(Application* app, bool start_enabled = true);
 	~SceneImporter();
 
+	void SaveScene(const char* path);
 
 };
 

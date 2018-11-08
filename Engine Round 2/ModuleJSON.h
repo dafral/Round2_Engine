@@ -25,7 +25,10 @@ public:
 	JSON_Doc SetEntry(const char* set);
 	JSON_Doc GetEntry(const char* set) const;
 	const char* GetPath();
+	void AddSectionToArray(const std::string& array_keyword);
 	bool MoveToSectionFromArray(const char * field, int index);
+
+	void MoveToFirstObject();
 
 	void Save();
 	void CleanUp();
@@ -33,6 +36,7 @@ public:
 private:
 	JSON_Value*  value = nullptr;
 	JSON_Object* object = nullptr;
+	JSON_Object* first_obj = nullptr;
 	const char*  path;
 
 };

@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include <string>
+#include <vector>
 
 class GameObject;
 
@@ -22,5 +23,6 @@ public:
 public:	
 
 	GameObject* root_node = nullptr;
+	std::vector<GameObject*> gameobjects;
 };
 
