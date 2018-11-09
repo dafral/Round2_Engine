@@ -11,11 +11,18 @@ SceneImporter::~SceneImporter()
 
 void SceneImporter::SaveScene(const char* path)
 {
+
 	JSON_Doc* new_json = App->json->LoadJSON(path);
-	if (new_json == nullptr)
+
+	if (new_json == nullptr) 
+	{
 		new_json = App->json->CreateJSON(path);
+	}
 	else
+	{
 		new_json->CleanUp();
+	}
+
 	new_json->SetArray("GameObjects");
 	new_json->SetArray("Components");
 
@@ -24,6 +31,8 @@ void SceneImporter::SaveScene(const char* path)
 	{
 		(*go)->OnSave(new_json);
 	}
+
+	CONSOLELOG("Scene saved! %d gameobjects saved", App->scene->gameobjects.size())
 
 	new_json->Save();
 }

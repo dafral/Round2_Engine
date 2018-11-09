@@ -1,9 +1,9 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "myPrimitives.h"
-
 #include "Component.h"
 #include "Component_Transform.h"
+#include <algorithm>
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -60,7 +60,7 @@ GameObject* ModuleScene::CreateGameObject(std::string name, GameObject* parent)
 	Component_Transform* trans = new Component_Transform();
 	trans->my_go = new_go;
 	new_go->AddComponent(trans);
-	
+
 	gameobjects.push_back(new_go);
 
 	return new_go;

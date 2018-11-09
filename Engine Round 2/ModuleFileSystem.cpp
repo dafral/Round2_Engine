@@ -11,7 +11,6 @@ ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Modul
 	library_mesh_path = CreateFolder(library_path.c_str(), "Meshes");
 	library_material_path = CreateFolder(library_path.c_str(), "Materials");
 
-
 }
 
 ModuleFileSystem::~ModuleFileSystem()
