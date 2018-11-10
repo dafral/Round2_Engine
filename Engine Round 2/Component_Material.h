@@ -8,7 +8,7 @@
 class Component_Material : public Component
 {
 public:
-	Component_Material() : Component(MATERIAL) {};
+	Component_Material();
 	virtual ~Component_Material() {};
 
 	uint GetTextureId() { return texture_id; };
@@ -18,6 +18,7 @@ public:
 	uint GetTextureWidth() { return width; };
 	uint GetTextureHeight() { return height; };
 	ImTextureID GetTextureSnap() { return snap; };
+	uint GetUniqueID() { return unique_id; };
 	void LoadBuffers();
 
 	void OnSave(JSON_Doc* filetosave);
@@ -26,4 +27,6 @@ private:
 	uint texture_id = 0;
 	uint width, height = 0;
 	ImTextureID snap = nullptr;
+
+	uint unique_id = 0;
 };

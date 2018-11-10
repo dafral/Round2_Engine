@@ -77,6 +77,11 @@ void GameObject::OnSave(JSON_Doc* filetosave)
 	filetosave->MoveToFirstObject();
 
 	//Save components 
+	for (std::vector<Component*>::iterator c = components.begin(); c != components.end(); ++c)
+	{
+		(*c)->OnSave(filetosave);
+		filetosave->MoveToFirstObject();
+	}
 
 	//Save childs
 	//for (std::vector<GameObject*>::iterator go = childrens.begin(); go != childrens.end(); ++go)

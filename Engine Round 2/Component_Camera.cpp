@@ -1,4 +1,5 @@
 #include "Component_Camera.h"
+#include "GameObject.h"
 
 Component_Camera::Component_Camera() : Component(CAMERA)
 {
@@ -125,5 +126,14 @@ float* Component_Camera::GetProjectionMatrix() const
 
 void Component_Camera::OnSave(JSON_Doc* filetosave)
 {
+	filetosave->AddSectionToArray("Components");
+	filetosave->MoveToSectionFromArray("Components", filetosave->GetArraySize("Components") - 1);
 
+	filetosave->SetNumber("type", 3);
+	filetosave->SetNumber("owner", my_go->GetUniqueID());
+	filetosave->SetNumber("aspect_ratio", aspect_ratio);
+	filetosave->SetNumber("horizontal_fov", frustum.horizontalFov);
+	filetosave->SetNumber("vertical_fov", frustum.verticalFov);
+	filetosave->SetNumber("near", frustum.nearPlaneDistance);
+	filetosave->SetNumber("far", frustum.farPlaneDistance);
 }

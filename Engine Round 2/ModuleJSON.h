@@ -5,6 +5,9 @@
 #include "Parson/parson.h"
 #include <list>
 
+#include "MathGeoLib/MathGeoLib.h"
+#include "MathGeoLib/MathGeoLibFwd.h"
+
 class JSON_Doc
 {
 public:
@@ -15,7 +18,9 @@ public:
 	void SetString(const char* set, const char* str);
 	void SetBool(const char* set, bool bo);
 	void SetNumber(const char* set, double nu);
-	void SetArray(const char * array_name);
+	void SetNumber3(const char* set, float3 vals);
+	void SetNumber4(const char* set, float4 vals);
+	void SetArray(const char* array_name);
 	const char* GetString(const char* str);
 	bool GetBool(const char* bo);
 	double GetNumber(const char* nu);
@@ -25,6 +30,7 @@ public:
 	JSON_Doc SetEntry(const char* set);
 	JSON_Doc GetEntry(const char* set) const;
 	const char* GetPath();
+	void AddNumberToArray(const char* arr, double set);
 	void AddSectionToArray(const std::string& array_keyword);
 	bool MoveToSectionFromArray(const char * field, int index);
 

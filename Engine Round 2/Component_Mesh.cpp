@@ -1,4 +1,8 @@
+#include "Application.h"
 #include "Component_Mesh.h"
+#include "GameObject.h"
+
+#include "PCG/pcg_basic.h"
 
 #include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
@@ -7,6 +11,11 @@
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
+
+Component_Mesh::Component_Mesh() : Component(MATERIAL)
+{
+	unique_id = pcg32_random_r(&App->rng);
+}
 
 void Component_Mesh::SetFaces(aiMesh* new_mesh)
 {
@@ -82,5 +91,13 @@ void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
 
 void Component_Mesh::OnSave(JSON_Doc* filetosave)
 {
+	filetosave->AddSectionToArray("Components");
+	filetosave->MoveToSectionFromArray("Components", filetosave->GetArraySize("Components") - 1);
+
+	filetosave->SetNumber("type", 1);
+	filetosave->SetNumber("owner",my_go->GetUniqueID());
+
+	filetosave->SetNumber("mesh", GetUniqueID());
+	filetosave->SetNumber("mesh", 0);
 
 }

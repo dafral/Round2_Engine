@@ -10,7 +10,7 @@ struct aiMesh;
 class Component_Mesh : public Component
 {
 public: 
-	Component_Mesh() : Component(MESH) {};
+	Component_Mesh();
 	virtual ~Component_Mesh() {};
 
 private:
@@ -26,6 +26,8 @@ private:
 	uint num_uvs = 0;
 	float* texture_coords = nullptr;
 
+	uint unique_id = 0;
+
 public:
 	uint GetIdVertices() { return id_vertices; };
 	uint GetNumVertices() { return num_vertices; };
@@ -38,6 +40,8 @@ public:
 	uint GetIdUVs() { return id_uvs; };
 	uint GetNumUVs() { return num_uvs; };
 	float* GetTexCoords() { return texture_coords; };
+
+	uint GetUniqueID() { return unique_id; };
 
 	void SetFaces(aiMesh* new_mesh);
 	void SetUVs(aiMesh* new_mesh);

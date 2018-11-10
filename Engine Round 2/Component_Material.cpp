@@ -1,7 +1,17 @@
+#include "Application.h"
 #include "Component_Material.h"
+#include "GameObject.h"
+
+#include "PCG/pcg_basic.h"
+
 #include "Devil/include/IL/il.h"
 #include "Devil/include/IL/ilu.h"
 #include "Devil/include/IL/ilut.h"
+
+Component_Material::Component_Material() : Component(MATERIAL)
+{
+	unique_id = pcg32_random_r(&App->rng);
+}
 
 void Component_Material::LoadBuffers()
 {
@@ -26,5 +36,11 @@ void Component_Material::LoadBuffers()
 
 void Component_Material::OnSave(JSON_Doc* filetosave)
 {
+	filetosave->AddSectionToArray("Components");
+	filetosave->MoveToSectionFromArray("Components", filetosave->GetArraySize("Components") - 1);
+
+	filetosave->SetNumber("type", 2);
+	filetosave->SetNumber("owner", my_go->GetUniqueID());
+	filetosave->SetNumber("material", GetUniqueID());
 
 }

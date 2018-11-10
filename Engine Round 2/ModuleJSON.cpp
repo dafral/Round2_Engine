@@ -31,6 +31,23 @@ void JSON_Doc::SetNumber(const char * set, double nu)
 	json_object_dotset_number(object, set, nu);
 }
 
+void JSON_Doc::SetNumber3(const char * set, float3 vals)
+{
+	SetArray(set);
+	AddNumberToArray(set, vals.x);
+	AddNumberToArray(set, vals.y);
+	AddNumberToArray(set, vals.z);
+}
+
+void JSON_Doc::SetNumber4(const char * set, float4 vals)
+{
+	SetArray(set);
+	AddNumberToArray(set, vals.x);
+	AddNumberToArray(set, vals.y);
+	AddNumberToArray(set, vals.w);
+	AddNumberToArray(set, vals.z);
+}
+
 void JSON_Doc::SetArray(const char * array_name)
 {
 	JSON_Value* val = json_value_init_array();
@@ -114,6 +131,16 @@ int JSON_Doc::GetArraySize(const char * field) const
 	if (array != nullptr)
 		ret = json_array_get_count(array);
 	return ret;
+}
+
+void JSON_Doc::AddNumberToArray(const char* arr, double set)
+{
+	JSON_Array* array = json_object_get_array(object, arr);
+
+	if (array != nullptr)
+	{
+		json_array_append_number(array, set);
+	}
 }
 
 void JSON_Doc::AddSectionToArray(const std::string & array_keyword)

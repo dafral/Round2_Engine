@@ -36,5 +36,14 @@ const float4x4 Component_Transform::GetGlobalTransform()
 
 void Component_Transform::OnSave(JSON_Doc* filetosave)
 {
+	filetosave->AddSectionToArray("Components");
+	filetosave->MoveToSectionFromArray("Components", filetosave->GetArraySize("Components") - 1);
 
+	filetosave->SetNumber("type", 0);
+	filetosave->SetNumber("owner", my_go->GetUniqueID());
+	filetosave->SetNumber3("position", position);
+	filetosave->SetNumber3("scale", scale);
+
+	float4 rot(rotation.x, rotation.y, rotation.z, rotation.w);
+	filetosave->SetNumber4("rotation", rot);
 }
