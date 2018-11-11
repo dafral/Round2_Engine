@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleCamera3D.h"
 #include "myPrimitives.h"
 #include "Component.h"
 #include "Component_Transform.h"

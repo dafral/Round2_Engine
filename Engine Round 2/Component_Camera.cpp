@@ -1,15 +1,18 @@
 #include "Component_Camera.h"
 #include "GameObject.h"
 
+#include "glew/include/glew.h"
+#include "SDL/include/SDL_opengl.h"
+
 Component_Camera::Component_Camera() : Component(CAMERA)
 {
 	frustum.type = FrustumType::PerspectiveFrustum;
 	frustum.nearPlaneDistance = 1.0f;
 	frustum.farPlaneDistance = 100.0f;
 
-	frustum.verticalFov = DEGTORAD * 60.0f;
-	frustum.horizontalFov = SCREEN_WIDTH / SCREEN_HEIGHT;
-	aspect_ratio = SCREEN_WIDTH / SCREEN_HEIGHT;
+	vertical_fov = 50;
+	aspect_ratio = ((float)SCREEN_WIDTH / (float)SCREEN_HEIGHT);
+	SetFOV(vertical_fov);
 
 	frustum.pos = float3::zero;
 	frustum.front = -float3::unitZ;
@@ -108,6 +111,12 @@ void Component_Camera::TransformRot(Quat rot)
 	frustum.up = rotation_z.Mul(frustum.up.Normalized());
 }
 
+void Component_Camera::SetFOV(uint v_fov)
+{
+	vertical_fov = v_fov;
+	frustum.verticalFov = DEGTORAD * v_fov;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov / 2.f) * aspect_ratio);
+}
 
 // -----------------------------------------------------------------
 

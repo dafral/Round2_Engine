@@ -33,18 +33,10 @@ void PanelProperties::Draw()
 			Component_Camera* ccamera = (Component_Camera*)go->FindComponentWithType(CAMERA);
 
 			GOInfo(go);
-
-			ImGui::Separator();
-
 			TransInfo(ctrans, ccamera, go->GetStatic());
-
-			ImGui::Separator();
-
 			MeshInfo(cmesh);
-
-			ImGui::Separator();
-
 			MaterialInfo(cmaterial);
+			CameraInfo(ccamera);
 		}
 	}
 
@@ -73,6 +65,8 @@ void PanelProperties::MeshInfo(Component_Mesh* mesh)
 {
 	if (mesh != nullptr)
 	{
+		ImGui::Separator();
+
 		if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Text("Vertices: %d", mesh->GetNumVertices());
@@ -85,6 +79,8 @@ void PanelProperties::MaterialInfo(Component_Material* material)
 {
 	if (material != nullptr)
 	{
+		ImGui::Separator();
+
 		if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Text("Dimensions: %d x %d", material->GetTextureWidth(), material->GetTextureHeight());
@@ -97,6 +93,8 @@ void PanelProperties::TransInfo(Component_Transform* trans, Component_Camera* ca
 {
 	if (trans != nullptr)
 	{
+		ImGui::Separator();
+
 		float3 position = trans->GetPosition();
 		float3 scale = trans->GetScale();
 		Quat rotation = trans->GetRotation();
@@ -115,5 +113,21 @@ void PanelProperties::TransInfo(Component_Transform* trans, Component_Camera* ca
 		}
 		if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
 			if (!is_static) trans->SetScale(scale);
+	}
+}
+
+void PanelProperties::CameraInfo(Component_Camera* cam)
+{
+	if (cam != nullptr)
+	{
+		ImGui::Separator();
+
+		int v_fov = cam->GetFOV();
+
+		if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			if (ImGui::SliderInt("Field of View", &v_fov, 50, 100))
+				cam->SetFOV(v_fov);
+		}
 	}
 }

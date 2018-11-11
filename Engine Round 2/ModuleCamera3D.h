@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Globals.h"
 #include "glmath.h"
-#include "MathGeoLib/MathGeoLib.h"
 
 #include <vector>
 #include <string>
@@ -24,10 +23,10 @@ public:
 
 	Component_Camera* CreateComponentCamera(std::string name);
 
-	void LookAt(const float3 &Spot);
 	void Move(float dt);
 	void Rotate(float dt);
 	void Zoom(int mouse_z, float dt);
+	void DrawAllFrustums();
 
 	TextureMSAA* GetSceneTexture() { return scene_texture; };
 	TextureMSAA* GetGameTexture() { return game_texture; };

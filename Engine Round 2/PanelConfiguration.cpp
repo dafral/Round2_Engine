@@ -161,9 +161,6 @@ void PanelConfiguration::WindowConfig()
 		if (ImGui::SliderFloat("Brightness", &brightness, 0, 1))
 			App->window->SetBrightness(brightness);
 
-		if (ImGui::Checkbox("Fullscreen", &fullscreen))
-			App->window->SwitchFullscreen();
-
 		if (ImGui::Checkbox("Resizable", &resizable))
 			App->window->SwitchResizable();
 

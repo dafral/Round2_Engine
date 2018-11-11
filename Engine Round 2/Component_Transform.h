@@ -12,7 +12,7 @@ public:
 	float3 GetPosition() { return position; };
 	float3 GetScale() { return scale; };
 	Quat GetRotation() { return rotation; };
-	float3 GetEulerRotation() { return RadToDeg(rotation.ToEulerXYZ()); };
+	float3 GetEulerRotation() { return rotation.ToEulerXYZ(); };
 
 	void SetPosition(float3 pos) { position = pos; };
 	void SetScale(float3 scl) { scale = scl; };

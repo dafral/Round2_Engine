@@ -14,7 +14,9 @@ public:
 
 	float* GetViewMatrix() const;
 	float* GetProjectionMatrix() const;
-	Frustum GetFrustum() { return frustum; };
+	Frustum GetFrustum() { return frustum; };	
+	float3 GetPosition() { return frustum.pos; };
+	uint GetFOV() { return vertical_fov; };
 
 	// Movement ----------------------------------
 
@@ -28,9 +30,9 @@ public:
 
 	// ------------------------------------------
 
-	float3 GetPosition() { return frustum.pos; };
-	void Component_Camera::TransformPos(float3 pos);
-	void Component_Camera::TransformRot(Quat rot);
+	void SetFOV(uint h_fov);
+	void TransformPos(float3 pos);
+	void TransformRot(Quat rot);
 
 	// -------------------------------------------
 
@@ -39,6 +41,7 @@ public:
 private:
 	Frustum frustum;
 	float aspect_ratio;
+	uint vertical_fov;
 };
 
 #endif // !__C_CAMERA_H__

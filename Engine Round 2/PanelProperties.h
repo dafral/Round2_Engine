@@ -24,6 +24,7 @@ private:
 	void MeshInfo(Component_Mesh* mesh);
 	void MaterialInfo(Component_Material* material);
 	void TransInfo(Component_Transform* trans, Component_Camera* cam, bool is_static);
+	void CameraInfo(Component_Camera* cam);
 };
 
 #endif // !__P_PROPERTIES_H__

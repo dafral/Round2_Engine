@@ -3,6 +3,8 @@
 
 Application::Application()
 {
+	debug = new DebugDraw();
+
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
@@ -46,6 +48,8 @@ Application::~Application()
 		delete item->data;
 		item = item->prev;
 	}
+
+	delete debug;
 }
 
 bool Application::Init()

@@ -14,7 +14,7 @@
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
     <ProjectName>Engine Round 2</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -81,6 +81,7 @@
     <ClInclude Include="Component_Material.h" />
     <ClInclude Include="Component_Mesh.h" />
     <ClInclude Include="Component_Transform.h" />
+    <ClInclude Include="DebugDraw.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glew\include\eglew.h" />
     <ClInclude Include="glew\include\glew.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PCG\pcg_basic.h" />
-    <ClInclude Include="PhysBody3D.h" />
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="TextureMSAA.h" />
     <ClInclude Include="Timer.h" />
@@ -191,6 +191,7 @@
     <ClCompile Include="Component_Material.cpp" />
     <ClCompile Include="Component_Mesh.cpp" />
     <ClCompile Include="Component_Transform.cpp" />
+    <ClCompile Include="DebugDraw.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glmath.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
@@ -249,7 +250,6 @@
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
-    <ClCompile Include="PhysBody3D.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />

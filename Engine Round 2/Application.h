@@ -17,6 +17,7 @@
 #include "ModuleJSON.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
+#include "DebugDraw.h"
 
 #include "ImGui/imgui.h"
 #include "PCG/pcg_basic.h"
@@ -36,6 +37,7 @@ public:
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
 
+	DebugDraw* debug;
 	ImGuiTextBuffer consoleText; 
 	pcg32_random_t rng;
 

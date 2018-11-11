@@ -2,6 +2,7 @@
 #include "ModuleCamera3D.h"
 #include "TextureMSAA.h"
 #include "Component_Camera.h"
+#include "Color.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -37,20 +38,9 @@ update_status ModuleCamera3D::Update(float dt)
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 		Rotate(dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-		LookAt({ 0, 0, 0 });
+	if (App->debug->IsDebugDrawActive()) DrawAllFrustums();
 
 	return UPDATE_CONTINUE;
-}
-
-void ModuleCamera3D::LookAt(const float3 & spot)
-{
-	float3 direction = spot - scene_camera->GetFrustum().pos;
-
-	float3x3 matrix = float3x3::LookAt(scene_camera->GetFrustum().front, direction.Normalized(), scene_camera->GetFrustum().up, float3::unitY);
-
-	scene_camera->GetFrustum().front = matrix.MulDir(scene_camera->GetFrustum().front).Normalized();
-	scene_camera->GetFrustum().up = matrix.MulDir(scene_camera->GetFrustum().up).Normalized();
 }
 
 void ModuleCamera3D::Rotate(float dt)
@@ -87,6 +77,20 @@ void ModuleCamera3D::Zoom(int mouse_z, float dt)
 		wheel_inverted ? scene_camera->MoveForwards(speed * -sensitivity * dt) : scene_camera->MoveForwards(speed *sensitivity * dt);
 	else if (mouse_z == -1)
 		wheel_inverted ? scene_camera->MoveForwards(speed * sensitivity * dt) : scene_camera->MoveForwards(speed *-sensitivity * dt);
+}
+
+void ModuleCamera3D::DrawAllFrustums()
+{
+	for (int i = 0; i < cameras.size(); i++)
+	{
+		if (cameras[i] != scene_camera)
+		{
+			float3 vertices[8];
+			cameras[i]->GetFrustum().GetCornerPoints(vertices);
+
+			App->debug->DrawBox(vertices, 1.5f, Red);
+		}
+	}
 }
 
 // ===========================================================================================================

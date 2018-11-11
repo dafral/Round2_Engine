@@ -145,6 +145,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(App->camera->GetGameCamera()->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetGameCamera()->GetViewMatrix());
 
@@ -166,6 +168,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(App->camera->GetSceneCamera()->GetProjectionMatrix());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->GetSceneCamera()->GetViewMatrix());
 

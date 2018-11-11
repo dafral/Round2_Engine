@@ -152,8 +152,8 @@ void ModuleEditor::Draw()
 
 	if (ImGui::Begin("Dock", 0, flags))
 	{
-		float h_offset = 6.0f;
-		float w_offset = 0.0f;
+		int h_offset = 6;
+		int w_offset = 0;
 		int w = SDL_GetWindowSurface(App->window->window)->w;
 		int h = SDL_GetWindowSurface(App->window->window)->h;
 

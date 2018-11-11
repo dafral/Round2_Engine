@@ -34,7 +34,6 @@ public:
 	float width;
 	float height;
 	bool bordered = false;
-	bool fullscreen = false;
 	bool resizable = true;
 
 	//render

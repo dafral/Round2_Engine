@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "Module.h"
 #include "ModuleCamera3D.h"
-
+#include "DebugDraw.h"
 #include "TextureMSAA.h"
 #include "glew/include/glew.h"
 
@@ -21,45 +21,16 @@ void PanelScene::Draw()
 {
 	if (ImGui::BeginDock("Scene", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
-		float width = GetSystemMetrics(SM_CXSCREEN) / 3;
-		float height = GetSystemMetrics(SM_CYSCREEN) / 3;
+		bool debug_draw = App->debug->IsDebugDrawActive();
 
-		float aspect_ratio = width / height;
+		if (ImGui::Checkbox("Debug Draw", &debug_draw))
+			App->debug->SetDebugDraw(debug_draw);
 
-		//Get size of the window
-		ImVec2 size = ImGui::GetContentRegionAvail();
-		if (width < size.x && height < size.y)
-		{
-			if (width < size.x)
-			{
-				width = size.x;
-				height = width / aspect_ratio;
-
-				if (height > size.y)
-				{
-					height = size.y;
-					width = height * aspect_ratio;
-				}
-			}
-
-			if (height < size.y)
-			{
-				height = size.y;
-				width = height * aspect_ratio;
-
-				if (width > size.x)
-				{
-					width = size.x;
-					height = width / aspect_ratio;
-				}
-			}
-		}
-	
 		glEnable(GL_TEXTURE_2D);
 		if (App->camera->GetSceneTexture() != nullptr)
 		{
 			App->camera->GetSceneTexture()->Render();
-			ImGui::Image((void*)App->camera->GetSceneTexture()->GetTextureID(), { width, height }, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((void*)App->camera->GetSceneTexture()->GetTextureID(), { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, ImVec2(0, 1), ImVec2(1, 0));
 			App->camera->GetSceneTexture()->Unbind();
 		}
 		glDisable(GL_TEXTURE_2D);
