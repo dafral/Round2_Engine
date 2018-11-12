@@ -118,6 +118,17 @@ void Component_Camera::SetFOV(uint v_fov)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov / 2.f) * aspect_ratio);
 }
 
+void Component_Camera::SetAspectRatio(float n_aspect_ratio)
+{
+	aspect_ratio = n_aspect_ratio;
+}
+
+void Component_Camera::SetPlanes(float n_near_plane, float n_far_plane)
+{
+	frustum.nearPlaneDistance = n_near_plane;
+	frustum.farPlaneDistance = n_far_plane;
+}
+
 // -----------------------------------------------------------------
 
 float* Component_Camera::GetViewMatrix() const
@@ -140,8 +151,8 @@ void Component_Camera::OnSave(JSON_Doc* filetosave)
 
 	filetosave->SetNumber("type", 3);
 	filetosave->SetNumber("owner", my_go->GetUniqueID());
+
 	filetosave->SetNumber("aspect_ratio", aspect_ratio);
-	filetosave->SetNumber("horizontal_fov", frustum.horizontalFov);
 	filetosave->SetNumber("vertical_fov", frustum.verticalFov);
 	filetosave->SetNumber("near", frustum.nearPlaneDistance);
 	filetosave->SetNumber("far", frustum.farPlaneDistance);

@@ -62,7 +62,7 @@ void SceneImporter::LoadScene(const char* path)
 			uint id = doc->GetNumber("UID");
 			bool visible = doc->GetBool("visible");
 			bool is_static = doc->GetBool("is_static");
-			//uint new_child_id = doc->GetNumber("new_child_id");
+
 			if (parent == 0)
 			{
 				GameObject* go = App->scene->CreateGameObject(name, nullptr);
@@ -70,7 +70,6 @@ void SceneImporter::LoadScene(const char* path)
 				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
-				//go->SetNewChildId(new_child_id);
 			}
 			else
 			{
@@ -80,7 +79,6 @@ void SceneImporter::LoadScene(const char* path)
 				go_parent->AddChildren(go);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
-				//go->addSetNewChildId(new_child_id);
 			}
 
 			doc->MoveToFirstObject();
@@ -109,7 +107,42 @@ void SceneImporter::LoadScene(const char* path)
 				transform->SetScale(scale);
 
 				break;
-			}		
+			}
+			/*case Component_Type::MESH:
+			{
+				uint mesh_uid = doc->GetNumber("mesh");
+				uint p_type = 0;
+
+				Component_Mesh* mr = (MeshRenderer*)go->AddComponent(Component::C_MeshRenderer);
+				mr->SetMesh(mesh_uid);
+
+				break;
+			}
+			case Component_Type::MATERIAL:
+			{
+				uint mat_uid = doc->GetNumber("material");
+				uint vert_shader = doc->GetNumber("vertex_shader");
+				uint frag_shader = doc->GetNumber("fragment_shader");
+
+				Component_Material* m = (Component_Material*)go->AddComponent(Component::Component_Material);
+				m->SetMaterial(mat_uid);
+				break;
+			}*/
+			case Component_Type::CAMERA:
+			{
+				float aspect_ratio = doc->GetNumber("aspect_ratio");
+				float vertical_fov = doc->GetNumber("vertical_fov");
+				float near_plane = doc->GetNumber("near");
+				float far_plane = doc->GetNumber("far");
+
+				Component_Camera* cam = new Component_Camera();
+				cam->SetFOV(vertical_fov);
+				cam->SetAspectRatio(aspect_ratio);
+				cam->SetPlanes(near_plane, far_plane);
+
+				go->AddComponent(cam);
+				break;
+			}
 			}
 
 			doc->MoveToFirstObject();

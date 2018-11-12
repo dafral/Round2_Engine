@@ -30,7 +30,9 @@ public:
 
 	// ------------------------------------------
 
-	void SetFOV(uint h_fov);
+	void SetFOV(uint v_fov);
+	void SetAspectRatio(float aspect_ratio);
+	void SetPlanes(float n_near_plane, float n_far_plane);
 	void TransformPos(float3 pos);
 	void TransformRot(Quat rot);
 
