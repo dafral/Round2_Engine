@@ -18,6 +18,7 @@ public:
 	void DeleteFilesInPath(const char* path);
 
 	std::string assets_path;
+	std::string scene_path;
 	std::string library_path;
 	std::string library_mesh_path;
 	std::string library_material_path;

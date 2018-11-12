@@ -54,13 +54,12 @@ update_status ModuleEditor::Update(float dt)
 		{
 			if(ImGui::Button("Save"))
 			{
-				App->filesystem->assets_path += "scene.json";
-				App->scene_importer->SaveScene(App->filesystem->assets_path.c_str());
+				App->scene_importer->SaveScene(App->filesystem->scene_path.c_str());
 			}
 
 			if(ImGui::Button("Load"))
 			{
-
+				App->scene_importer->LoadScene(App->filesystem->scene_path.c_str());
 			}
 
 			ImGui::EndMenu();

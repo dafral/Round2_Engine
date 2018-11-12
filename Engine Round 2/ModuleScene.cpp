@@ -67,5 +67,28 @@ GameObject* ModuleScene::CreateGameObject(std::string name, GameObject* parent)
 	return new_go;
 }
 
+GameObject* ModuleScene::GetGOByUniqueID(uint uid) const
+{
+	GameObject* ret = nullptr;
+
+	for (int i = 0; i < gameobjects.size(); ++i)
+	{
+		if (gameobjects[i]->GetUniqueID() == uid)
+		{
+			ret = gameobjects[i];
+			break;
+		}
+		else
+		{
+			gameobjects[i]->GetChildrenByUniqueID(uid, ret);
+
+			if (ret != nullptr)
+				break;
+		}
+	}
+
+	return ret;
+}
+
 
 

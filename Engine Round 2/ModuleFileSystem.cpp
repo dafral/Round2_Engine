@@ -7,6 +7,7 @@
 ModuleFileSystem::ModuleFileSystem(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	assets_path = CreateFolder(GetRootPath(), "Assets");
+	scene_path = assets_path += "scene.json";
 	library_path = CreateFolder(GetRootPath(), "Library");
 	library_mesh_path = CreateFolder(library_path.c_str(), "Meshes");
 	library_material_path = CreateFolder(library_path.c_str(), "Materials");

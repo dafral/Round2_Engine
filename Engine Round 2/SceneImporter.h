@@ -10,6 +10,7 @@ public:
 	~SceneImporter();
 
 	void SaveScene(const char* path);
+	void LoadScene(const char* path);
 
 };
 
