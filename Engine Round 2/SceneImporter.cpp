@@ -9,6 +9,9 @@
 #include "Component_Material.h"
 #include "Component_Camera.h"
 
+#include "MaterialImporter.h"
+#include "MeshImporter.h"
+
 SceneImporter::SceneImporter(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
 
@@ -108,26 +111,22 @@ void SceneImporter::LoadScene(const char* path)
 
 				break;
 			}
-			/*case Component_Type::MESH:
+			case Component_Type::MESH:
 			{
-				uint mesh_uid = doc->GetNumber("mesh");
-				uint p_type = 0;
+				uint mesh_uniqueid = doc->GetNumber("mesh");
 
-				Component_Mesh* mr = (MeshRenderer*)go->AddComponent(Component::C_MeshRenderer);
-				mr->SetMesh(mesh_uid);
-
+				Component_Mesh* mesh = new Component_Mesh();
+				//App->mesh_importer->Load(mesh_uniqueid);
 				break;
 			}
 			case Component_Type::MATERIAL:
 			{
-				uint mat_uid = doc->GetNumber("material");
-				uint vert_shader = doc->GetNumber("vertex_shader");
-				uint frag_shader = doc->GetNumber("fragment_shader");
+				uint material_uniqueid = doc->GetNumber("material");
 
-				Component_Material* m = (Component_Material*)go->AddComponent(Component::Component_Material);
-				m->SetMaterial(mat_uid);
+				Component_Material* material = new Component_Material();
+			//	App->material_importer->Load(material_uniqueid);
 				break;
-			}*/
+			}
 			case Component_Type::CAMERA:
 			{
 				float aspect_ratio = doc->GetNumber("aspect_ratio");

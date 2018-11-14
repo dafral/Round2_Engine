@@ -15,6 +15,7 @@
 #include "SceneImporter.h"
 #include "ModuleFileSystem.h"
 #include "ModuleJSON.h"
+#include "ModuleResources.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "DebugDraw.h"
@@ -36,6 +37,7 @@ public:
 	SceneImporter* scene_importer;
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
+	ModuleResources* resources;
 
 	DebugDraw* debug;
 	ImGuiTextBuffer consoleText; 
