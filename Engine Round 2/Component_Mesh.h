@@ -1,10 +1,19 @@
-#pragma once
+#ifndef __COMPONENT_MESH_H__
+#define __COMPONENT_MESH_H__
 
 #include "Globals.h"
 #include "Component.h"
 #include "ModuleJSON.h"
+#include "myPrimitives.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 struct aiMesh;
+
+struct Bounding_Volume
+{
+	Sphere sphere;
+	AABB bounding_box;
+};
 
 // 0..1
 class Component_Mesh : public Component
@@ -27,6 +36,7 @@ private:
 	float* texture_coords = nullptr;
 
 	uint unique_id = 0;
+	Bounding_Volume bv;
 
 public:
 	uint GetIdVertices() { return id_vertices; };
@@ -42,6 +52,7 @@ public:
 	float* GetTexCoords() { return texture_coords; };
 
 	uint GetUniqueID() { return unique_id; };
+	Bounding_Volume GetBoundingVolume() { return bv; };
 
 	void SetFaces(aiMesh* new_mesh);
 	void SetUVs(aiMesh* new_mesh);
@@ -50,3 +61,5 @@ public:
 
 	void OnSave(JSON_Doc* filetosave);
 };
+
+#endif

@@ -42,6 +42,18 @@ void Component_Mesh::SetFaces(aiMesh* new_mesh)
 			}
 		}
 	}
+
+	// Bounding volume
+	AABB box;
+	box.SetNegativeInfinity();
+	box.Enclose((float3*) new_mesh->mVertices, new_mesh->mNumVertices);
+	bv.bounding_box = box;
+
+	Sphere sph;
+	sph.SetNegativeInfinity();
+	sph.r = 0;
+	sph.Enclose((float3*)new_mesh->mVertices, new_mesh->mNumVertices);
+	bv.sphere = sph;
 }
 
 void Component_Mesh::SetUVs(aiMesh* new_mesh)

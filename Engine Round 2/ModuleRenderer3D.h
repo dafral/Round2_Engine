@@ -29,7 +29,8 @@ public:
 
 	Component_Mesh* CreateComponentMesh(GameObject* my_go);
 	Component_Mesh* IsMeshLoaded(Component_Mesh* curr_mesh);
-	void DrawMeshes();
+	void DrawMeshes(bool is_scene_camera);
+	void DrawDebug(Component_Mesh* curr_mesh);
 	std::vector<Component_Mesh*>* GetMeshesVector();
 
 public:

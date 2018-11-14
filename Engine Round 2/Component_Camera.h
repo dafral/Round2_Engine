@@ -18,24 +18,15 @@ public:
 	float3 GetPosition() { return frustum.pos; };
 	uint GetFOV() { return vertical_fov; };
 
-	// Movement ----------------------------------
-
-	void MoveUp(const float movement);
-	void MoveDown(const float movement);
-	void MoveLeft(const float movement);
-	void MoveRight(const float movement);
-	void MoveForwards(const float movement);
-	void MoveBackwards(const float movement);
-	void Rotate(const float dx, const float dy);
-
 	// ------------------------------------------
 
 	void SetFOV(uint h_fov);
-	void TransformPos(float3 pos);
-	void TransformRot(Quat rot);
+	void SetFrustumPos(float3 pos);
+	void SetFrustumRot(Quat rot);
 
 	// -------------------------------------------
 
+	bool IsAABBInside(AABB &aabb);
 	void OnSave(JSON_Doc* filetosave);
 
 private:

@@ -35,8 +35,6 @@ public:
 	float radius;
 
 	std::vector<GLfloat> vertices;
-	std::vector<GLfloat> normals;
-	std::vector<GLfloat> texcoords;
 	std::vector<GLushort> indices;
 };
 

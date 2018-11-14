@@ -21,77 +21,12 @@ Component_Camera::Component_Camera() : Component(CAMERA)
 
 // -----------------------------------------------------------------
 
-void Component_Camera::MoveUp(const float movement)
-{
-	float3 move = float3::zero;
-	move += frustum.up * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::MoveDown(const float movement)
-{
-	float3 move = float3::zero;
-	move -= frustum.up * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::MoveLeft(const float movement)
-{
-	float3 move = float3::zero;
-	move -= frustum.WorldRight() * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::MoveRight(const float movement)
-{
-	float3 move = float3::zero;
-	move += frustum.WorldRight() * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::MoveForwards(const float movement)
-{
-	float3 move = float3::zero;
-	move += frustum.front * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::MoveBackwards(const float movement)
-{
-	float3 move = float3::zero;
-	move -= frustum.front * movement;
-	frustum.Translate(move);
-}
-
-void Component_Camera::Rotate(const float dx, const float dy)
-{
-	if (dx != 0)
-	{
-		Quat rotation_x = Quat::RotateY(dx);
-		frustum.front = rotation_x.Mul(frustum.front).Normalized();
-		frustum.up = rotation_x.Mul(frustum.up).Normalized();
-	}
-
-	if (dy != 0)
-	{
-		Quat rotation_y = Quat::RotateAxisAngle(frustum.WorldRight(), dy);
-
-		float3 new_up = rotation_y.Mul(frustum.up).Normalized();
-
-		if (new_up.y > 0.0f)
-		{
-			frustum.up = new_up;
-			frustum.front = rotation_y.Mul(frustum.front).Normalized();
-		}
-	}
-}
-
-void Component_Camera::TransformPos(float3 pos)
+void Component_Camera::SetFrustumPos(float3 pos)
 {
 	frustum.pos = pos;
 }
 
-void Component_Camera::TransformRot(Quat rot)
+void Component_Camera::SetFrustumRot(Quat rot)
 {
 	float3 new_rot = rot.ToEulerXYZ();
 
@@ -111,6 +46,8 @@ void Component_Camera::TransformRot(Quat rot)
 	frustum.up = rotation_z.Mul(frustum.up.Normalized());
 }
 
+// ------------------------------------------------------------------
+
 void Component_Camera::SetFOV(uint v_fov)
 {
 	vertical_fov = v_fov;
@@ -129,6 +66,29 @@ float* Component_Camera::GetViewMatrix() const
 float* Component_Camera::GetProjectionMatrix() const
 {
 	return (float*)frustum.ProjectionMatrix().Transposed().v;
+}
+
+// -----------------------------------------------------------------
+
+bool Component_Camera::IsAABBInside(AABB &aabb)
+{
+	int vertex_num = aabb.NumVertices();
+	for (int i = 0; i < 6; i++)
+	{
+		int points_out = 0;
+		for (int j = 0; j < vertex_num; j++)
+		{
+			Plane plane = frustum.GetPlane(i);
+			if (plane.IsOnPositiveSide(aabb.CornerPoint(j)))
+			{
+				points_out++;
+			}
+		}
+
+		if (points_out == 8) return false;
+	}
+
+	return true;
 }
 
 // -----------------------------------------------------------------

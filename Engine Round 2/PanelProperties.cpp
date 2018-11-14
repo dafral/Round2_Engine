@@ -104,12 +104,12 @@ void PanelProperties::TransInfo(Component_Transform* trans, Component_Camera* ca
 		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f))
 		{
 			if (!is_static) trans->SetPosition(position);
-			if (cam != nullptr) cam->TransformPos(trans->GetPosition());
+			if (cam != nullptr) cam->SetFrustumPos(trans->GetPosition());
 		}
 		if (ImGui::DragFloat3("Rotation", (float*)&euler_rotation, 0.1f))
 		{
 			if (!is_static) trans->SetRotation(DegToRad(euler_rotation));
-			if (cam != nullptr) cam->TransformRot(trans->GetRotation());
+			if (cam != nullptr) cam->SetFrustumRot(trans->GetRotation());
 		}
 		if (ImGui::DragFloat3("Scale", (float*)&scale, 1.0f))
 			if (!is_static) trans->SetScale(scale);

@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "myPrimitives.h"
 #include "Application.h"
 
@@ -49,11 +48,13 @@ mySphere::mySphere(float radius, unsigned int rings, unsigned int sectors)
 	float const R = 1. / (float)(rings - 1);
 	float const S = 1. / (float)(sectors - 1);
 
-	for (int r = 0; r < rings; ++r) {
-		for (int s = 0; s < sectors; ++s) {
-			float const y = sin(-M_PI_2 + M_PI * r * R);
-			float const x = cos(2 * M_PI * s * S) * sin(M_PI * r * R);
-			float const z = sin(2 * M_PI * s * S) * sin(M_PI * r * R);
+	for (int r = 0; r < rings; ++r)
+	{
+		for (int s = 0; s < sectors; ++s) 
+		{
+			float const y = sin(-(PI / 2) + PI * r * R);
+			float const x = cos(2 * PI * s * S) * sin(PI * r * R);
+			float const z = sin(2 * PI * s * S) * sin(PI * r * R);
 
 			vertices.push_back(x * radius);
 			vertices.push_back(y * radius);
@@ -75,7 +76,6 @@ mySphere::mySphere(float radius, unsigned int rings, unsigned int sectors)
 			}
 		}
 	}
-
 }
 
 void mySphere::Draw() const

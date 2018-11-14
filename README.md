@@ -18,8 +18,7 @@ You can find some example files inside the "3D Models" folder.
 - **"QE":** Up & down
 - **Shift:** Accelerate camera
 - **Mouse wheel:** zoom in and out
-- **Alt +Right click + Move Mouse:** orbital camera
-- **"F":** focus the camera around the geometry
+- **Right click + Move Mouse:** orbital camera
 
 
 ## Libraries used

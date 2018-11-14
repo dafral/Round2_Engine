@@ -157,7 +157,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	App->scene->Draw();
-	DrawMeshes();
+	DrawMeshes(false);
 
 	// =============================================================
 	// Scene camera 
@@ -180,9 +180,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	App->scene->Draw();
-	DrawMeshes();
-
-
+	DrawMeshes(true);
 
 	return UPDATE_CONTINUE;
 }
@@ -237,7 +235,7 @@ Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 	return cmesh;
 }
 
-void ModuleRenderer3D::DrawMeshes()
+void ModuleRenderer3D::DrawMeshes(bool is_scene_camera)
 {
 	for (int i = 0; i < meshes.size(); i++)
 	{
@@ -271,7 +269,9 @@ void ModuleRenderer3D::DrawMeshes()
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 			glDisable(GL_TEXTURE_2D);
 
-			glPopMatrix();
+			if (App->debug->IsDebugDrawActive() /*&& is_scene_camera*/) DrawDebug(meshes[i]);
+
+			glPopMatrix();		
 		}
 	}
 }
@@ -314,6 +314,15 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(Component_Mesh* new_mesh)
 	}
 
 	return ret;
+}
+
+void ModuleRenderer3D::DrawDebug(Component_Mesh* curr_mesh)
+{
+	float3 vertices[8];
+	curr_mesh->GetBoundingVolume().bounding_box.GetCornerPoints(vertices);
+	App->debug->DrawBox(vertices, 1.5, Green);
+
+	App->debug->DrawSphere(curr_mesh->GetBoundingVolume().bounding_box.CenterPoint(), curr_mesh->GetBoundingVolume().sphere.r, 1.5, Blue);
 }
 
 

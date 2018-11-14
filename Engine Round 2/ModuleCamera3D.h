@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 
+class Component_Transform;
 class Component_Camera;
 class TextureMSAA;
 
@@ -23,8 +24,8 @@ public:
 
 	Component_Camera* CreateComponentCamera(std::string name);
 
-	void Move(float dt);
-	void Rotate(float dt);
+	void Move(Component_Transform* trans, float dt);
+	void Rotate(Component_Transform* trans, float dt);
 	void Zoom(int mouse_z, float dt);
 	void DrawAllFrustums();
 
