@@ -11,15 +11,20 @@ public:
 	ModuleResources(Application* app, bool start_enabled = true);
 	~ModuleResources();
 
-	//uint Find(const char* file_in_assets) const;
 	uint ImportFile(const char* new_file_in_assets);
-	//uint GenerateNewUID();
-	//const Resource* Get(uint uid) const;
-	//Resource* Get(uint uid);
 	Resource* CreateNewResource(ResourceType type, uint force_uid = 0);
-private:
+	uint CreateNewResourceInPath(const char* path);
+
+	std::string GetNameFromPath(const char * path);
+	ResourceType GetTypeFromPath(const char * path) const;
+	std::string GetExtension(const char* path);
+	std::string GetFilePath(const char* path);
+
+	Resource * ExistResource(std::string & file, int file_id = -1);
+public:
 	uint last_uid = 1;
-	std::map<uint, Resource*> resources;
+	std::map<uint, std::vector<Resource*>> resources;
+
 };
 
 #endif // !__MODULERESOURCES_H__

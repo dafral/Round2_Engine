@@ -9,6 +9,8 @@ class Component_Material : public Component
 {
 public:
 	Component_Material();
+	Component_Material(uint id, uint w, uint h);
+	Component_Material(uint uid, uint id, uint w, uint h);
 	virtual ~Component_Material() {};
 
 	uint GetTextureId() { return texture_id; };

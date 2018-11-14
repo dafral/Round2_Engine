@@ -104,3 +104,35 @@ void ModuleFileSystem::DeleteFilesInPath(const char* path)
 		}
 	}
 }
+
+void ModuleFileSystem::GetFilesInPath(std::vector<std::string>& paths, const char * path, const char * extension)
+{
+	WIN32_FIND_DATA search_data;
+
+	std::string path_ex = path;
+
+	if (extension != nullptr)
+	{
+		path_ex += "*.";
+		path_ex += extension;
+	}
+	else
+	{
+		path_ex += "*.*";
+	}
+
+	HANDLE handle = FindFirstFile(path_ex.c_str(), &search_data);
+
+	while (handle != INVALID_HANDLE_VALUE)
+	{
+		std::string path_new = path;
+		path_new += search_data.cFileName;
+		paths.push_back(path_new);
+
+		if (FindNextFile(handle, &search_data) == FALSE)
+			break;
+	}
+
+	if (handle)
+		FindClose(handle);
+}

@@ -13,6 +13,23 @@ Component_Material::Component_Material() : Component(MATERIAL)
 	unique_id = pcg32_random_r(&App->rng);
 }
 
+Component_Material::Component_Material(uint id, uint w, uint h) : Component(MATERIAL)
+{
+	texture_id = id;
+	width = w;
+	height = h;
+	unique_id = pcg32_random_r(&App->rng);
+}
+
+Component_Material::Component_Material(uint uid, uint id, uint w, uint h) : Component(MATERIAL)
+{
+	unique_id = uid;
+	texture_id = id;
+	width = w;
+	height = h;
+	unique_id = pcg32_random_r(&App->rng);
+}
+
 void Component_Material::LoadBuffers()
 {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

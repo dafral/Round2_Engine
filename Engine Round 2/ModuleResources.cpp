@@ -1,5 +1,7 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleResources.h"
+#include <algorithm>
 
 #include "MeshImporter.h"
 #include "MaterialImporter.h"
@@ -15,17 +17,20 @@ ModuleResources::~ModuleResources()
 uint ModuleResources::ImportFile(const char* new_file_in_assets)
 {
 	uint ret = 0; //bool import_ok = false; std::string written_file;
+	ResourceType type = GetTypeFromPath(new_file_in_assets);
 
-	//switch (type) 
-	//{
-	//case texture:
-	//	import_ok = App->material_importer->Import(); break;
-	//case mesh: 
-	//	import_ok = App->mesh_importer->ImportMesh(new_file_in_assets, "", written_file); break;
-
-	//case scene: 
-	//	import_ok = App->scene_importer->SaveScene(new_file_in_assets, written_file); break;
-	//}
+	switch (type) 
+	{
+	case texture:
+		App->material_importer->ImportImage(new_file_in_assets); 
+		break;
+	case mesh: 
+		//import_ok = App->mesh_importer->ImportMesh(new_file_in_assets, "", written_file); 
+		break;
+	case scene: 
+		//import_ok = App->scene_importer->SaveScene(new_file_in_assets, written_file); 
+		break;
+	}
 
 	//if (import_ok == true) // If export was successful, create a new resource
 	//{ 
@@ -34,7 +39,8 @@ uint ModuleResources::ImportFile(const char* new_file_in_assets)
 	//	res->exported_file = written_file;
 	//	ret = res->uid;
 	//}
-	return ret;
+	return ret;
+
 }
 
 Resource * ModuleResources::CreateNewResource(ResourceType type, uint default_id)
@@ -67,3 +73,126 @@ Resource * ModuleResources::CreateNewResource(ResourceType type, uint default_id
 //		return it->second;
 	return nullptr;
 }
+
+uint ModuleResources::CreateNewResourceInPath(const char* path)
+{
+	uint uid_key = 0;
+
+	FILE* f = fopen(path, "rb");
+	if (f != nullptr)
+	{
+		fseek(f, 0L, SEEK_END);
+		uint total_size = ftell(f);
+		rewind(f); //go back to file begining
+
+		char* data = new char[total_size];
+		memccpy(data, f, sizeof(char), total_size);
+		fclose(f);
+
+		uid_key = pcg32_random_r(&App->rng);
+		RELEASE_ARRAY(data);
+	}
+
+	return uid_key;
+}
+
+std::string ModuleResources::GetNameFromPath(const char * path)
+{
+	std::string _path = path;
+	std::string name;
+
+	uint dot = _path.find_last_of(".");
+	uint slash = _path.find_last_of("\\");
+	slash += 1;
+	name = _path.substr(slash, dot - slash);
+
+	return name;
+}
+
+std::string ModuleResources::GetExtension(const char* path)
+{
+	std::string _path = path;
+	std::string ext;
+
+	uint dot = _path.find_last_of(".");
+	ext = _path.substr(dot + 1);
+
+	return ext;
+}
+
+std::string ModuleResources::GetFilePath(const char* path)
+{
+	std::string _path = path;
+	std::string rel_path;
+
+	uint slash = _path.find_last_of("\\");
+	rel_path = _path.substr(0, slash + 1);
+
+	return rel_path;
+}
+
+ResourceType ModuleResources::GetTypeFromPath(const char * path) const
+{
+	ResourceType ret = unknown;
+
+	std::string p = path;
+	uint cut = p.find_last_of(".");
+	std::string extension = p.substr(cut + 1);
+	std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+
+	if (extension == "json") // meta, scenes and prefabs.
+	{
+		int type_cut = p.find_last_of("_");
+		if (type_cut != -1)
+		{
+			std::string type_str = p.substr(type_cut + 1, cut - (type_cut + 1));
+			if (type_str == "scene")
+				ret = scene;
+		}
+		else
+			CONSOLELOG("The file %s is not supported.", path);
+	}
+	else if (extension == "fbx") // meshes
+	{
+		ret = mesh;
+	}
+	else if (extension == "png" || extension == "dds") // textures
+	{
+		ret = texture;
+	}
+
+	return ret;
+}
+
+Resource * ModuleResources::ExistResource(std::string & file, int cn)
+{
+	Resource* ret = nullptr;
+
+	std::string file_name = GetNameFromPath(file.c_str());
+
+	for (std::map<uint, std::vector<Resource*>>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		for (std::vector<Resource*>::iterator r = it->second.begin(); r != it->second.end(); ++r)
+		{
+			if ((*r)->name == file_name)
+			{
+				if (cn != -1)
+				{
+					if ((*r)->comp_number == cn)
+					{
+						ret = (*r);
+						break;
+					}
+				}
+				else
+				{
+					ret = (*r);
+					break;
+				}
+			}
+		}
+	}
+
+	return ret;
+}
+

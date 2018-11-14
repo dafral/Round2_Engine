@@ -256,6 +256,7 @@
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />

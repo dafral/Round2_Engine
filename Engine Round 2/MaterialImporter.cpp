@@ -50,6 +50,80 @@ bool MaterialImporter::CleanUp()
 	return true;
 }
 
+Component_Material* MaterialImporter::ImportImage(const char* path, Resource* res)
+{
+	uint id = 0;
+	ILenum error;
+	Component_Material* m = nullptr;
+
+	//check if material already exist
+	Resource* r = App->resources->ExistResource(std::string(path));
+	if (r != nullptr) // already exist
+	{
+		m = materials[res->array_pos];
+	}
+	else
+	{
+		//Data will be handled by renderer. Devil is only used to load the image.
+		if (ilLoad(IL_TYPE_UNKNOWN, path))
+		{
+
+			ILinfo info;
+			iluGetImageInfo(&info);
+			std::string ext = App->resources->GetExtension(path);
+			bool is_flipped = false;
+			//if (res != nullptr)is_flipped = res->flipped;
+			if (info.Origin == IL_ORIGIN_UPPER_LEFT && !is_flipped)
+			{
+				iluFlipImage();
+				is_flipped = true;
+			}
+
+			ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+			int w = ilGetInteger(IL_IMAGE_WIDTH);
+			int h = ilGetInteger(IL_IMAGE_HEIGHT);
+			id = LoadTextureInMemory(w, h, ilGetData(), ilGetInteger(IL_IMAGE_FORMAT));
+
+			if (res == nullptr)
+				m = new Component_Material(id, w, h);
+			else
+				m = new Component_Material(res->uid, id, w, h);
+
+			materials.push_back(m);
+
+			if (res == nullptr)
+			{
+				r = new Resource();
+				r->extension = App->resources->GetExtension(path);
+				r->comp_number = 0; 
+				r->name = App->resources->GetNameFromPath(path);
+				r->exported_file = App->resources->GetFilePath(path);
+
+				r->array_pos = materials.size() - 1;
+				r->type = texture;
+				r->uid = m->GetUniqueID();
+				SaveAsDDS(r);
+				App->resources->resources[App->resources->CreateNewResourceInPath(path)].push_back(r);
+				//App->resources->CreateMeta(path);
+			}
+			else
+			{
+				res->array_pos = materials.size() - 1;
+				//CheckSaveID(res->lib_name.c_str());
+			}
+
+			ilDeleteImage(ilGetInteger(IL_ACTIVE_IMAGE));
+		}
+		else
+		{
+			error = ilGetError();
+			CONSOLELOG("Error loading image %s. Error %d.", path, error);
+		}
+	}
+
+	return m;
+}
+
 void MaterialImporter::Import(const char* full_path, GameObject* go)
 {
 	ILuint imageID;
@@ -122,7 +196,7 @@ void MaterialImporter::DeleteTextures()
 	//}
 }
 
-void MaterialImporter::SaveAsDDS()
+void MaterialImporter::SaveAsDDS(Resource* res)
 {
 	ILuint		size;
 	ILubyte*	data;
@@ -140,8 +214,51 @@ void MaterialImporter::SaveAsDDS()
 			FILE* tex_file = fopen(file, "wb");
 			fwrite(data, sizeof(ILubyte), size, tex_file);
 			fclose(tex_file);
+
+			/*res->lib_name = App->resources->GetNameFromPath(file);
+			res->lib_path = App->resources->GetRelativePathFromPath(file);*/
+
 			CONSOLELOG("New material texture saved: %s.", file);
 		}
 	}
 
+}
+
+uint MaterialImporter::LoadTextureInMemory(uint w, uint h, GLubyte * tex_data, GLint format) const
+{
+	uint buff_id = 0;
+
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+	{
+		CONSOLELOG("Error loading texture in memory: %s\n", gluErrorString(error));
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &buff_id);
+	glBindTexture(GL_TEXTURE_2D, buff_id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, tex_data);
+
+	error = glGetError();
+	if (error != GL_NO_ERROR)
+	{
+		CONSOLELOG("Error loading texture in memory: %s\n", gluErrorString(error));
+	}
+
+	return buff_id;
+}
+
+void MaterialImporter::CheckSaveID(const char * file)
+{
+	std::string f = file;
+	uint cut = f.find_last_of("_");
+	std::string num = f.substr(cut + 1);
+
+	int id = atoi(num.c_str());
+	if (id > save_id)
+		save_id = id + 1;
 }
