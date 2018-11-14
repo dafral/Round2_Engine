@@ -59,6 +59,28 @@ void GameObject::SetVisible(bool new_visible)
 	}
 };
 
+void GameObject::SetUniqueID(uint id)
+{
+	unique_id = id;
+}
+
+void GameObject::GetChildrenByUniqueID(uint UID, GameObject *& go) const
+{
+	for (int i = 0; i < childrens.size(); ++i)
+	{
+		if (childrens[i]->GetUniqueID() == UID)
+		{
+			go = childrens[i];
+			break;
+		}
+		else
+		{
+			childrens[i]->GetChildrenByUniqueID(UID, go);
+			if (go != nullptr)
+				break;
+		}
+	}
+}
 // ------------------------------------------------------------------
 
 void GameObject::OnSave(JSON_Doc* filetosave)
@@ -69,6 +91,7 @@ void GameObject::OnSave(JSON_Doc* filetosave)
 	filetosave->MoveToSectionFromArray("GameObjects", filetosave->GetArraySize("GameObjects") - 1);
 	filetosave->SetNumber("unique ID", unique_id);
 	filetosave->SetString("name", name.c_str());
+	filetosave->SetBool("visible", is_visible);
 	filetosave->SetBool("is_static", is_static);
 	if (parent != nullptr)
 		filetosave->SetNumber("parent", parent->GetUniqueID());

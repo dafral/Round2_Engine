@@ -21,9 +21,11 @@ public:
 	Component* FindComponentWithType(Component_Type type);
 	void SetStatic(bool new_static);
 	void SetVisible(bool new_visible);
+	void SetUniqueID(uint id);
 	bool GetStatic() { return is_static; };
 	bool GetVisible() { return is_visible; };
 	uint GetUniqueID() { return unique_id; };
+	void GetChildrenByUniqueID(uint UID, GameObject *& go) const;
 
 	void OnSave(JSON_Doc* config);
 	void OnLoad(JSON_Doc* config);

@@ -19,6 +19,7 @@ public:
 
 	void Draw();
 	GameObject* CreateGameObject(std::string name, GameObject* parent);
+	GameObject* GetGOByUniqueID(uint uid) const;
 
 public:	
 

@@ -24,8 +24,13 @@ public:
 	const char* GetString(const char* str);
 	bool GetBool(const char* bo);
 	double GetNumber(const char* nu);
+	const float3 GetNumber3(const char* name);
+	const float4 GetNumber4(const char* name);
+	const double GetNumberFromArray(const char* arr, int index);
+
 	JSON_Doc GetArray(const char* field, int index) const;
 	int GetArraySize(const char * field) const;
+	bool FindArrayValue(const char* arr, int index, json_value_type type);
 
 	JSON_Doc SetEntry(const char* set);
 	JSON_Doc GetEntry(const char* set) const;

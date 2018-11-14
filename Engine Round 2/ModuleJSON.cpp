@@ -65,9 +65,59 @@ bool JSON_Doc::GetBool(const char * bo)
 	return json_object_dotget_boolean(object, bo);
 }
 
-double JSON_Doc::GetNumber(const char * nu)
+double JSON_Doc::GetNumber(const char* nu)
 {
 	return json_object_dotget_number(object, nu);
+}
+
+const float3 JSON_Doc::GetNumber3(const char* fl)
+{
+	float3 ret = float3::zero;
+
+	JSON_Array* array = json_object_get_array(object, fl);
+
+	if (array != nullptr)
+	{
+		ret.x = GetNumberFromArray(fl, 0);
+		ret.y = GetNumberFromArray(fl, 1);
+		ret.z = GetNumberFromArray(fl, 2);
+	}
+
+	return ret;
+}
+
+const float4 JSON_Doc::GetNumber4(const char* fl)
+{
+	float4 ret = float4::zero;
+
+	JSON_Array* array = json_object_get_array(object, fl);
+
+	if (array != nullptr)
+	{
+		ret.x = GetNumberFromArray(fl, 0);
+		ret.y = GetNumberFromArray(fl, 1);
+		ret.w = GetNumberFromArray(fl, 2);
+		ret.z = GetNumberFromArray(fl, 3);
+	}
+
+	return ret;
+}
+
+const double JSON_Doc::GetNumberFromArray(const char* arr, int index)
+{
+	double ret = 0;
+
+	JSON_Array* array = json_object_get_array(object, arr);
+
+	if (array != nullptr)
+	{
+		if (FindArrayValue(arr, index, json_value_type::JSONNumber))
+		{
+			ret = json_array_get_number(array, index);
+		}
+	}
+
+	return ret;
 }
 
 const char * JSON_Doc::GetPath()
@@ -130,6 +180,23 @@ int JSON_Doc::GetArraySize(const char * field) const
 	JSON_Array* array = json_object_get_array(object, field);
 	if (array != nullptr)
 		ret = json_array_get_count(array);
+	return ret;
+}
+
+bool JSON_Doc::FindArrayValue(const char * arr, int index, json_value_type type)
+{
+	bool ret = false;
+
+	JSON_Array* array = json_object_get_array(object, arr);
+
+	if (array != nullptr)
+	{
+		JSON_Value* val = json_array_get_value(array, index);
+
+		if (val != nullptr && json_value_get_type(val) == type)
+			ret = true;
+	}
+
 	return ret;
 }
 

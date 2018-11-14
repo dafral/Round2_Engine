@@ -23,6 +23,8 @@ public:
 	void SetFOV(uint h_fov);
 	void SetFrustumPos(float3 pos);
 	void SetFrustumRot(Quat rot);
+	void SetAspectRatio(float aspect_ratio);
+	void SetPlanes(float n_near_plane, float n_far_plane);
 
 	// -------------------------------------------
 

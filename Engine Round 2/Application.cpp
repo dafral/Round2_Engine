@@ -16,6 +16,7 @@ Application::Application()
 	filesystem = new ModuleFileSystem(this);
 	json = new ModuleJSON(this);
 	scene_importer = new SceneImporter(this);
+	resources = new ModuleResources(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -27,6 +28,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
+	AddModule(resources);
 	
 	// Scenes
 	AddModule(scene);

@@ -13,6 +13,7 @@
 #include "PanelScene.h"
 #include "PanelHierarchy.h"
 #include "PanelGame.h"
+#include "PanelResources.h"
 
 //Constructor
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -34,6 +35,7 @@ bool ModuleEditor::Init()
 	panels.push_back(console = new PanelConsole(true));
 	panels.push_back(hierarchy = new PanelHierarchy(true));
 	panels.push_back(game = new PanelGame(true));
+	panels.push_back(resources = new PanelResources(true));
 	
 	return true;
 }
@@ -54,13 +56,12 @@ update_status ModuleEditor::Update(float dt)
 		{
 			if(ImGui::Button("Save"))
 			{
-				App->filesystem->assets_path += "scene.json";
-				App->scene_importer->SaveScene(App->filesystem->assets_path.c_str());
+				App->scene_importer->SaveScene(App->filesystem->scene_path.c_str());
 			}
 
 			if(ImGui::Button("Load"))
 			{
-
+				App->scene_importer->LoadScene(App->filesystem->scene_path.c_str());
 			}
 
 			ImGui::EndMenu();
