@@ -1,8 +1,17 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "Timer.h"
 #include <string>
 #include <vector>
+
+enum SceneState
+{
+	EDITOR,
+	PAUSED,
+	PLAY,
+	TICK
+};
 
 class GameObject;
 
@@ -21,9 +30,19 @@ public:
 	GameObject* CreateGameObject(std::string name, GameObject* parent);
 	GameObject* GetGOByUniqueID(uint uid) const;
 
-public:	
+	// Time management ---------------
+	void Play();
+	void Pause();
+	void Tick();
+	float ReadTimer() const;
 
+public:		
 	GameObject* root_node = nullptr;
 	std::vector<GameObject*> gameobjects;
+
+	Timer game_clock;
+	SceneState state;
+	float last_game_frame_time = 0.f;
+	float game_dt = 0.f;
 };
 

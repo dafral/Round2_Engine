@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleScene.h"
 #include "ModuleCamera3D.h"
 #include "myPrimitives.h"
@@ -36,6 +37,22 @@ bool ModuleScene::CleanUp()
 // Update
 update_status ModuleScene::Update(float dt)
 {
+	if (state == PLAY || state == PAUSED || state == TICK)
+	{
+		if (state == PAUSED)
+			game_dt = 0.f;
+
+		//calculate game_dt
+		game_dt = game_clock.ReadSec() - last_game_frame_time;
+		last_game_frame_time = game_clock.ReadSec();
+
+		if (state == TICK)
+		{
+			state = EDITOR;
+			CONSOLELOG("Game Logic has done ONE tick!");
+		}
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -90,5 +107,52 @@ GameObject* ModuleScene::GetGOByUniqueID(uint uid) const
 	return ret;
 }
 
+// ===========================================================================
+// Time Management
+// ===========================================================================
 
+void ModuleScene::Play()
+{
+	if (state == PAUSED || state == EDITOR)
+	{
+		state = PLAY;
+		game_clock.Start();
+		App->scene_importer->SaveScene(App->filesystem->scene_path.c_str());
+		CONSOLELOG("%d", state);
+	}
+	else if (state == PLAY)
+	{
+		state = EDITOR;
+		game_clock.Stop();
+		App->scene_importer->LoadScene(App->filesystem->scene_path.c_str());
+		CONSOLELOG("%d", state);
+	}
+}
+
+void ModuleScene::Pause()
+{
+	if (state == PLAY || state == PAUSED)
+	{
+		if (state == PLAY)
+		{
+			state = PAUSED;
+			game_clock.PauseOn();
+		}
+		else
+		{
+			state = PLAY;
+			game_clock.PauseOff();
+		}
+	}
+}
+
+void ModuleScene::Tick()
+{
+	state = TICK;
+}
+
+float ModuleScene::ReadTimer() const
+{
+	return game_clock.ReadSec();
+}
 
