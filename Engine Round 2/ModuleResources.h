@@ -21,6 +21,8 @@ public:
 	std::string GetFilePath(const char* path);
 
 	Resource * ExistResource(std::string & file, int file_id = -1);
+
+	void CreateMeta(const char* path);
 public:
 	uint last_uid = 1;
 	std::map<uint, std::vector<Resource*>> resources;

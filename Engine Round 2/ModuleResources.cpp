@@ -18,10 +18,12 @@ uint ModuleResources::ImportFile(const char* new_file_in_assets)
 {
 	uint ret = 0; //bool import_ok = false; std::string written_file;
 	ResourceType type = GetTypeFromPath(new_file_in_assets);
+	std::string copy_path;
 
 	switch (type) 
 	{
 	case texture:
+		App->filesystem->CopyFileTo(new_file_in_assets, "Assets\\Meshes", &copy_path);
 		App->material_importer->ImportImage(new_file_in_assets); 
 		break;
 	case mesh: 
@@ -195,4 +197,36 @@ Resource * ModuleResources::ExistResource(std::string & file, int cn)
 
 	return ret;
 }
+
+void ModuleResources::CreateMeta(const char * path)
+{
+	/*uint key = CreateResource(path);
+	std::string lib_path = GetRelativePathFromPath(path);
+	lib_path += GetNameFromPath(path);
+	lib_path += "_meta.json";
+	JSON_Doc* meta = App->json->CreateJSON(lib_path.c_str());
+
+	meta->AddArray("resources");
+	for (int i = 0; i < resources[key].size(); ++i)
+	{
+		meta->AddSectionToArray("resources");
+		meta->MoveToSectionFromArray("resources", meta->GetArraySize("resources") - 1);
+
+		meta->SetString("name", resources[key][i]->name.c_str());
+		meta->SetString("extension", resources[key][i]->extension.c_str());
+		meta->SetString("rel_path", resources[key][i]->rel_path.c_str());
+		meta->SetString("lib_name", resources[key][i]->lib_name.c_str());
+		meta->SetString("lib_path", resources[key][i]->lib_path.c_str());
+		meta->SetNumber("file_id", resources[key][i]->file_id);
+		meta->SetNumber("type", resources[key][i]->type);
+		meta->SetNumber("UID", resources[key][i]->UID);
+		meta->SetBool("flipped", resources[key][i]->flipped);
+		meta->SetNumber("sh_type", resources[key][i]->sh_type);
+
+		meta->MoveToFirstObject();*/
+	//}
+
+	//meta->SaveFile();
+}
+
 
