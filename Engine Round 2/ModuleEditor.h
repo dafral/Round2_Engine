@@ -12,6 +12,7 @@ class PanelScene;
 class PanelHierarchy;
 class PanelGame;
 class PanelResources;
+class PanelTime;
 
 class ModuleEditor : public Module
 {
@@ -36,6 +37,7 @@ public:
 	PanelHierarchy* hierarchy = nullptr;
 	PanelGame* game = nullptr;
 	PanelResources* resources = nullptr;
+	PanelTime* time = nullptr;
 
 	std::vector<Panel*> panels;
 };

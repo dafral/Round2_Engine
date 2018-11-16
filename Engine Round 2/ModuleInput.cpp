@@ -144,8 +144,10 @@ update_status ModuleInput::PreUpdate(float dt)
 				{
 					CONSOLELOG("Dropped texture: %s", full_path.c_str());
 
-					if(App->editor->hierarchy->GetSelectedGO() != nullptr)
+					if (App->editor->hierarchy->GetSelectedGO() != nullptr) {
 						App->material_importer->Import(full_path.c_str(), App->editor->hierarchy->GetSelectedGO());
+						//App->resources->ImportFile(full_path.c_str());
+					}
 					else CONSOLELOG("You MUST select a GameObject to load a texture.");
 				}
 				else 

@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleScene.h"
 #include "ModuleCamera3D.h"
 #include "myPrimitives.h"
@@ -22,6 +23,10 @@ bool ModuleScene::Start()
 	App->camera->SetSceneCamera(App->camera->CreateComponentCamera("Scene Camera"));
 	App->camera->SetGameCamera(App->camera->CreateComponentCamera("Main Camera"));
 
+	state = EDITOR;
+	game_clock.Start();
+	game_clock.Stop();
+
 	return ret;
 }
 
@@ -37,6 +42,32 @@ bool ModuleScene::CleanUp()
 update_status ModuleScene::PreUpdate(float dt)
 {
 	root_node->Update();
+
+	if (state == PLAY || state == PAUSED || state == TICK)
+	{
+		if (state == PAUSED)
+			game_dt = 0.f;
+
+		//calculate game_dt
+		game_dt = game_clock.ReadSec() - last_game_frame_time;
+		last_game_frame_time = game_clock.ReadSec();
+
+		//Here we would have the specific logic for the GAME MODE
+
+		if (state == TICK)
+		{
+			if (prev_tick_state == EDITOR)
+			{
+				state = EDITOR;
+			}
+			else if (prev_tick_state == PAUSED || prev_tick_state == PLAY)
+			{
+				Pause();
+			}
+
+			CONSOLELOG("Game Logic has done ONE tick!");
+		}
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -138,6 +169,53 @@ void ModuleScene::RayCollision(LineSegment ray)
 	distance = FLOAT_INF;*/
 }
 
+// ===========================================================================
+// Time Management
+// ===========================================================================
+
+void ModuleScene::Play()
+{
+	if (state == EDITOR)
+	{
+		state = PLAY;
+		game_clock.Start();
+		App->scene_importer->SaveScene(App->filesystem->scene_path.c_str());
+		CONSOLELOG("Game Mode Started!");
+	}
+	else if (state == PAUSED)
+	{
+		state = PLAY;
+		game_clock.PauseOff();
+		CONSOLELOG("Game Mode Resumed");
+	}
+	else if (state == PLAY)
+	{
+		state = EDITOR;
+		game_clock.Stop();
+		App->scene_importer->LoadScene(App->filesystem->scene_path.c_str());
+		CONSOLELOG("Game Mode Stopped. Back to Editor Mode");
+	}
+}
+
+void ModuleScene::Pause()
+{
+	if (state == PLAY || state == TICK)
+	{
+		state = PAUSED;
+		game_clock.PauseOn();
+		CONSOLELOG("Game Paused.")
+	}
+}
 
 
+void ModuleScene::Tick()
+{
+	prev_tick_state = state;
+	state = TICK;
+}
+
+float ModuleScene::ReadTimer() const
+{
+	return game_clock.ReadSec();
+}
 

@@ -8,6 +8,9 @@ class PanelResources : public Panel
 public:
 	PanelResources(bool active);
 	virtual ~PanelResources();
+	
+	void Init();
+	void Draw();
 };
 
 #endif // !__PANELRESOURCES_H__

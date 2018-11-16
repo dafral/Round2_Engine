@@ -15,10 +15,11 @@ enum ResourceType
 class Resource
 {
 public:
-	//Resource(uint uid, ResourceType type);
-	//virtual ~Resource();
+	Resource();
+	virtual ~Resource();
+
 	//Resource::ResourceType GetType() const;
-	//uint GetUID() const;
+	uint GetUID() const;
 	//const char* GetFile() const;
 	//const char* GetExportedFile() const;
 	//bool IsLoadedToMemory() const;
@@ -26,12 +27,17 @@ public:
 	//uint CountReferences() const;
 	/*virtual void Save(Config& config) const;
 	virtual void Load(const Config& config);*/
-	virtual bool LoadInMemory() = 0;public:
+	//virtual bool LoadInMemory() = 0;
+
+public:
 
 	uint uid = 0;
-	std::string file;
+	std::string name;
+	std::string extension;
 	std::string exported_file;
 	ResourceType type = unknown;
+	uint comp_number = 0;
+	uint array_pos;
 	uint loaded = 0;
 
 };

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <string>
+#include <vector>
 
 class ModuleFileSystem : public Module
 {
@@ -16,6 +17,9 @@ public:
 	std::string CreateFolder(const char* path, const char* name);
 	bool SaveFile(const char* path, const char* file_content, const char* name, const char* extension, int size);
 	void DeleteFilesInPath(const char* path);
+
+	void CopyFileTo(const char * file, const char * target, std::string* new_path);
+	void GetFilesInPath(std::vector<std::string>& paths, const char * path, const char * extension = nullptr);
 
 	std::string assets_path;
 	std::string scene_path;

@@ -92,6 +92,25 @@ bool ModuleFileSystem::SaveFile(const char* path, const char* file_content, cons
 	return ret;
 }
 
+void ModuleFileSystem::CopyFileTo(const char * file, const char * target, std::string* new_path)
+{
+	std::string curr_file = file;
+	uint cut = curr_file.find_last_of("\\");
+	std::string dest_file = target;
+
+	if (dest_file.find_last_of("\\") == dest_file.size() - 1)
+		dest_file += curr_file.substr(cut + 1, curr_file.size() - cut + 1);
+	
+	else
+		dest_file += curr_file.substr(cut, curr_file.size() - cut);
+
+	CopyFile(file, dest_file.c_str(), false);
+
+	if (new_path != nullptr)
+		*new_path = dest_file;
+}
+
+
 void ModuleFileSystem::DeleteFilesInPath(const char* path)
 {
 	if (DeleteFile(path) == 0)
@@ -103,4 +122,36 @@ void ModuleFileSystem::DeleteFilesInPath(const char* path)
 			CONSOLELOG("Error deleting file (path not found)): %s", path);
 		}
 	}
+}
+
+void ModuleFileSystem::GetFilesInPath(std::vector<std::string>& paths, const char * path, const char * extension)
+{
+	WIN32_FIND_DATA search_data;
+
+	std::string path_ex = path;
+
+	if (extension != nullptr)
+	{
+		path_ex += "*.";
+		path_ex += extension;
+	}
+	else
+	{
+		path_ex += "*.*";
+	}
+
+	HANDLE handle = FindFirstFile(path_ex.c_str(), &search_data);
+
+	while (handle != INVALID_HANDLE_VALUE)
+	{
+		std::string path_new = path;
+		path_new += search_data.cFileName;
+		paths.push_back(path_new);
+
+		if (FindNextFile(handle, &search_data) == FALSE)
+			break;
+	}
+
+	if (handle)
+		FindClose(handle);
 }

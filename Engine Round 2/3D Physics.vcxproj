@@ -181,6 +181,7 @@
     <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelResources.h" />
     <ClInclude Include="PanelScene.h" />
+    <ClInclude Include="PanelTime.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="PCG\pcg_basic.h" />
     <ClInclude Include="Resource.h" />
@@ -255,9 +256,11 @@
     <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="PanelScene.cpp" />
+    <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="PCG\pcg_basic.c" />
     <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="TextureMSAA.cpp" />
     <ClCompile Include="Timer.cpp" />
