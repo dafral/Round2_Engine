@@ -37,5 +37,15 @@ void PanelTime::Draw()
 
 		ImGui::End();
 	}
+
+	bool debug_draw = App->debug->IsDebugDrawActive();
+
+	if (ImGui::Begin("Debug", 0, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar))
+	{
+		if (ImGui::Checkbox("Debug Draw", &debug_draw))
+			App->debug->SetDebugDraw(debug_draw);
+
+		ImGui::End();
+	}
 }
 

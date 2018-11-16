@@ -15,38 +15,38 @@ Component_Material::Component_Material() : Component(MATERIAL)
 
 Component_Material::Component_Material(uint id, uint w, uint h) : Component(MATERIAL)
 {
-	texture_id = id;
-	width = w;
-	height = h;
+	material.texture_id = id;
+	material.width = w;
+	material.height = h;
 	unique_id = pcg32_random_r(&App->rng);
 }
 
 Component_Material::Component_Material(uint uid, uint id, uint w, uint h) : Component(MATERIAL)
 {
 	unique_id = uid;
-	texture_id = id;
-	width = w;
-	height = h;
+	material.texture_id = id;
+	material.width = w;
+	material.height = h;
 	unique_id = pcg32_random_r(&App->rng);
 }
 
 void Component_Material::LoadBuffers()
 {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, (GLuint*) &texture_id);
-	glBindTexture(GL_TEXTURE_2D, (GLuint)texture_id);
+	glGenTextures(1, (GLuint*) &material.texture_id);
+	glBindTexture(GL_TEXTURE_2D, (GLuint)material.texture_id);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-	width = ilGetInteger(IL_IMAGE_WIDTH);
-	height = ilGetInteger(IL_IMAGE_HEIGHT);
+	material.width = ilGetInteger(IL_IMAGE_WIDTH);
+	material.height = ilGetInteger(IL_IMAGE_HEIGHT);
 	
 	//Texture Specifications
-	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());	
-	snap = (void*)texture_id;
+	glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), material.width, material.height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+	snap = (void*)material.texture_id;
 }
 
 // -----------------------------------------------------------------

@@ -390,6 +390,9 @@
     <ClInclude Include="PanelTime.h">
       <Filter>Sources\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleOctree.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -610,6 +613,9 @@
     </ClCompile>
     <ClCompile Include="PanelTime.cpp">
       <Filter>Sources\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleOctree.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

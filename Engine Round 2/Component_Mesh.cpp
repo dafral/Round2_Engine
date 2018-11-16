@@ -20,15 +20,15 @@ Component_Mesh::Component_Mesh() : Component(MESH)
 void Component_Mesh::SetFaces(aiMesh* new_mesh)
 {
 	// Vertices
-	num_vertices = new_mesh->mNumVertices;
-	vertices = new float[num_vertices * 3];
-	memcpy(vertices, new_mesh->mVertices, sizeof(float) * num_vertices * 3);
+	mesh.num_vertices = new_mesh->mNumVertices;
+	mesh.vertices = new float[mesh.num_vertices * 3];
+	memcpy(mesh.vertices, new_mesh->mVertices, sizeof(float) * mesh.num_vertices * 3);
 
 	// Indices
 	if (new_mesh->HasFaces())
 	{
-		num_indices = new_mesh->mNumFaces * 3;
-		indices = new uint[num_indices];
+		mesh.num_indices = new_mesh->mNumFaces * 3;
+		mesh.indices = new uint[mesh.num_indices];
 
 		for (uint i = 0; i < new_mesh->mNumFaces; i++)
 		{
@@ -38,7 +38,7 @@ void Component_Mesh::SetFaces(aiMesh* new_mesh)
 			}
 			else
 			{
-				memcpy(&indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
+				memcpy(&mesh.indices[i * 3], new_mesh->mFaces[i].mIndices, 3 * sizeof(uint));
 			}
 		}
 	}
@@ -61,41 +61,41 @@ void Component_Mesh::SetUVs(aiMesh* new_mesh)
 	// UVs
 	if (new_mesh->HasTextureCoords(0))
 	{
-		num_uvs = new_mesh->mNumVertices;
-		texture_coords = new float[num_uvs * 3];
-		memcpy(texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * num_uvs * 3);
+		mesh.num_uvs = new_mesh->mNumVertices;
+		mesh.texture_coords = new float[mesh.num_uvs * 3];
+		memcpy(mesh.texture_coords, new_mesh->mTextureCoords[0], sizeof(float) * mesh.num_uvs * 3);
 	}
 }
 
 void Component_Mesh::SetIDs(Component_Mesh* cmesh)
 {
-	id_indices = cmesh->id_indices;
-	id_vertices = cmesh->id_vertices;
-	id_uvs = cmesh->id_uvs;
+	mesh.id_indices = cmesh->mesh.id_indices;
+	mesh.id_vertices = cmesh->mesh.id_vertices;
+	mesh.id_uvs = cmesh->mesh.id_uvs;
 }
 
 void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
 {
 
 	// Load buffer for vertices
-	glGenBuffers(1, (GLuint*) &(id_vertices));
-	glBindBuffer(GL_ARRAY_BUFFER, id_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*num_vertices * 3, vertices, GL_STATIC_DRAW);
+	glGenBuffers(1, (GLuint*) &(mesh.id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float)*mesh.num_vertices * 3, mesh.vertices, GL_STATIC_DRAW);
 
 	// Load buffer for indices
 	if (new_mesh->HasFaces())
 	{
-		glGenBuffers(1, (GLuint*) &(id_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * num_indices, indices, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*) &(mesh.id_indices));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh.num_indices, mesh.indices, GL_STATIC_DRAW);
 	}
 
 	// Load buffer for UVs
 	if (new_mesh->HasTextureCoords(0))
 	{
-		glGenBuffers(1, (GLuint*) &(id_uvs));
-		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)id_uvs);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * num_uvs * 3, texture_coords, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*) &(mesh.id_uvs));
+		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)mesh.id_uvs);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh.num_uvs * 3, mesh.texture_coords, GL_STATIC_DRAW);
 	}
 }
 
@@ -111,5 +111,4 @@ void Component_Mesh::OnSave(JSON_Doc* filetosave)
 
 	filetosave->SetNumber("mesh", GetUniqueID());
 	filetosave->SetNumber("mesh", 0);
-
 }

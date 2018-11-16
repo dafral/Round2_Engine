@@ -15,14 +15,8 @@ struct Bounding_Volume
 	AABB bounding_box;
 };
 
-// 0..1
-class Component_Mesh : public Component
+struct Mesh
 {
-public: 
-	Component_Mesh();
-	virtual ~Component_Mesh() {};
-
-private:
 	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
@@ -34,22 +28,32 @@ private:
 	uint id_uvs = 0;
 	uint num_uvs = 0;
 	float* texture_coords = nullptr;
+};
 
+// 0..1
+class Component_Mesh : public Component
+{
+public: 
+	Component_Mesh();
+	virtual ~Component_Mesh() {};
+
+private:
+	Mesh mesh;
 	uint unique_id = 0;
 	Bounding_Volume bv;
 
 public:
-	uint GetIdVertices() { return id_vertices; };
-	uint GetNumVertices() { return num_vertices; };
-	float* GetVertices() { return vertices; };
+	uint GetIdVertices() { return mesh.id_vertices; };
+	uint GetNumVertices() { return mesh.num_vertices; };
+	float* GetVertices() { return mesh.vertices; };
 	
-	uint GetIdIndices() { return id_indices; };
-	uint GetNumIndices() { return num_indices; };
-	uint* GetIndices() { return indices; };
+	uint GetIdIndices() { return mesh.id_indices; };
+	uint GetNumIndices() { return mesh.num_indices; };
+	uint* GetIndices() { return mesh.indices; };
 
-	uint GetIdUVs() { return id_uvs; };
-	uint GetNumUVs() { return num_uvs; };
-	float* GetTexCoords() { return texture_coords; };
+	uint GetIdUVs() { return mesh.id_uvs; };
+	uint GetNumUVs() { return mesh.num_uvs; };
+	float* GetTexCoords() { return mesh.texture_coords; };
 
 	uint GetUniqueID() { return unique_id; };
 	Bounding_Volume GetBoundingVolume() { return bv; };

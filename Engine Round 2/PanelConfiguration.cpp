@@ -96,11 +96,6 @@ void PanelConfiguration::RendererConfig()
 		ImGui::Checkbox("Grid", &grid);
 		ImGui::Separator();
 
-		bool debug_draw = App->debug->IsDebugDrawActive();
-
-		if (ImGui::Checkbox("Debug Draw", &debug_draw))
-			App->debug->SetDebugDraw(debug_draw);
-
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{
 			if (depth_test) glEnable(GL_DEPTH_TEST);
