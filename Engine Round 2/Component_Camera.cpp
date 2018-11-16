@@ -102,6 +102,32 @@ bool Component_Camera::IsAABBInside(AABB &aabb)
 	return true;
 }
 
+bool Component_Camera::IsSphereInside(Sphere &sphere)
+{
+	// various distances
+	float distance;
+
+	// calculate our distances to each of the planes
+	for (int i = 0; i < 6; ++i) 
+	{
+		Plane plane = frustum.GetPlane(i);
+
+		// find the distance to this plane
+		distance = plane.normal.Dot(sphere.pos) + plane.d;
+
+		// if this distance is < -sphere.radius, we are outside
+		if (distance < -sphere.r)
+			return false;
+
+		// else if the distance is between +- radius, then we intersect
+		if ((float)fabs(distance) < sphere.r)
+			return true;
+	}
+
+	// otherwise we are fully in view
+	return true;
+}
+
 // -----------------------------------------------------------------
 
 void Component_Camera::OnSave(JSON_Doc* filetosave)

@@ -4,12 +4,8 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 
-#include "Component_Mesh.h"
-#include "Component_Material.h"
 #include "Component_Camera.h"
-#include "Component_Transform.h"
 #include "GameObject.h"
-
 #include "TextureMSAA.h"
 
 #include "glew/include/glew.h"
@@ -157,7 +153,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	App->scene->Draw();
-	DrawMeshes(false);
+	DrawGO(false);
 
 	// =============================================================
 	// Scene camera 
@@ -180,7 +176,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 		lights[i].Render();
 
 	App->scene->Draw();
-	DrawMeshes(true);
+	DrawGO(true);
 
 	return UPDATE_CONTINUE;
 }
@@ -235,47 +231,6 @@ Component_Mesh* ModuleRenderer3D::CreateComponentMesh(GameObject* my_go)
 	return cmesh;
 }
 
-void ModuleRenderer3D::DrawMeshes(bool is_scene_camera)
-{
-	for (int i = 0; i < meshes.size(); i++)
-	{
-		if (meshes[i]->my_go->GetVisible())
-		{
-			glPushMatrix();
-
-			Component_Material* texture = (Component_Material*)meshes[i]->my_go->FindComponentWithType(MATERIAL);
-			Component_Transform* trans = (Component_Transform*)meshes[i]->my_go->FindComponentWithType(TRANSFORM);
-
-			if (trans != nullptr) glMultMatrixf(trans->GetGlobalTransform().ptr());
-
-			glEnable(GL_TEXTURE_2D);
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdVertices());
-			glVertexPointer(3, GL_FLOAT, 0, NULL);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshes[i]->GetIdIndices());
-
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			glBindBuffer(GL_ARRAY_BUFFER, meshes[i]->GetIdUVs());
-			glTexCoordPointer(3, GL_FLOAT, 0, NULL);
-
-			if (texture != nullptr) glBindTexture(GL_TEXTURE_2D, texture->GetTextureId());
-			glDrawElements(GL_TRIANGLES, meshes[i]->GetNumIndices(), GL_UNSIGNED_INT, NULL);
-
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glDisable(GL_TEXTURE_2D);
-
-			if (App->debug->IsDebugDrawActive() /*&& is_scene_camera*/) DrawDebug(meshes[i]);
-
-			glPopMatrix();		
-		}
-	}
-}
-
 std::vector<Component_Mesh*>* ModuleRenderer3D::GetMeshesVector()
 {
 	return &meshes;
@@ -316,13 +271,42 @@ Component_Mesh* ModuleRenderer3D::IsMeshLoaded(Component_Mesh* new_mesh)
 	return ret;
 }
 
-void ModuleRenderer3D::DrawDebug(Component_Mesh* curr_mesh)
-{
-	float3 vertices[8];
-	curr_mesh->GetBoundingVolume().bounding_box.GetCornerPoints(vertices);
-	App->debug->DrawBox(vertices, 1.5, Green);
+// ==================================================================================
+// Draw
+// ==================================================================================
 
-	App->debug->DrawSphere(curr_mesh->GetBoundingVolume().bounding_box.CenterPoint(), curr_mesh->GetBoundingVolume().sphere.r, 1.5, Blue);
+void ModuleRenderer3D::AddGOToDraw(GameObject* go, Component_Camera* curr_camera)
+{
+	if (curr_camera == App->camera->GetSceneCamera())
+		go_scene.push_back(go);
+	else
+		go_game.push_back(go);
+}
+
+void ModuleRenderer3D::DrawGO(bool is_editor_cam)
+{
+	if (is_editor_cam)
+	{
+		std::sort(go_scene.begin(), go_scene.end());
+		go_scene.erase(std::unique(go_scene.begin(), go_scene.end()), go_scene.end());
+
+		for (int i = 0; i < go_scene.size(); i++)
+		{
+			if(go_scene[i]->GetVisible()) go_scene[i]->Draw(true);
+		}
+		go_scene.clear();
+	}
+	else
+	{
+		std::sort(go_game.begin(), go_game.end());
+		go_game.erase(std::unique(go_game.begin(), go_game.end()), go_game.end());
+
+		for (int i = 0; i < go_game.size(); i++)
+		{
+			if (go_game[i]->GetVisible()) go_game[i]->Draw(false);
+		}
+		go_game.clear();
+	}
 }
 
 

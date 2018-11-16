@@ -102,7 +102,6 @@ Component_Material* MaterialImporter::CreateComponentMaterial(GameObject* my_go)
 	return cmaterial;
 }
 
-
 void MaterialImporter::DeleteTextures()
 {
 	//if (comp_mats.size() > 0) {

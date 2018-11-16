@@ -1,6 +1,10 @@
-#pragma once
+#ifndef __MODULE_SCENE_H__
+#define __MODULE_SCENE_H__
+
 #include "Module.h"
 #include "Globals.h"
+#include "MathGeoLib/MathGeoLib.h"
+
 #include <string>
 #include <vector>
 
@@ -14,16 +18,19 @@ public:
 	~ModuleScene();
 
 	bool Start();
-	update_status Update(float dt);
+	update_status PreUpdate(float dt);
 	bool CleanUp();
 
 	void Draw();
 	GameObject* CreateGameObject(std::string name, GameObject* parent);
 	GameObject* GetGOByUniqueID(uint uid) const;
+	void RayCollision(LineSegment ray);
 
 public:	
 
 	GameObject* root_node = nullptr;
 	std::vector<GameObject*> gameobjects;
 };
+
+#endif
 

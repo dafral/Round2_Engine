@@ -10,6 +10,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
+#include "ModuleOctree.h"
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
 #include "SceneImporter.h"
@@ -35,6 +36,7 @@ public:
 	MaterialImporter* material_importer;
 	MeshImporter* mesh_importer;
 	SceneImporter* scene_importer;
+	ModuleOctree* octree;
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
 	ModuleResources* resources;

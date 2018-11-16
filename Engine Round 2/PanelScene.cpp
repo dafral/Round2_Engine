@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "Module.h"
 #include "ModuleCamera3D.h"
-#include "DebugDraw.h"
 #include "TextureMSAA.h"
 #include "glew/include/glew.h"
 
@@ -21,11 +20,6 @@ void PanelScene::Draw()
 {
 	if (ImGui::BeginDock("Scene", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
-		bool debug_draw = App->debug->IsDebugDrawActive();
-
-		if (ImGui::Checkbox("Debug Draw", &debug_draw))
-			App->debug->SetDebugDraw(debug_draw);
-
 		glEnable(GL_TEXTURE_2D);
 		if (App->camera->GetSceneTexture() != nullptr)
 		{
@@ -37,4 +31,27 @@ void PanelScene::Draw()
 	}
 
 	ImGui::EndDock();
+}
+
+void PanelScene::Update()
+{
+	SetHovered(ImGui::IsWindowHovered());
+}
+
+float2 PanelScene::GetMousePosNormalized()
+{
+	ImVec2 mouse_pos, mouse_dock_pos, window_pos;
+
+	mouse_pos = ImGui::GetMousePos();
+	window_pos = ImGui::GetWindowPos();
+
+	mouse_dock_pos.x = mouse_pos.x - window_pos.x;
+	mouse_dock_pos.y = mouse_pos.y - window_pos.y;
+
+	CONSOLELOG("x:%f, y:%f", mouse_dock_pos.x, mouse_dock_pos.y);
+
+	float2 normalized_pos = { mouse_dock_pos.x, mouse_dock_pos.y };
+	normalized_pos = normalized_pos.Normalized();
+
+	return normalized_pos;
 }

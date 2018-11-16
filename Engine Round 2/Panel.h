@@ -13,12 +13,13 @@ public:
 	void Init();
 	void CleanUp();
 	bool isActive();
-
 	void virtual Draw() {};
 
 	bool* getActive() { return &active; };
 	void switchActive() { active != active; };
+	void SetHovered(bool new_hovered) { hovered = new_hovered; };
 
+	bool hovered;
 	bool active;
 };
 

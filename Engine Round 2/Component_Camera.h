@@ -29,6 +29,7 @@ public:
 	// -------------------------------------------
 
 	bool IsAABBInside(AABB &aabb);
+	bool IsSphereInside(Sphere &sphere);
 	void OnSave(JSON_Doc* filetosave);
 
 private:

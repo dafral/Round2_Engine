@@ -24,7 +24,7 @@ void PanelProperties::Draw()
 	if (ImGui::BeginDock("Properties", NULL))
 	{
 		GameObject* go = App->editor->hierarchy->GetSelectedGO();
-
+		
 		if (active && go != nullptr)
 		{
 			Component_Transform* ctrans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
@@ -53,7 +53,11 @@ void PanelProperties::GOInfo(GameObject* go)
 	ImGui::Separator();
 
 	if (ImGui::Checkbox("Static", &is_static))
+	{
+		App->octree->CleanUp();
 		go->SetStatic(is_static);
+		App->octree->StartOctree();
+	}
 
 	ImGui::SameLine();
 

@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "PanelConfiguration.h"
-
+#include "DebugDraw.h"
 #include "glew/include/glew.h"
 
 PanelConfiguration::PanelConfiguration(bool active = true) : Panel(active)
@@ -96,6 +96,11 @@ void PanelConfiguration::RendererConfig()
 		ImGui::Checkbox("Grid", &grid);
 		ImGui::Separator();
 
+		bool debug_draw = App->debug->IsDebugDrawActive();
+
+		if (ImGui::Checkbox("Debug Draw", &debug_draw))
+			App->debug->SetDebugDraw(debug_draw);
+
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{
 			if (depth_test) glEnable(GL_DEPTH_TEST);
@@ -113,12 +118,6 @@ void PanelConfiguration::RendererConfig()
 			if (lighting) glEnable(GL_LIGHTING);
 			else glDisable(GL_LIGHTING);
 		}
-
-		//if (ImGui::Checkbox("Color Material", &color_material))
-		//{
-		//	if (color_material) glEnable(GL_COLOR_MATERIAL);
-		//	else glDisable(GL_COLOR_MATERIAL);
-		//}
 
 		if (ImGui::Checkbox("Texture 2D", &texture_2d))
 		{

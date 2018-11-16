@@ -4,6 +4,8 @@
 #include "Component_Camera.h"
 #include "Component_Transform.h"
 #include "Color.h"
+#include "Panel.h"
+#include "PanelScene.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -34,6 +36,8 @@ bool ModuleCamera3D::CleanUp()
 
 update_status ModuleCamera3D::Update(float dt)
 {
+	// Movement ------------------------------------
+
 	Component_Transform* trans = (Component_Transform*)scene_camera->my_go->FindComponentWithType(TRANSFORM);
 
 	Move(trans, dt);
@@ -42,6 +46,21 @@ update_status ModuleCamera3D::Update(float dt)
 		Rotate(trans, dt);
 
 	if (App->debug->IsDebugDrawActive()) DrawAllFrustums();
+
+	// Mouse picking -------------------------------
+
+	/*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->editor->scene->IsHovered())
+	{
+		LineSegment mouse_ray;
+		float2 mouse_pos_norm = App->editor->scene->GetMousePosNormalized();
+
+		if (mouse_pos_norm.x > -1 && mouse_pos_norm.x < 1)
+			if (mouse_pos_norm.y > -1 && mouse_pos_norm.y < 1)
+				mouse_ray = scene_camera->GetFrustum().UnProjectLineSegment(mouse_pos_norm.x, mouse_pos_norm.y);
+
+		if (mouse_ray.Length() != 0)
+			App->scene->RayCollision(mouse_ray);
+	}*/
 
 	return UPDATE_CONTINUE;
 }

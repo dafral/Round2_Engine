@@ -162,6 +162,7 @@
     <ClInclude Include="ModuleCamera3D.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="ModuleJSON.h" />
+    <ClInclude Include="ModuleOctree.h" />
     <ClInclude Include="ModuleRenderer3D.h" />
     <ClInclude Include="ModuleResources.h" />
     <ClInclude Include="myPrimitives.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleJSON.cpp" />
+    <ClCompile Include="ModuleOctree.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleResources.cpp" />
     <ClCompile Include="ModuleScene.cpp" />

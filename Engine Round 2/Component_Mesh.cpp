@@ -12,7 +12,7 @@
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
 
-Component_Mesh::Component_Mesh() : Component(MATERIAL)
+Component_Mesh::Component_Mesh() : Component(MESH)
 {
 	unique_id = pcg32_random_r(&App->rng);
 }
