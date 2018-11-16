@@ -33,7 +33,7 @@ void PanelTime::Draw()
 		}
 		ImGui::SameLine();
 
-		ImGui::Text("%.2f", App->scene->ReadTimer());
+		ImGui::Text("%.2f seconds", App->scene->ReadTimer());
 
 		ImGui::End();
 	}

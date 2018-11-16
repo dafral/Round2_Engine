@@ -42,6 +42,7 @@ public:
 
 	Timer game_clock;
 	SceneState state;
+	SceneState prev_tick_state;
 	float last_game_frame_time = 0.f;
 	float game_dt = 0.f;
 };

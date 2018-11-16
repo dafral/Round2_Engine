@@ -51,7 +51,14 @@ float Timer::ReadSec() const
 	}
 	else
 	{
-		return (float)(stopped_at - started_at) / 1000;
+		if (paused)
+		{
+			return (float)(paused_at - started_at) / 1000;
+		}
+		else
+		{
+			return (float)(stopped_at - started_at) / 1000;
+		}
 	}
 }
 
@@ -59,6 +66,7 @@ void Timer::PauseOn()
 {
 	if (paused == false)
 	{
+		running = false;
 		paused_at = SDL_GetTicks();
 		paused = true;
 	}
@@ -68,6 +76,7 @@ void Timer::PauseOff()
 {
 	if (paused == true)
 	{
+		running = true;
 		started_at += (SDL_GetTicks() - paused_at);
 		last_read += (SDL_GetTicks() - paused_at);
 
