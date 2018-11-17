@@ -18,8 +18,11 @@ public:
 	bool SaveFile(const char* path, const char* file_content, const char* name, const char* extension, int size);
 	void DeleteFilesInPath(const char* path);
 
-	void CopyFileTo(const char * file, const char * target, std::string* new_path);
+	void CopyFileTo(const char * file, const char * target);
 	void GetFilesInPath(std::vector<std::string>& paths, const char * path, const char * extension = nullptr);
+
+	std::string GetExtension(const char* path);
+
 
 	std::string assets_path;
 	std::string scene_path;

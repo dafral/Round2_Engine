@@ -131,9 +131,11 @@ void SceneImporter::LoadScene(const char* path)
 			case Component_Type::MATERIAL:
 			{
 				uint material_uniqueid = doc->GetNumber("material");
+				std::string material_path = App->filesystem->library_material_path.c_str();
+				material_path += std::to_string(material_uniqueid);
+				material_path += ".dds";
 
-				Component_Material* material = new Component_Material();
-			//	App->material_importer->Load(material_uniqueid);
+				App->material_importer->Import(material_path.c_str(), go);
 				break;
 			}
 			case Component_Type::CAMERA:
