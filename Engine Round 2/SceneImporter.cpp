@@ -80,6 +80,7 @@ void SceneImporter::LoadScene(const char* path)
 				GameObject* go = App->scene->CreateGameObject(name, go_parent);
 
 				go_parent->AddChildren(go);
+				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
 			}
@@ -134,12 +135,13 @@ void SceneImporter::LoadScene(const char* path)
 				float near_plane = doc->GetNumber("near");
 				float far_plane = doc->GetNumber("far");
 
-				Component_Camera* cam = new Component_Camera();
+				Component_Camera* cam = new Component_Camera();				
 				cam->SetFOV(vertical_fov);
 				cam->SetAspectRatio(aspect_ratio);
 				cam->SetPlanes(near_plane, far_plane);
 
 				go->AddComponent(cam);
+				CONSOLELOG("%d", cam->my_go->GetUniqueID());
 				break;
 			}
 			}

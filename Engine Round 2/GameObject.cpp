@@ -87,8 +87,11 @@ void GameObject::AddChildren(GameObject* children)
 
 void GameObject::AddComponent(Component* component)
 {
-	if (component != nullptr)
+	if (component != nullptr) 
+	{
 		components.push_back(component);
+		component->my_go = this;
+	}
 }
 
 Component* GameObject::FindComponentWithType(Component_Type type)
@@ -184,7 +187,4 @@ void GameObject::OnSave(JSON_Doc* filetosave)
 
 
 };
-
-void GameObject::OnLoad(JSON_Doc* config)
-{};
 
