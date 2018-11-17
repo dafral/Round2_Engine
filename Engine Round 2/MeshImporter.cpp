@@ -164,10 +164,8 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 {
 	bool ret = true;
-	mesh->my_go->name;
-	std::string name = mesh->my_go->name;
-	name += mesh->GetUniqueID();
-
+	std::string name =	std::to_string(mesh->GetUniqueID()).c_str();
+	
 	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
 	uint size = sizeof(double) + sizeof(ranges) +
 		sizeof(uint) * mesh->GetNumIndices() +

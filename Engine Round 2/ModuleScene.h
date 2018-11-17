@@ -35,6 +35,9 @@ public:
 	GameObject* GetGOByUniqueID(uint uid) const;
 	void RayCollision(LineSegment ray);
 
+	GameObject* GetRootNode() { return root_node; };
+	void SetRootNode(GameObject* new_root) { root_node = new_root; };
+
 	// Time management ---------------
 	void Play();
 	void Pause();

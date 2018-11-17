@@ -76,6 +76,9 @@ void SceneImporter::LoadScene(const char* path)
 				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
+
+				if (doc->GetBool("root"))
+					App->scene->SetRootNode(go);
 			}
 			else
 			{
@@ -118,9 +121,11 @@ void SceneImporter::LoadScene(const char* path)
 			case Component_Type::MESH:
 			{
 				uint mesh_uniqueid = doc->GetNumber("mesh");
+				std::string mesh_path = App->filesystem->library_mesh_path.c_str();
+				mesh_path += std::to_string(mesh_uniqueid);
+				mesh_path += ".mymesh";
 
-				Component_Mesh* mesh = new Component_Mesh();
-				//App->mesh_importer->Load(mesh_uniqueid);
+				go->AddComponent(App->mesh_importer->Load(mesh_path.c_str()));
 				break;
 			}
 			case Component_Type::MATERIAL:

@@ -162,8 +162,14 @@ void GameObject::OnSave(JSON_Doc* filetosave)
 	filetosave->MoveToSectionFromArray("GameObjects", filetosave->GetArraySize("GameObjects") - 1);
 	filetosave->SetNumber("unique ID", unique_id);
 	filetosave->SetString("name", name.c_str());
+	
+	filetosave->SetBool("root", false);
+	if(this == App->scene->GetRootNode())
+		filetosave->SetBool("root", true);
+	
 	filetosave->SetBool("visible", is_visible);
 	filetosave->SetBool("is_static", is_static);
+	
 	if (parent != nullptr)
 		filetosave->SetNumber("parent", parent->GetUniqueID());
 	else
@@ -176,12 +182,6 @@ void GameObject::OnSave(JSON_Doc* filetosave)
 		(*c)->OnSave(filetosave);
 		filetosave->MoveToFirstObject();
 	}
-
-	//Save childs
-	//for (std::vector<GameObject*>::iterator go = childrens.begin(); go != childrens.end(); ++go)
-	//{
-	//	(*go)->OnSave(filetosave);
-	//}
 
 	filetosave->MoveToFirstObject();
 

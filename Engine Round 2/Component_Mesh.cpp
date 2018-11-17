@@ -183,5 +183,4 @@ void Component_Mesh::OnSave(JSON_Doc* filetosave)
 	filetosave->SetNumber("owner",my_go->GetUniqueID());
 
 	filetosave->SetNumber("mesh", GetUniqueID());
-	filetosave->SetNumber("mesh", 0);
 }
