@@ -25,7 +25,7 @@ void PanelProperties::Draw()
 	{
 		GameObject* go = App->editor->hierarchy->GetSelectedGO();
 		
-		if (active && go != nullptr)
+		if (isActive() && go != nullptr)
 		{
 			Component_Transform* ctrans = (Component_Transform*)go->FindComponentWithType(TRANSFORM);
 			Component_Mesh* cmesh = (Component_Mesh*)go->FindComponentWithType(MESH);

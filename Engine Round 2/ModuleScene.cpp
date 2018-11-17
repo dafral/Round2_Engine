@@ -1,7 +1,9 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 #include "ModuleCamera3D.h"
+#include "PanelHierarchy.h"
 #include "myPrimitives.h"
 #include "Component.h"
 #include "Component_Transform.h"
@@ -123,52 +125,6 @@ GameObject* ModuleScene::GetGOByUniqueID(uint uid) const
 	return ret;
 }
 
-// This fcn test if a given ray collides with all the Game Objects of the scene.
-void ModuleScene::RayCollision(LineSegment ray)
-{
-	/*GameObject* selected = nullptr;
-	std::vector<GameObject*> possible_collisions;
-
-	App->octree->RayIntersections(ray, possible_collisions);
-
-	for (uint i = 0; i < possible_collisions.size(); i++)
-	{
-		Component_Mesh* mesh = (Component_Mesh*)possible_collisions[i]->FindComponent(COMPONENT_MESH);
-
-		if (mesh != nullptr)
-		{
-			Component_Transform* trans = (Component_Transform*)possible_collisions[i]->FindComponent(COMPONENT_TRANSFORM);
-
-			LineSegment local_ray(ray);
-			local_ray.Transform(trans->GetTransform().Inverted());
-
-			for (uint j = 0; j < mesh->num_indices - 9; j += 3)
-			{
-				Triangle triangle;
-
-				triangle.a.Set(mesh->vertices[mesh->indices[j]], mesh->vertices[mesh->indices[j + 1]], mesh->vertices[mesh->indices[j + 2]]);
-				triangle.b.Set(mesh->vertices[mesh->indices[j + 3]], mesh->vertices[mesh->indices[j + 4]], mesh->vertices[mesh->indices[j + 5]]);
-				triangle.c.Set(mesh->vertices[mesh->indices[j + 6]], mesh->vertices[mesh->indices[j + 7]], mesh->vertices[mesh->indices[j + 8]]);
-
-				float dist;
-				float3 hit_point;
-
-				if (local_ray.Intersects(triangle, &dist, &hit_point))
-				{
-					if (dist < distance)
-					{
-						distance = dist;
-						selected = possible_collisions[i];
-					}
-				}
-			}
-		}
-	}
-
-	App->imgui->hierarchy->go_selected = selected;
-	distance = FLOAT_INF;*/
-}
-
 // ===========================================================================
 // Time Management
 // ===========================================================================
@@ -217,5 +173,70 @@ void ModuleScene::Tick()
 float ModuleScene::ReadTimer() const
 {
 	return game_clock.ReadSec();
+}
+
+// ===========================================================================
+// Mouse Picking
+// ===========================================================================
+
+void ModuleScene::RayCast(LineSegment ray)
+{
+	// Check collisions --------------------------------
+	float distance = FLOAT_INF;
+	GameObject* selected = nullptr;
+	std::vector<GameObject*> possible_collisions;
+	RayIntersections(ray, possible_collisions);
+
+	for (uint i = 0; i < possible_collisions.size(); i++)
+	{
+		Component_Mesh* mesh = (Component_Mesh*)possible_collisions[i]->FindComponentWithType(MESH);
+
+		if (mesh != nullptr)
+		{
+			Component_Transform* trans = (Component_Transform*)possible_collisions[i]->FindComponentWithType(TRANSFORM);
+
+			LineSegment local_ray(ray);
+			local_ray.Transform(trans->GetGlobalTransform().Inverted());
+
+			for (uint j = 0; j < mesh->GetNumIndices() - 9; j += 3)
+			{
+				Triangle triangle;
+
+				triangle.a.Set(mesh->GetVertices()[mesh->GetIndices()[j]], mesh->GetVertices()[mesh->GetIndices()[j + 1]], mesh->GetVertices()[mesh->GetIndices()[j + 2]]);
+				triangle.b.Set(mesh->GetVertices()[mesh->GetIndices()[j + 3]], mesh->GetVertices()[mesh->GetIndices()[j + 4]], mesh->GetVertices()[mesh->GetIndices()[j + 5]]);
+				triangle.c.Set(mesh->GetVertices()[mesh->GetIndices()[j + 6]], mesh->GetVertices()[mesh->GetIndices()[j + 7]], mesh->GetVertices()[mesh->GetIndices()[j + 8]]);
+
+				float dist;
+				float3 hit_point;
+
+				if (local_ray.Intersects(triangle, &dist, &hit_point))
+				{
+					if (dist < distance)
+					{
+						distance = dist;
+						selected = possible_collisions[i];
+					}
+				}
+			}
+		}
+	}
+
+	App->editor->hierarchy->SetSelectedGO(selected);
+	distance = FLOAT_INF;
+}
+
+void ModuleScene::RayIntersections(LineSegment ray, std::vector<GameObject*> &go_collided)
+{
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		Component_Mesh* mesh = (Component_Mesh*)gameobjects[i]->FindComponentWithType(MESH);
+
+		if (mesh != nullptr && ray.Intersects(mesh->GetBoundingVolume().bounding_box))
+			go_collided.push_back(gameobjects[i]);
+	}
+
+	// Erase duplicates
+	std::sort(go_collided.begin(), go_collided.end());
+	go_collided.erase(std::unique(go_collided.begin(), go_collided.end()), go_collided.end());
 }
 

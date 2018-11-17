@@ -12,9 +12,12 @@ public:
 
 	void Init();
 	void Draw();
-	void Update();
 
 	float2 GetMousePosNormalized();
+
+private:
+	ImVec2 window_pos = { 0, 0 };
+	ImVec2 region = { 0, 0 };
 };
 
 #endif // !__PANEL_H__

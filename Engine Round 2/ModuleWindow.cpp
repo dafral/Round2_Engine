@@ -165,3 +165,19 @@ void ModuleWindow::SwitchResizable()
 {
 	resizable = !resizable;
 }
+
+int ModuleWindow::GetWidth()
+{
+	int w;
+	SDL_GetWindowSize(window, &w, nullptr);
+
+	return w;
+}
+
+int ModuleWindow::GetHeight()
+{
+	int h;
+	SDL_GetWindowSize(window, nullptr, &h);
+
+	return h;
+}

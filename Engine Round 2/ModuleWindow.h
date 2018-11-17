@@ -34,6 +34,8 @@ public:
 	bool GetBordered();
 	bool GetFullscreen();
 	bool GetResizable();
+	int GetWidth();
+	int GetHeight();
 
 	void SwitchBordered();
 	void SwitchFullscreen();

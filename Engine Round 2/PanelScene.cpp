@@ -12,14 +12,16 @@ PanelScene::~PanelScene()
 {}
 
 void PanelScene::Init()
-{
-	ImGui::SetNextWindowPos(ImVec2(0, 12));
-}
+{}
 
 void PanelScene::Draw()
 {
 	if (ImGui::BeginDock("Scene", NULL, ImGuiWindowFlags_NoScrollbar))
 	{
+		SetHovered(ImGui::IsWindowHovered());
+		window_pos = { ImGui::GetWindowPos().x + ImGui::GetCursorPos().x, ImGui::GetWindowPos().y + ImGui::GetCursorPos().y };
+		region = ImGui::GetContentRegionAvail();
+
 		glEnable(GL_TEXTURE_2D);
 		if (App->camera->GetSceneTexture() != nullptr)
 		{
@@ -33,25 +35,25 @@ void PanelScene::Draw()
 	ImGui::EndDock();
 }
 
-void PanelScene::Update()
-{
-	SetHovered(ImGui::IsWindowHovered());
-}
-
 float2 PanelScene::GetMousePosNormalized()
 {
-	ImVec2 mouse_pos, mouse_dock_pos, window_pos;
+	ImVec2 mouse_pos = { ImGui::GetMousePos().x - window_pos.x - 1,  // 1 = margin
+		                 ImGui::GetMousePos().y - window_pos.y - 1};
 
-	mouse_pos = ImGui::GetMousePos();
-	window_pos = ImGui::GetWindowPos();
+	ImVec2 mouse_normalized;
 
-	mouse_dock_pos.x = mouse_pos.x - window_pos.x;
-	mouse_dock_pos.y = mouse_pos.y - window_pos.y;
+	mouse_normalized.x = mouse_pos.x / region.x;
+	mouse_normalized.y = mouse_pos.y / region.y;
 
-	CONSOLELOG("x:%f, y:%f", mouse_dock_pos.x, mouse_dock_pos.y);
+	mouse_normalized.x -= 0.5;
+	mouse_normalized.x *= 2;
 
-	float2 normalized_pos = { mouse_dock_pos.x, mouse_dock_pos.y };
-	normalized_pos = normalized_pos.Normalized();
+	mouse_normalized.y -= 0.5;
+	mouse_normalized.y *= 2;
 
-	return normalized_pos;
+	mouse_normalized.y *= -1;
+
+	CONSOLELOG("x:%f, y:%f", mouse_pos.x, mouse_pos.y);
+	
+	return { mouse_normalized.x, mouse_normalized.y };
 }

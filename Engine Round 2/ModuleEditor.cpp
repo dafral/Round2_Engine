@@ -28,7 +28,6 @@ bool ModuleEditor::Init()
 {
 	ImGui_ImplSdl_Init(App->window->window);
 	ImGui::InitDock();
-	/*ImGui::StyleColorsDark();*/
 
 	panels.push_back(scene = new PanelScene(true));
 	panels.push_back(configuration = new PanelConfiguration(true));
@@ -52,6 +51,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {	
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -76,22 +76,22 @@ update_status ModuleEditor::Update(float dt)
 
 		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::Checkbox("Configuration", App->editor->configuration->getActive()))
+			if (ImGui::Checkbox("Configuration", App->editor->configuration->isActive()))
 			{
 				App->editor->configuration->switchActive();
 			}
 			
-			if (ImGui::Checkbox("Properties", App->editor->properties->getActive()))
+			if (ImGui::Checkbox("Properties", App->editor->properties->isActive()))
 			{
 				App->editor->properties->switchActive();
 			}
 
-			if (ImGui::Checkbox("Console", App->editor->console->getActive()))
+			if (ImGui::Checkbox("Console", App->editor->console->isActive()))
 			{
 				App->editor->console->switchActive();
 			}
 
-			if (ImGui::Checkbox("Hierarchy", App->editor->hierarchy->getActive()))
+			if (ImGui::Checkbox("Hierarchy", App->editor->hierarchy->isActive()))
 			{
 				App->editor->console->switchActive();
 			}
@@ -169,7 +169,7 @@ void ModuleEditor::Draw()
 
 		for (std::vector<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
 		{
-			if ((*it)->active == true)
+			if ((*it)->isActive())
 			{ 
 				Panel* panel = (*it);
 				panel->Draw();

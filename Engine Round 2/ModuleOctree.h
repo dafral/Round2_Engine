@@ -21,7 +21,6 @@ public:
 	void Draw();
 	void CleanUp();
 	void FrustumIntersections(Component_Camera* curr_camera);
-	void CollectIntersections(LineSegment ray, std::vector<GameObject*> &go_collided);
 
 	void DivideNode();
 	const bool IsFull() { return objects_in_node.size() > MAX_OBJ_IN_NODE; };
@@ -47,7 +46,6 @@ public:
 	void AddStatic(GameObject* static_go);
 	void RemoveStatic(GameObject* static_go);
 	void StartOctree();
-	void RayIntersections(LineSegment ray, std::vector<GameObject*> &go_collided);
 
 	bool CleanUp();
 

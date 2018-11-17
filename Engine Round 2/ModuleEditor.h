@@ -17,7 +17,6 @@ class PanelTime;
 class ModuleEditor : public Module
 {
 public:
-
 	ModuleEditor(Application* app, bool start_enabled = true);
 	~ModuleEditor();
 

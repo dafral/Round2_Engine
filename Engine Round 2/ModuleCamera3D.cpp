@@ -49,18 +49,15 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Mouse picking -------------------------------
 
-	/*if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->editor->scene->IsHovered())
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->editor->scene->isHovered())
 	{
 		LineSegment mouse_ray;
 		float2 mouse_pos_norm = App->editor->scene->GetMousePosNormalized();
-
-		if (mouse_pos_norm.x > -1 && mouse_pos_norm.x < 1)
-			if (mouse_pos_norm.y > -1 && mouse_pos_norm.y < 1)
-				mouse_ray = scene_camera->GetFrustum().UnProjectLineSegment(mouse_pos_norm.x, mouse_pos_norm.y);
+		mouse_ray = scene_camera->GetFrustum().UnProjectLineSegment(mouse_pos_norm.x, mouse_pos_norm.y);
 
 		if (mouse_ray.Length() != 0)
-			App->scene->RayCollision(mouse_ray);
-	}*/
+			App->scene->RayCast(mouse_ray);
+	}
 
 	return UPDATE_CONTINUE;
 }

@@ -33,7 +33,8 @@ public:
 	void Draw();
 	GameObject* CreateGameObject(std::string name, GameObject* parent);
 	GameObject* GetGOByUniqueID(uint uid) const;
-	void RayCollision(LineSegment ray);
+	void RayCast(LineSegment ray);
+	void RayIntersections(LineSegment ray, std::vector<GameObject*> &go_collided);
 
 	// Time management ---------------
 	void Play();

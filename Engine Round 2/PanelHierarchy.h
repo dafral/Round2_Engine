@@ -15,6 +15,7 @@ public:
 	void Init();
 	void Draw();
 	GameObject* GetSelectedGO() { return go_selected; };
+	void SetSelectedGO(GameObject* go) { go_selected = go; };
 
 private:
 	void CreateHierarchy(GameObject* curr_go);
