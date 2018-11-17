@@ -63,6 +63,11 @@ public:
 	void SetIDs(Component_Mesh* cmesh);
 	void LoadBuffers(aiMesh* new_mesh);
 
+	//Own format
+	void LoadToMemory();
+	void SetFaces(float* vertices, uint num_vertices, uint* indices, uint num_indices);
+	void SetUvs(float* uvs, uint num_uvs);
+
 	void OnSave(JSON_Doc* filetosave);
 };
 

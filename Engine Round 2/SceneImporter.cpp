@@ -54,7 +54,10 @@ void SceneImporter::LoadScene(const char* path)
 	{
 		//reset scene
 		App->scene->CleanUp();
-		App->scene->Start();
+
+		App->scene->state = EDITOR;
+		App->scene->game_clock.Start();
+		App->scene->game_clock.Stop();
 
 		for (int i = 0; i < doc->GetArraySize("GameObjects"); ++i)
 		{
@@ -62,7 +65,7 @@ void SceneImporter::LoadScene(const char* path)
 
 			uint parent = doc->GetNumber("parent");
 			std::string name = doc->GetString("name");
-			uint id = doc->GetNumber("UID");
+			uint id = doc->GetNumber("unique ID");
 			bool visible = doc->GetBool("visible");
 			bool is_static = doc->GetBool("is_static");
 
@@ -141,6 +144,12 @@ void SceneImporter::LoadScene(const char* path)
 				cam->SetPlanes(near_plane, far_plane);
 
 				go->AddComponent(cam);
+
+				if (doc->GetBool("game_camera"))
+					App->camera->SetGameCamera(cam);
+				if (doc->GetBool("scene_camera"))
+					App->camera->SetSceneCamera(cam);
+
 				CONSOLELOG("%d", cam->my_go->GetUniqueID());
 				break;
 			}

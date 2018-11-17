@@ -100,6 +100,79 @@ void Component_Mesh::LoadBuffers(aiMesh* new_mesh)
 }
 
 // -------------------------------------------------------------
+//Own Format
+
+void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_indices, uint n_num_indices)
+{
+	if (n_num_vertices > 0)
+	{
+		// Vertices
+		mesh.vertices = new float[n_num_vertices * 3];
+		memcpy(mesh.vertices, n_vertices, sizeof(float) * n_num_vertices * 3);
+		mesh.num_vertices = n_num_vertices;
+
+		if (n_num_indices > 0)
+		{
+			// Indices
+			mesh.num_indices = n_num_indices;
+			mesh.indices = new uint[n_num_indices];
+			if (n_num_indices != 3)
+			{
+				CONSOLELOG("WARNING, geometry face with != 3 indices!");
+			}
+			else
+			{
+				memcpy(mesh.indices, n_indices, sizeof(uint) * n_num_indices);
+			}
+		}
+	}
+}
+
+void Component_Mesh::SetUvs(float* n_uvs, uint n_num_uvs)
+{
+	if (n_num_uvs > 0)
+	{
+		// UVs
+		mesh.texture_coords = new float[n_num_uvs * 3];
+		memcpy(mesh.texture_coords, n_uvs, sizeof(float) * n_num_uvs * 3);
+		mesh.num_uvs = n_num_uvs;
+	}
+}
+
+void Component_Mesh::LoadToMemory()
+{
+	if (mesh.id_vertices == 0 && mesh.vertices != nullptr)
+	{
+		uint id = 0;
+
+		glGenBuffers(1, (GLuint*)&(id));
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh.num_vertices * 3, mesh.vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	if (mesh.id_indices == 0 && mesh.indices != nullptr)
+	{
+		uint id = 0;
+
+		glGenBuffers(1, (GLuint*)&(id));
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh.num_indices, mesh.indices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	if (mesh.id_uvs == 0 && mesh.texture_coords != nullptr)
+	{
+		uint id = 0;
+
+		glGenBuffers(1, (GLuint*)&(id));
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh.num_uvs * 3, mesh.texture_coords, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+}
+
+// -------------------------------------------------------------
 
 void Component_Mesh::OnSave(JSON_Doc* filetosave)
 {
