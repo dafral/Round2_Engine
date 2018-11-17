@@ -35,7 +35,13 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	CONSOLELOG("Unloading Intro scene");
+	for (int i = gameobjects.size() - 1; i >= 0; i--)
+	{
+		RELEASE(gameobjects[i]);
+		gameobjects.pop_back();
+	}
+
+	CONSOLELOG("Unloading Intro scene %d", gameobjects.size());
 
 	return true;
 }

@@ -36,6 +36,9 @@ public:
 	void RayCast(LineSegment ray);
 	void RayIntersections(LineSegment ray, std::vector<GameObject*> &go_collided);
 
+	GameObject* GetRootNode() { return root_node; };
+	void SetRootNode(GameObject* new_root) { root_node = new_root; };
+
 	// Time management ---------------
 	void Play();
 	void Pause();

@@ -146,14 +146,14 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	// Create mesh --------------
 	Component_Mesh* new_mesh = new Component_Mesh;
 
-	/*new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
+	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
 	new_mesh->LoadToMemory();
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 
-	CONSOLELOG("Loading mesh with %d vertices", new_mesh->num_vertices * 3);
-	CONSOLELOG("Loading mesh with %d indices", new_mesh->num_indices);
-*/
+	CONSOLELOG("Loading mesh with %d vertices", new_mesh->GetNumVertices() * 3);
+	CONSOLELOG("Loading mesh with %d indices", new_mesh->GetNumIndices());
+
 	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
 	RELEASE_ARRAY(uvs);
@@ -164,9 +164,8 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 {
 	bool ret = true;
-	mesh->my_go->name;
-	std::string name = mesh->my_go->name;
-
+	std::string name =	std::to_string(mesh->GetUniqueID()).c_str();
+	
 	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
 	uint size = sizeof(double) + sizeof(ranges) +
 		sizeof(uint) * mesh->GetNumIndices() +

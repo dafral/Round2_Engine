@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENTMATERIAL_H__
+#define __COMPONENTMATERIAL_H__
+
 #include "Component.h"
 #include "Globals.h"
 #include "ModuleJSON.h"
@@ -36,3 +38,5 @@ private:
 	ImTextureID snap = nullptr;
 	uint unique_id = 0;
 };
+
+#endif

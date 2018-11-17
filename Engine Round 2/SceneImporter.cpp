@@ -54,7 +54,10 @@ void SceneImporter::LoadScene(const char* path)
 	{
 		//reset scene
 		App->scene->CleanUp();
-		App->scene->Start();
+
+		App->scene->state = EDITOR;
+		App->scene->game_clock.Start();
+		App->scene->game_clock.Stop();
 
 		for (int i = 0; i < doc->GetArraySize("GameObjects"); ++i)
 		{
@@ -62,7 +65,7 @@ void SceneImporter::LoadScene(const char* path)
 
 			uint parent = doc->GetNumber("parent");
 			std::string name = doc->GetString("name");
-			uint id = doc->GetNumber("UID");
+			uint id = doc->GetNumber("unique ID");
 			bool visible = doc->GetBool("visible");
 			bool is_static = doc->GetBool("is_static");
 
@@ -73,6 +76,9 @@ void SceneImporter::LoadScene(const char* path)
 				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
+
+				if (doc->GetBool("root"))
+					App->scene->SetRootNode(go);
 			}
 			else
 			{
@@ -115,9 +121,11 @@ void SceneImporter::LoadScene(const char* path)
 			case Component_Type::MESH:
 			{
 				uint mesh_uniqueid = doc->GetNumber("mesh");
+				std::string mesh_path = App->filesystem->library_mesh_path.c_str();
+				mesh_path += std::to_string(mesh_uniqueid);
+				mesh_path += ".mymesh";
 
-				Component_Mesh* mesh = new Component_Mesh();
-				//App->mesh_importer->Load(mesh_uniqueid);
+				go->AddComponent(App->mesh_importer->Load(mesh_path.c_str()));
 				break;
 			}
 			case Component_Type::MATERIAL:
@@ -141,6 +149,12 @@ void SceneImporter::LoadScene(const char* path)
 				cam->SetPlanes(near_plane, far_plane);
 
 				go->AddComponent(cam);
+
+				if (doc->GetBool("game_camera"))
+					App->camera->SetGameCamera(cam);
+				if (doc->GetBool("scene_camera"))
+					App->camera->SetSceneCamera(cam);
+
 				CONSOLELOG("%d", cam->my_go->GetUniqueID());
 				break;
 			}

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __COMPONENT_H__
+#define __COMPONENT_H__
 
 enum Component_Type 
 {
@@ -27,3 +28,5 @@ public:
 	Component_Type type;
 	GameObject* my_go;
 };
+
+#endif // !__COMPONENT_H__

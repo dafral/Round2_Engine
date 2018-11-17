@@ -1,5 +1,7 @@
+#include "Application.h"
 #include "Component_Camera.h"
 #include "GameObject.h"
+#include "ModuleCamera3D.h"
 
 #include "glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -142,4 +144,13 @@ void Component_Camera::OnSave(JSON_Doc* filetosave)
 	filetosave->SetNumber("vertical_fov", frustum.verticalFov);
 	filetosave->SetNumber("near", frustum.nearPlaneDistance);
 	filetosave->SetNumber("far", frustum.farPlaneDistance);
+
+	filetosave->SetBool("game_camera", false);
+	filetosave->SetBool("scene_camera", false);
+
+	if (this == App->camera->GetGameCamera())
+		filetosave->SetBool("game_camera", true);
+
+	if (this == App->camera->GetSceneCamera())
+		filetosave->SetBool("scene_camera", true);
 }
