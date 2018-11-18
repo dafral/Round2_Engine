@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief A conveniency file to include all files in the folder Math/. */
 
-#pragma once
+#ifndef __MGL_MATHALL_H__
+#define __MGL_MATHALL_H__
 
 #include "../MathBuildConfig.h"
 #include "MathNamespace.h"
@@ -41,3 +42,5 @@
 #include "Rect.h"
 #include "SSEMath.h"
 #include "TransformOps.h"
+
+#endif

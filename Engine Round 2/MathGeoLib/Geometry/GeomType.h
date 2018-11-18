@@ -15,7 +15,8 @@
 /** @file GeomType.h
 	@author Jukka Jylänki
 	@brief Specifies a type identifier enum for distinguishing between different geometry object types. */
-#pragma once
+#ifndef __MGL_GEOMTYPE_H__
+#define __MGL_GEOMTYPE_H__
 
 MATH_BEGIN_NAMESPACE
 
@@ -38,3 +39,5 @@ enum GeomType
 };
 
 MATH_END_NAMESPACE
+
+#endif

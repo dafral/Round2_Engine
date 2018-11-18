@@ -11,7 +11,9 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-#pragma once
+
+#ifndef __MGL_MATHTYPES_H__
+#define __MGL_MATHTYPES_H__
 
 /** @file Types.h
 	@brief Provides platform-independent fixed size types. */
@@ -121,4 +123,6 @@ STATIC_ASSERT(sizeof(s64) == 8, "Typedef for fixed-width type s64 is incorrect!"
 #define FORCE_INLINE __forceinline
 #else
 #define FORCE_INLINE inline __attribute__((always_inline))
+#endif
+
 #endif

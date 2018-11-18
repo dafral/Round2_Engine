@@ -15,7 +15,9 @@
 /** @file float4_sse.h
 	@author Jukka Jylänki
 	@brief SSE code for float4-related computations. */
-#pragma once
+
+#ifndef __MGL_FLOAT4SSE_H__
+#define __MGL_FLOAT4SSE_H__
 
 #include "../MathBuildConfig.h"
 
@@ -156,3 +158,5 @@ FORCE_INLINE __m128 vec4_safe_normalize3(__m128 vec, __m128 &outLength)
 }
 
 #endif
+
+#endif // !__MGL_FLOAT4SSE_H__

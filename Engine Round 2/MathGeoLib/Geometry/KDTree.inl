@@ -15,7 +15,9 @@
 /** @file KDTree.inl
 	@author Jukka Jylänki
 	@brief Implementation for the KDTree object. */
-#pragma once
+
+#ifndef __MGL_KDTREE_INL__
+#define __MGL_KDTREE_INL__
 
 #include "AABB.h"
 #include "OBB.h"
@@ -711,3 +713,5 @@ inline void KdTree<T>::NearestObjects(const float3 &point, Func &leafCallback)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_KDTREE_INL__

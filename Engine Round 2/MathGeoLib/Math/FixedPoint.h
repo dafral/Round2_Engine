@@ -15,7 +15,9 @@
 /** @file FixedPoint.h
 	@author Jukka Jylänki
 	@brief FixedPoint is a templatized structure for representing fixed-point decimal numbers. */
-#pragma once
+
+#ifndef __MGL_FIXEDPOINT_H__
+#define __MGL_FIXEDPOINT_H__
 
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include <iostream>
@@ -314,3 +316,5 @@ Q_DECLARE_METATYPE(FixedPoint*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

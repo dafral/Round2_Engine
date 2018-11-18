@@ -15,7 +15,8 @@
 /** @file AABB.h
 	@author Jukka Jylänki
 	@brief The Axis-Aligned Bounding Box (AABB) geometry object. */
-#pragma once
+#ifndef __MGL_AABB_H__
+#define __MGL_AABB_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -561,3 +562,5 @@ std::ostream &operator <<(std::ostream &o, const AABB &aabb);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

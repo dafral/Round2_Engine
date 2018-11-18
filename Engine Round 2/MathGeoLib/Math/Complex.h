@@ -15,7 +15,9 @@
 /** @file Complex.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_COMPLEX_H__
+#define __MGL_COMPLEX_H__
 
 MATH_BEGIN_NAMESPACE
 
@@ -65,3 +67,5 @@ Q_DECLARE_METATYPE(Complex*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

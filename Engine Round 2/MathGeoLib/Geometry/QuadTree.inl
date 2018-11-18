@@ -15,7 +15,9 @@
 /** @file QuadTree.inl
 	@author Jukka Jylänki
 	@brief Implementation for the QuadTree object. */
-#pragma once
+
+#ifndef __MGL_QUADTREE_INL__
+#define __MGL_QUADTREE_INL__
 
 #include "../Math/MathFunc.h"
 
@@ -770,3 +772,5 @@ void QuadTree<T>::DebugSanityCheckNode(Node *n)
 }
 
 MATH_END_NAMESPACE
+
+#endif

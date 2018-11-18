@@ -15,7 +15,9 @@
 /** @file Polyhedron.h
 	@author Jukka Jylänki
 	@brief The Polyhedron geometry object. */
-#pragma once
+
+#ifndef __MGL_POLYHEDRON_H__
+#define __MGL_POLYHEDRON_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -387,3 +389,5 @@ Polyhedron operator *(const Quat &q, const Polyhedron &s);
 //#endif
 
 MATH_END_NAMESPACE
+
+#endif

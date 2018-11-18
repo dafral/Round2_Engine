@@ -15,7 +15,9 @@
 /** @file SSEMath.h
 	@author Jukka Jylänki
 	@brief SIMD-enabled math helper utilities. */
-#pragma once
+
+#ifndef __MGL_SSEMATH_H__
+#define __MGL_SSEMATH_H__
 
 #include "../MathBuildConfig.h"
 #include "MathNamespace.h"
@@ -184,3 +186,5 @@ inline std::string ToString(simd4f vec)
 #endif // ~MATH_SIMD
 
 MATH_END_NAMESPACE
+
+#endif

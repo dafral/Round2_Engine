@@ -15,7 +15,8 @@
 /** @file Frustum.h
 	@author Jukka Jylänki
 	@brief The Frustum geometry object. */
-#pragma once
+#ifndef __MGL_FRUSTUM_H__
+#define __MGL_FRUSTUM_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float2.h"
@@ -440,3 +441,5 @@ std::ostream &operator <<(std::ostream &o, const Frustum &frustum);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_FRUSTUM_H__

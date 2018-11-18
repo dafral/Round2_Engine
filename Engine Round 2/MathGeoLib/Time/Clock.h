@@ -11,7 +11,9 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License. */
-#pragma once
+
+#ifndef __MGL_CLOCK_H__
+#define __MGL_CLOCK_H__
 
 /** @file Clock.h
 	@brief The Clock class. Supplies timing facilities. */
@@ -126,3 +128,5 @@ private:
 };
 
 MATH_END_NAMESPACE
+
+#endif

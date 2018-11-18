@@ -15,7 +15,9 @@
 /** @file float3.h
 	@author Jukka Jylänki
 	@brief A 3D (x,y,z) ordered tuple. */
-#pragma once
+
+#ifndef __MGL_FLOAT3_H__
+#define __MGL_FLOAT3_H__
 
 #include "../MathBuildConfig.h"
 
@@ -722,3 +724,5 @@ Q_DECLARE_METATYPE(float3*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

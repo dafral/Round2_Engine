@@ -15,7 +15,9 @@
 /** @file KdTree.h
 	@author Jukka Jylänki
 	@brief A KD-tree acceleration structure for static geometry. */
-#pragma once
+
+#ifndef __MGL_KDTREE_H__
+#define __MGL_KDTREE_H__
 
 #include "../Math/MathTypes.h"
 #include "../Math/myassert.h"
@@ -242,3 +244,5 @@ struct TriangleKdTreeRayQueryNearestHitVisitor
 MATH_END_NAMESPACE
 
 #include "KDTree.inl"
+
+#endif

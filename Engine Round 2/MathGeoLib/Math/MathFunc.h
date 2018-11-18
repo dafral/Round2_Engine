@@ -15,7 +15,9 @@
 /** @file MathFunc.h
 	@author Jukka Jylänki
 	@brief Common mathematical functions. */
-#pragma once
+
+#ifndef __MGL_MATHFUNC_H__
+#define __MGL_MATHFUNC_H__
 
 #include "myassert.h"
 #include <math.h>
@@ -512,3 +514,5 @@ FORCE_INLINE bool IsNan(long double value) { return IsNan((double)value); }
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

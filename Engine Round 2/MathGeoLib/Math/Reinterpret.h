@@ -2,7 +2,8 @@
 #include "MathNamespace.h"
 #include "../MathGeoLibFwd.h"
 
-#pragma once
+#ifndef __MGL_REINTERPRET_H__
+#define __MGL_REINTERPRET_H__
 
 MATH_BEGIN_NAMESPACE
 
@@ -50,3 +51,5 @@ FORCE_INLINE double ReinterpretAsDouble(u64 i)
 }
 
 MATH_END_NAMESPACE;
+
+#endif

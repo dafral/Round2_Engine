@@ -16,9 +16,12 @@
 	@author Jukka Jylänki
 	@brief A conveniency file to include all header files in MathGeoLib. */
 
-#pragma once
+#ifndef __MGL_MATHGEOLIB_H__
+#define __MGL_MATHGEOLIB_H__
 
 #include "Geometry/GeometryAll.h"
 #include "Math/MathAll.h"
 #include "Algorithm/Random/LCG.h"
 #include "Time/Clock.h"
+
+#endif

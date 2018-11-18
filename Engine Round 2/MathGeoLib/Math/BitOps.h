@@ -15,7 +15,9 @@
 /** @file BitOps.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_BITOPS_H__
+#define __MGL_BITOPS_H__
 
 #include "myassert.h"
 #include "../MathGeoLibFwd.h"
@@ -176,3 +178,5 @@ void ExtractBits(int pos, int bits, ResultType &out, const InputType &in)
 }
 
 MATH_END_NAMESPACE
+
+#endif

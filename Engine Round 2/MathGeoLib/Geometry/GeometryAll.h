@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief A conveniency file to include all files in the folder Geometry/. */
 
-#pragma once
+#ifndef __MGL_GEOMETRYALL_H__
+#define __MGL_GEOMETRYALL_H__
 
 #include "../MathBuildConfig.h"
 #include "../Math/MathNamespace.h"
@@ -53,3 +54,5 @@
 #include "Triangle.h"
 #include "TriangleMesh.h"
 #include "GeomType.h"
+
+#endif

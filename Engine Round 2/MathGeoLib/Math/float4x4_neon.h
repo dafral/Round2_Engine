@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief ARM NEON code for float4-related computations. */
 
-#pragma once
+#ifndef __MGL_FLOAT4X4NEON_H__
+#define __MGL_FLOAT4X4NEON_H__
 
 #ifdef MATH_SIMD
 
@@ -241,5 +242,7 @@ FORCE_INLINE void mat4x4_negate(simd4f *out, const simd4f *mat)
 	out[3] = negate_ps(mat[3]);
 #endif
 }
+
+#endif
 
 #endif

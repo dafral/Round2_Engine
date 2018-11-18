@@ -15,7 +15,9 @@
 /** @file assume.h
 	@author Jukka Jylänki
 	@brief Global compilation defines. */
-#pragma once
+
+#ifndef __MGL_ASSUME_H__
+#define __MGL_ASSUME_H__
 
 #include "../MathBuildConfig.h"
 #include "MathNamespace.h"
@@ -124,4 +126,6 @@ MATH_END_NAMESPACE
 #endif
 #define assume(x) ((void)0)
 #define mathassert(x) ((void)0)
+#endif
+
 #endif

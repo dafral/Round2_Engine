@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief ARM NEON code for float4-related computations. */
 
-#pragma once
+#ifndef __MGL_FLOAT4NEON_H__
+#define __MGL_FLOAT4NEON_H__
 
 #ifdef MATH_SIMD
 
@@ -405,3 +406,5 @@ FORCE_INLINE simd4f vec4_lerp(simd4f a, simd4f b, float t)
 }
 
 #endif // ~MATH_SIMD
+
+#endif

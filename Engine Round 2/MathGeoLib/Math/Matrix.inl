@@ -15,7 +15,9 @@
 /** @file Matrix.inl
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_MATRIX_INL__
+#define __MGL_MATRIX_INL__
 
 #include <utility>
 #include "Quat.h"
@@ -896,3 +898,5 @@ void SetMatrix3x4AffinePlaneProject(Matrix &m, float x, float y, float z, float 
 }
 
 MATH_END_NAMESPACE
+
+#endif

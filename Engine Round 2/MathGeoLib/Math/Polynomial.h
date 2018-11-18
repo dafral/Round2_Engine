@@ -15,7 +15,9 @@
 /** @file Polynomial.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_POLYNOMIAL_H__
+#define __MGL_POLYNOMIAL_H__
 
 #include "MathNamespace.h"
 
@@ -40,3 +42,5 @@ public:
 };
 
 MATH_END_NAMESPACE
+
+#endif

@@ -15,7 +15,8 @@
 /** @file LCG.h
 	@author Jukka Jylänki
 	@brief A linear congruential random number generator. */
-#pragma once
+#ifndef __MGL_LCDG___
+#define __MGL_LCDG___
 
 #include "../../MathBuildConfig.h"
 #include "../../Math/MathNamespace.h"
@@ -123,3 +124,5 @@ Q_DECLARE_METATYPE(LCG*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_LCDG___

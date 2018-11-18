@@ -15,7 +15,9 @@
 /** @file MathBuildConfig.h
 	@author Jukka Jylänki
 	@brief Specifies all build flags for the library. */
-#pragma once
+
+#ifndef __MGL_MATHBUILDCONFIG_H__
+#define __MGL_MATHBUILDCONFIG_H__
 
 // If MATH_ENABLE_NAMESPACE is defined, all math symbols are put inside a namespace.
 #define MATH_ENABLE_NAMESPACE
@@ -174,3 +176,5 @@ typedef __m128 simd4f;
 #endif
 
 #include "Math/MathTypes.h"
+
+#endif

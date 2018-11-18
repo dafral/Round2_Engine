@@ -15,7 +15,9 @@
 /** @file Triangle.h
 	@author Jukka Jylänki
 	@brief The Triangle geometry object. */
-#pragma once
+
+#ifndef __MGL_TRIANGLE_H__
+#define __MGL_TRIANGLE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -381,3 +383,5 @@ std::ostream &operator <<(std::ostream &o, const Triangle &triangle);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

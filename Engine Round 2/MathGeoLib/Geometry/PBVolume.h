@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief Implements a convex polyhedron data structure. */
 
-#pragma once
+#ifndef __MGL_PBVOLUME_H__
+#define __MGL_PBVOLUME_H__
 
 #include "../Math/float3.h"
 #include "AABB.h"
@@ -99,3 +100,5 @@ public:
 };
 
 MATH_END_NAMESPACE
+
+#endif

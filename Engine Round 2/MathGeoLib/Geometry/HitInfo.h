@@ -15,7 +15,8 @@
 /** @file HitInfo.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+#ifndef __MGL_HITINFO_H__
+#define __MGL_HITINFO_H__
 
 MATH_BEGIN_NAMESPACE
 
@@ -48,3 +49,5 @@ Q_DECLARE_METATYPE(HitInfo*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_HITINFO_H__

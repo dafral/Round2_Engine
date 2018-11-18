@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __MGL_QUADSIMD_H__
+#define __MGL_QUADSIMD_H__
 
 #include "../MathBuildConfig.h"
 
@@ -279,3 +280,5 @@ FORCE_INLINE simd4f quat_div_quat(simd4f q1, simd4f q2)
 MATH_END_NAMESPACE
 
 #endif // ~MATH_SIMD
+
+#endif // !__MGL_QUADSIMD_H__

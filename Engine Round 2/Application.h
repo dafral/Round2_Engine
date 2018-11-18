@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include "p2List.h"
 #include "Globals.h"
@@ -16,7 +17,6 @@
 #include "SceneImporter.h"
 #include "ModuleFileSystem.h"
 #include "ModuleJSON.h"
-#include "ModuleResources.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "DebugDraw.h"
@@ -39,8 +39,6 @@ public:
 	ModuleOctree* octree;
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
-	ModuleResources* resources;
-
 	DebugDraw* debug;
 	ImGuiTextBuffer consoleText; 
 	pcg32_random_t rng;
@@ -71,3 +69,5 @@ private:
 };
 
 extern Application* App;
+
+#endif // !__APPLICATION_H__

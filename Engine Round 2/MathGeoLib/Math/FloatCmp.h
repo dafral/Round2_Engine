@@ -15,7 +15,9 @@
 /** @file FloatCmp.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_FLOATCMP_H__
+#define __MGL_FLOATCMP_H__
 
 #include "MathFunc.h"
 
@@ -31,3 +33,5 @@ inline bool Equal(double a, double b, double epsilon = 1e-6)
 }
 
 MATH_END_NAMESPACE
+
+#endif

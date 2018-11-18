@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __MODULERENDERER3D_H__
+#define __MODULERENDERER3D_H__
+
 #include "Module.h"
 #include "Globals.h"
 #include "MeshImporter.h"
@@ -49,3 +51,5 @@ private:
 	std::vector<GameObject*> go_game;
 	std::vector<Component_Mesh*> meshes;
 };
+
+#endif

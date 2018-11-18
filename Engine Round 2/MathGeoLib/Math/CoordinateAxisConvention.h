@@ -15,7 +15,9 @@
 /** @file CoordinateAxisConvention.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_COORDINATEAXISCONVENTION_H__
+#define __MGL_COORDINATEAXISCONVENTION_H__
 
 #include "float3x3.h"
 #include "float3x4.h"
@@ -78,3 +80,5 @@ struct CoordinateAxisConvention
 /// is a left-handed coordinate system.
 typedef CoordinateAxisConvention<PositiveX, PositiveY, PositiveZ> XposRight_YposUp_ZposForward;
 */
+
+#endif

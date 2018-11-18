@@ -15,7 +15,8 @@
 /** @file Ray.h
 	@author Jukka Jylänki
 	@brief The Ray geometry object. */
-#pragma once
+#ifndef __MGL_RAY_H__
+#define __MGL_RAY_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -238,3 +239,5 @@ std::ostream &operator <<(std::ostream &o, const Ray &ray);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_RAY_H__

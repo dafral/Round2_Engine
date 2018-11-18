@@ -6,7 +6,8 @@
 // Read 'Programmer guide' in imgui.cpp for notes on how to setup ImGui in your codebase.
 // Get latest version at https://github.com/ocornut/imgui
 
-#pragma once
+#ifndef __IMGUI_IMGUI_H__
+#define __IMGUI_IMGUI_H__
 
 // Configuration file (edit imconfig.h or define IMGUI_USER_CONFIG to set your own filename)
 #ifdef IMGUI_USER_CONFIG
@@ -1939,4 +1940,6 @@ struct ImFont
 // Include imgui_user.h at the end of imgui.h (convenient for user to only explicitly include vanilla imgui.h)
 #ifdef IMGUI_INCLUDE_IMGUI_USER_H
 #include "imgui_user.h"
+#endif
+
 #endif

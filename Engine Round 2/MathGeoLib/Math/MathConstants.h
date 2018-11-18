@@ -19,7 +19,9 @@
 	See
 	http://www.worldwideschool.org/library/books/sci/math/MiscellaneousMathematicalConstants/toc.html
 */
-#pragma once
+
+#ifndef __MGL_MATHCONSTANTS_H__
+#define __MGL_MATHCONSTANTS_H__
 
 #include "MathTypes.h"
 #include "MathNamespace.h"
@@ -143,3 +145,5 @@ public:
 /// @endcond
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_MATHCONSTANTS_H__

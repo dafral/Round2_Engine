@@ -15,7 +15,9 @@
 /** @file Rect.h
 	@author Jukka Jylänki
 	@brief 2D integral axis-aligned rectangle, equivalent to RECT in Windows API. */
-#pragma once
+
+#ifndef __MGL_RECT_H__
+#define __MGL_RECT_H__
 
 #ifdef WIN32
 #define Polygon Polygon_unused
@@ -63,3 +65,5 @@ public:
 };
 
 MATH_END_NAMESPACE
+
+#endif

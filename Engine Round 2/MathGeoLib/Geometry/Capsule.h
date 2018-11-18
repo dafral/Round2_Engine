@@ -15,7 +15,8 @@
 /** @file Capsule.h
 	@author Jukka Jylänki
 	@brief The Capsule geometry object. */
-#pragma once
+#ifndef __MGL_CAPSULE_H__
+#define __MGL_CAPSULE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "LineSegment.h"
@@ -287,3 +288,5 @@ std::ostream &operator <<(std::ostream &o, const Capsule &capsule);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

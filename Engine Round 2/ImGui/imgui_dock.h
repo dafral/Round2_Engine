@@ -1,7 +1,8 @@
 // based on https://github.com/nem0/LumixEngine/blob/master/external/imgui/imgui_dock.h
 // modified from https://bitbucket.org/duangle/liminal/src/tip/src/liminal/imgui_dock.h
 
-#pragma once
+#ifndef __IMGUI_IMGUIDOCK_H__
+#define __IMGUI_IMGUIDOCK_H__
 
 // Forward declarations
 typedef int ImGuiWindowFlags;
@@ -27,5 +28,6 @@ IMGUI_API bool BeginDock(const char* label, bool* opened = NULL, ImGuiWindowFlag
 IMGUI_API void EndDock();
 IMGUI_API void DockDebugWindow(const char* dock_panel);
 IMGUI_API void InitDock();
-
 };
+
+#endif // !__IMGUI_IMGUIDOCK_H__

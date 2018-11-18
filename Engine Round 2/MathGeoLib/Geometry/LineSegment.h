@@ -15,7 +15,8 @@
 /** @file LineSegment.h
 	@author Jukka Jylänki
 	@brief The LineSegment geometry object. */
-#pragma once
+#ifndef __MGL_LINESEGMENT_H__
+#define __MGL_LINESEGMENT_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -245,3 +246,5 @@ std::ostream &operator <<(std::ostream &o, const LineSegment &lineSegment);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif // !__MGL_LINESEGMENT_H__

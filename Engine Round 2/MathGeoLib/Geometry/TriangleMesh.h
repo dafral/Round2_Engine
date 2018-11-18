@@ -15,7 +15,8 @@
 /** @file TriangleMesh.h
 	@author Jukka Jylänki
 	@brief The TriangleMesh geometry object. */
-#pragma once
+#ifndef __MGL_TRIANGLEMESH_H__
+#define __MGL_TRIANGLEMESH_H__
 
 #include "../MathGeoLibFwd.h"
 
@@ -75,3 +76,5 @@ private:
 };
 
 MATH_END_NAMESPACE
+
+#endif
