@@ -23,6 +23,7 @@ public:
 
 	std::string GetExtension(const char* path);
 	std::string GetNameWithoutPath(const char* path, bool delete_extension);
+	std::string GetDirectory(const char* path);
 
 
 	std::string assets_path;

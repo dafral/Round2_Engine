@@ -186,3 +186,20 @@ std::string ModuleFileSystem::GetNameWithoutPath(const char* path, bool delete_e
 
 	return filename;
 }
+
+std::string ModuleFileSystem::GetDirectory(const char* path)
+{
+	char sep = '/';
+	std::string s = path;
+
+#ifdef _WIN32
+	sep = '\\';
+#endif
+
+	size_t i = s.rfind(sep, s.length());
+	if (i != std::string::npos) {
+		return(s.substr(0, i));
+	}
+
+	return("");
+}
