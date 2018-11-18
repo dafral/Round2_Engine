@@ -114,9 +114,9 @@ void ModuleCamera3D::Zoom(int mouse_z, float dt)
 	float3 new_pos(0, 0, 0);
 
 	if (mouse_z == 1)
-		wheel_inverted ? new_pos -= scene_camera->GetFrustum().front * -speed  : new_pos -= scene_camera->GetFrustum().front * speed;
+		wheel_inverted ? new_pos -= scene_camera->GetFrustum().front * speed  : new_pos -= scene_camera->GetFrustum().front * -speed;
 	else if (mouse_z == -1)
-		wheel_inverted ? new_pos += scene_camera->GetFrustum().front * -speed : new_pos += scene_camera->GetFrustum().front * speed;
+		wheel_inverted ? new_pos += scene_camera->GetFrustum().front * speed : new_pos += scene_camera->GetFrustum().front * -speed;
 
 		scene_camera->SetFrustumPos(pos + new_pos);
 }

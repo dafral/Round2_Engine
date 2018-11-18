@@ -198,7 +198,7 @@ std::string ModuleFileSystem::GetDirectory(const char* path)
 
 	size_t i = s.rfind(sep, s.length());
 	if (i != std::string::npos) {
-		return(s.substr(0, i));
+		return(s.substr(0, i + 1));
 	}
 
 	return("");

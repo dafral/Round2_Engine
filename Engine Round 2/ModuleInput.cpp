@@ -140,14 +140,12 @@ update_status ModuleInput::PreUpdate(float dt)
 					CONSOLELOG("Dropped file: %s", full_path.c_str());
 					App->mesh_importer->ImportScene(full_path.c_str(), file_name.c_str());
 				}
-				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS") 
+				else if (extension == "png" || extension == "PNG" || extension == "dds" || extension == "DDS" || extension == "tga" || extension == "TGA")
 				{
 					CONSOLELOG("Dropped texture: %s", full_path.c_str());
 
-					if (App->editor->hierarchy->GetSelectedGO() != nullptr) {
+					if (App->editor->hierarchy->GetSelectedGO() != nullptr)
 						App->material_importer->Import(full_path.c_str(), App->editor->hierarchy->GetSelectedGO());
-						//App->resources->ImportFile(full_path.c_str());
-					}
 					else CONSOLELOG("You MUST select a GameObject to load a texture.");
 				}
 				else 

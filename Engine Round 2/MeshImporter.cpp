@@ -32,7 +32,7 @@ void MeshImporter::ImportScene(const char* full_path, const char* file_name)
 
 	if (scene != nullptr && scene->HasMeshes())
 	{
-		ImportMesh(empty_go, scene, node);
+		ImportMesh(full_path, empty_go, scene, node);
 		CONSOLELOG("Scene %s loaded.", full_path);
 	}
 	else
@@ -44,13 +44,13 @@ void MeshImporter::ImportScene(const char* full_path, const char* file_name)
 	aiReleaseImport(scene);
 }
 
-void MeshImporter::ImportMesh(GameObject* parent, const aiScene* scene, aiNode* node)
+void MeshImporter::ImportMesh(const char* full_path, GameObject* parent, const aiScene* scene, aiNode* node)
 {
 	if (node->mNumMeshes <= 0)
 	{
 		// Recursion
 		for (int i = 0; i < node->mNumChildren; i++)
-			ImportMesh(parent, scene, node->mChildren[i]);
+			ImportMesh(full_path, parent, scene, node->mChildren[i]);
 	}
 	else
 	{
@@ -87,33 +87,30 @@ void MeshImporter::ImportMesh(GameObject* parent, const aiScene* scene, aiNode* 
 			}
 
 			// Load Texture and color
-			//if (scene->HasMaterials())
-			//{
-			//	cmesh->SetMaterialIndex(new_mesh->mMaterialIndex);
+			if (scene->HasMaterials())
+			{
+				cmesh->SetMaterialIndex(new_mesh->mMaterialIndex);
 
-			//	// Material -------------------------------------------------
+				// Material -------------------------------------------------
 
-			//	aiMaterial* mat = scene->mMaterials[cmesh->GetMaterialIndex()];
-			//	aiString texture_name;
-			//	mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+				aiMaterial* mat = scene->mMaterials[cmesh->GetMaterialIndex()];
+				aiString texture_name;
+				mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);								
 
-			//	texture_name = App->loading_manager->GetFileName(texture_name.C_Str());
+				if (texture_name.length > 0)
+				{
+					std::string directory = App->filesystem->GetDirectory(full_path);
+					std::string file_name = App->filesystem->GetNameWithoutPath(texture_name.C_Str(), false);
+					directory.append(file_name.c_str());
+					App->material_importer->Import(directory.c_str(), go);
+				}
 
-			//	//Loading the texture on the mesh from the assets folder										
-			//	std::string tex_path("Assets/Textures/");
+				// Color ----------------------------------------------------
 
-			//	if (texture_name.length > 0)
-			//	{
-			//		tex_path.append(texture_name.C_Str());
-			//		App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
-			//	}
-
-			//	// Color ----------------------------------------------------
-
-			//	aiColor3D my_color;
-			//	mat->Get(AI_MATKEY_COLOR_DIFFUSE, my_color);
-			//	cmesh->SetColor({ my_color[0],my_color[1],my_color[2] });
-			//}
+				aiColor3D my_color;
+				mat->Get(AI_MATKEY_COLOR_DIFFUSE, my_color);
+				cmesh->SetColor({ my_color[0], my_color[1], my_color[2] });
+			}
 
 			// Check if we already loaded this mesh in memory
 			Component_Mesh* aux = App->renderer3D->IsMeshLoaded(cmesh);
@@ -126,7 +123,7 @@ void MeshImporter::ImportMesh(GameObject* parent, const aiScene* scene, aiNode* 
 
 			// Recursion
 			for (int i = 0; i < node->mNumChildren; i++)
-				ImportMesh(go, scene, node->mChildren[i]);
+				ImportMesh(full_path, go, scene, node->mChildren[i]);
 		}
 	}
 }

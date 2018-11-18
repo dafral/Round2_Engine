@@ -20,7 +20,7 @@ public:
 	~MeshImporter();
 
 	void ImportScene(const char* full_path, const char* file_name);
-	void ImportMesh(GameObject* parent, const aiScene* scene, aiNode* node);
+	void ImportMesh(const char* full_path, GameObject* parent, const aiScene* scene, aiNode* node);
 
 	Component_Mesh* Load(const char * myfile);
 	bool Save(const char* path, Component_Mesh* meshes);
