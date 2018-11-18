@@ -38,13 +38,13 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	for (int i = gameobjects.size() - 1; i >= 0; i--)
-	{
-		RELEASE(gameobjects[i]);
-		gameobjects.pop_back();
-	}
+	//for (std::vector<GameObject*>::iterator go = gameobjects.begin(); go != gameobjects.end();)
+	//{
+	//	(*go)->CleanUp();
+	//	RELEASE(*go);
 
-	CONSOLELOG("Unloading Intro scene %d", gameobjects.size());
+	//	go = gameobjects.erase(go);
+	//}
 
 	return true;
 }

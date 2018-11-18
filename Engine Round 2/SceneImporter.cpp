@@ -54,6 +54,7 @@ void SceneImporter::LoadScene(const char* path)
 	{
 		//reset scene
 		App->scene->CleanUp();
+		//App->scene->Start();
 
 		App->scene->state = EDITOR;
 		App->scene->game_clock.Start();

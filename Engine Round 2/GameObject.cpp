@@ -13,19 +13,7 @@ GameObject::GameObject(std::string name, GameObject* parent) : name(name), paren
 }
 
 GameObject::~GameObject()
-{
-	//for (int i = childrens.size() - 1; i >= 0; i--)
-	//{
-	//	RELEASE(childrens[i]);
-	//	childrens.pop_back();
-	//}
-
-	//for (int i = components.size() - 1; i >= 0; i--)
-	//{
-	//	RELEASE(components[i]);
-	//	components.pop_back();
-	//}
-}
+{}
 
 void GameObject::Update()
 {
@@ -40,6 +28,27 @@ void GameObject::Update()
 	// Recursion
 	for (int i = 0; i < childrens.size(); i++)
 		childrens[i]->Update();
+}
+
+void GameObject::CleanUp() 
+{
+	//Clean all components
+	for (std::vector<Component*>::iterator c = components.begin(); c != components.end();)
+	{
+		(*c)->CleanUp();
+		RELEASE(*c);
+
+		c = components.erase(c);
+	}
+
+	//Clean all childs
+	for (std::vector<GameObject*>::iterator go = childrens.begin(); go != childrens.end();)
+	{
+		(*go)->CleanUp();
+		RELEASE(*go);
+
+		go = childrens.erase(go);
+	}
 }
 
 void GameObject::Draw(bool is_scene_camera)

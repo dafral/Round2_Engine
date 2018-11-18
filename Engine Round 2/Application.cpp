@@ -155,6 +155,7 @@ bool Application::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
+
 	return ret;
 }
 

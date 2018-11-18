@@ -19,6 +19,7 @@ public:
 	virtual ~Component() {};
 
 	virtual void Update() {};
+	virtual void CleanUp() {};
 	virtual void Enable() {};
 	virtual void Disable() {};
 

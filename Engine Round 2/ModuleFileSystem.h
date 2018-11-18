@@ -15,6 +15,7 @@ public:
 
 	const char* GetRootPath();
 	std::string CreateFolder(const char* path, const char* name);
+	int DeleteFolder(const std::string &refcstrRootDirectory, bool bDeleteSubdirectories);
 	bool SaveFile(const char* path, const char* file_content, const char* name, const char* extension, int size);
 	void DeleteFilesInPath(const char* path);
 

@@ -18,9 +18,10 @@ public:
 	~GameObject();
 
 	void Update();
+	void CleanUp();
 	void Draw(bool is_scene_camera);
 	void DrawDebug(Component_Mesh* mesh);
-
+	
 	void AddChildren(GameObject* children); 
 	void AddComponent(Component* component);
 	Component* FindComponentWithType(Component_Type type);
