@@ -38,7 +38,7 @@ void GameObject::CleanUp()
 		delete components[i];
 	}
 
-	App->renderer3D->GetMeshesVector()->clear();
+	parent = nullptr;
 	components.clear();
 	childrens.clear();
 }

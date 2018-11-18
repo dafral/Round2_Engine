@@ -88,7 +88,6 @@ void SceneImporter::LoadScene(const char* path)
 				GameObject* go_parent = App->scene->GetGOByUniqueID(parent);
 				GameObject* go = App->scene->CreateGameObject(name, go_parent);
 
-				go_parent->AddChildren(go);
 				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);

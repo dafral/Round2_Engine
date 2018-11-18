@@ -44,15 +44,8 @@ bool ModuleScene::CleanUp()
 		delete gameobjects[i];
 	}
 
+	App->renderer3D->GetMeshesVector()->clear();
 	gameobjects.clear();
-
-	/*for (std::vector<GameObject*>::iterator go = gameobjects.begin(); go != gameobjects.end();)
-	{
-		(*go)->CleanUp();
-		RELEASE(*go);
-
-		go = gameobjects.erase(go);
-	}*/
 
 	return true;
 }
