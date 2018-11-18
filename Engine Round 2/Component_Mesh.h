@@ -29,7 +29,6 @@ struct Mesh
 	uint num_uvs = 0;
 	float* texture_coords = nullptr;
 
-	uint material_index = 0;
 	float3 color = { 255, 255, 255 };
 };
 
@@ -55,7 +54,6 @@ public:
 	uint GetIdUVs() { return mesh->id_uvs; };
 	uint GetNumUVs() { return mesh->num_uvs; };
 	float* GetTexCoords() { return mesh->texture_coords; };
-	uint GetMaterialIndex() { return mesh->material_index; };
 	float3 GetColor() { return mesh->color; };
 
 	uint GetUniqueID() { return unique_id; };
@@ -64,7 +62,6 @@ public:
 	Bounding_Volume GetBoundingVolume() { return bv; };
 
 	void SetColor(float3 color) { mesh->color = color; };
-	void SetMaterialIndex(uint index) { mesh->material_index = index; };
 	void SetFaces(aiMesh* new_mesh);
 	void SetUVs(aiMesh* new_mesh);
 	void SetIDs(Component_Mesh* cmesh);

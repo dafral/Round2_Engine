@@ -89,11 +89,9 @@ void MeshImporter::ImportMesh(const char* full_path, GameObject* parent, const a
 			// Load Texture and color
 			if (scene->HasMaterials())
 			{
-				cmesh->SetMaterialIndex(new_mesh->mMaterialIndex);
-
 				// Material -------------------------------------------------
 
-				aiMaterial* mat = scene->mMaterials[cmesh->GetMaterialIndex()];
+				aiMaterial* mat = scene->mMaterials[new_mesh->mMaterialIndex];
 				aiString texture_name;
 				mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);								
 
