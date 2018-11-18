@@ -125,6 +125,12 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	memcpy(ranges, cursor, bytes);
 	cursor += bytes;
 
+	//Copy the ids    
+	uint ids[3];		// ids[0] = Vertices, ids[1] = Indices, ids[2] = Uvs
+	bytes = sizeof(ids);
+	memcpy(ids, cursor, bytes);
+	cursor += bytes;
+
 	// Store indices
 	uint* indices = new uint[ranges[1]];
 	bytes = sizeof(uint) * ranges[1];
@@ -149,8 +155,11 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
 	new_mesh->LoadToMemory();
-	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 
+	new_mesh->SetIDs(ids[0], ids[1], ids[2]);
+
+	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
+	
 	CONSOLELOG("Loading mesh with %d vertices", new_mesh->GetNumVertices() * 3);
 	CONSOLELOG("Loading mesh with %d indices", new_mesh->GetNumIndices());
 
@@ -167,7 +176,9 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 	std::string name =	std::to_string(mesh->GetUniqueID()).c_str();
 	
 	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
-	uint size = sizeof(double) + sizeof(ranges) +
+	uint ids[3] = { mesh->GetIdVertices(), mesh->GetIdIndices(), mesh->GetIdUVs() };
+
+	uint size = sizeof(double) + sizeof(ranges) + sizeof(ids) +
 		sizeof(uint) * mesh->GetNumIndices() +
 		sizeof(float) * mesh->GetNumVertices() * 3 +
 		sizeof(float) * mesh->GetNumUVs() * 3;
@@ -179,6 +190,11 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 	// Store ranges
 	uint bytes = sizeof(ranges);
 	memcpy(cursor, ranges, bytes);
+	cursor += bytes;
+	
+	//Store ids
+	bytes = sizeof(ids);
+	memcpy(cursor, ids, bytes);
 	cursor += bytes;
 
 	// Store indices

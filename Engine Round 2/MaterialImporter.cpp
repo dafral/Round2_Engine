@@ -153,9 +153,8 @@ void MaterialImporter::Import(const char* full_path, GameObject* go)
 		{
 			tex->LoadBuffers();
 			std::string extension = App->filesystem->GetExtension(full_path);
-			extension += '/0';
 
-			if (extension.c_str() == "DDS" || extension.c_str() == "dds")
+			if (extension == "DDS" || extension == "dds")
 			{
 				App->filesystem->CopyFileTo(full_path, App->filesystem->library_material_path.c_str());
 			}
