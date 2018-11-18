@@ -151,6 +151,13 @@ void MaterialImporter::SaveAsDDS(uint uid)
 	if (size > 0)
 	{
 		data = new ILubyte[size];
+		
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			std::string file = App->filesystem->library_material_path;
