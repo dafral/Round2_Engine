@@ -137,13 +137,9 @@ void PanelConfiguration::RendererConfig()
 		ImGui::Checkbox("Wireframe Mode", &wireframe);
 		ImGui::Checkbox("Points Mode", &points);
 
-		if (ImGui::Checkbox("Color", &color))
-		{
-			if (color) glEnable(GL_COLOR);
-			else glDisable(GL_COLOR);
-		}
+		ImGui::Separator();
 
-		ImGui::ColorPicker3("Geometry color", App->renderer3D->color_hue);
+		ImGui::Text("Game Objects drawing: %i", App->renderer3D->GetGOSceneSize());
 	}
 }
 
@@ -206,8 +202,7 @@ void PanelConfiguration::TexturesConfig()
 		if (ImGui::Button("Delete Texture"))
 		{
 			App->material_importer->DeleteTextures();
-		}
-		
+		}	
 	}
 }
 

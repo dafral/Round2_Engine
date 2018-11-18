@@ -11,6 +11,7 @@
 
 #include "MaterialImporter.h"
 #include "MeshImporter.h"
+#include "PanelHierarchy.h"
 
 SceneImporter::SceneImporter(Application* app, bool start_enabled) : Module(app, start_enabled)
 {}
@@ -53,6 +54,7 @@ void SceneImporter::LoadScene(const char* path)
 	if (doc != nullptr)
 	{
 		//reset scene
+		App->editor->hierarchy->SetSelectedGO(nullptr);
 		App->scene->CleanUp();
 		//App->scene->Start();
 

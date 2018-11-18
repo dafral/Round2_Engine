@@ -124,14 +124,7 @@ void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_in
 			// Indices
 			mesh->num_indices = n_num_indices;
 			mesh->indices = new uint[n_num_indices];
-			if (n_num_indices != 3)
-			{
-				CONSOLELOG("WARNING, geometry face with != 3 indices!");
-			}
-			else
-			{
-				memcpy(mesh->indices, n_indices, sizeof(uint) * n_num_indices);
-			}
+			memcpy(mesh->indices, n_indices, sizeof(uint) * n_num_indices);
 		}
 
 		AABB box;
@@ -144,7 +137,6 @@ void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_in
 		sph.r = 0;
 		sph.Enclose((float3*)n_vertices, n_num_vertices);
 		bv.sphere = sph;
-
 	}
 }
 

@@ -35,6 +35,7 @@ public:
 	Component_Mesh* IsMeshLoaded(Component_Mesh* curr_mesh);
 	std::vector<Component_Mesh*>* GetMeshesVector();
 
+	uint GetGOSceneSize() { return go_scene.size(); };
 	void AddGOToDraw(GameObject* go, Component_Camera* curr_camera);
 	void DrawGO(bool is_editor_cam);
 

@@ -32,33 +32,15 @@ void GameObject::Update()
 
 void GameObject::CleanUp() 
 {
-
 	for (int i = 0; i < components.size(); i++)
 	{
 		components[i]->CleanUp();
 		delete components[i];
 	}
 
+	App->renderer3D->GetMeshesVector()->clear();
 	components.clear();
 	childrens.clear();
-	////Clean all components
-	//for (std::vector<Component*>::iterator c = components.begin(); c != components.end();)
-	//{
-	//	(*c)->CleanUp();
-	//	RELEASE(*c);
-
-	//	c = components.erase(c);
-	//}
-
-	////Clean all childs
-	//for (std::vector<GameObject*>::iterator go = childrens.begin(); go != childrens.end();)
-	//{
-	//	(*go)->CleanUp();
-	//	RELEASE(*go);
-
-	//	go = App->scene->gameobjects.erase(go);
-	//	go = childrens.erase(go);
-	//}
 }
 
 void GameObject::Draw(bool is_scene_camera)
