@@ -10,7 +10,7 @@ A 3D engine that allows you to see 3D models and try different textures on them.
 ## How to use it
 In order to load a fbx file, drag and drop it on the engine window. You can do the same with textures. Remember that the only files supported by the engines are FBX files for the 3D models and DDS/PNG files for the textures.
 
-You can find some example files inside the "3D Models" folder.
+You can find some example files inside the "Assets" folder.
 
 
 ### Camera Controls 
@@ -19,6 +19,14 @@ You can find some example files inside the "3D Models" folder.
 - **Shift:** Accelerate camera
 - **Mouse wheel:** zoom in and out
 - **Right click + Move Mouse:** orbital camera
+
+## Clarifications
+- There is no resource manager.
+- When you load the scene, the camera goes to the position 0,0,0.
+
+## Innovation
+- Bounding Volume (GameObjects don't have only AABBs, they have also spheres around them).
+- Octree instead of KDtree
 
 
 ## Libraries used
