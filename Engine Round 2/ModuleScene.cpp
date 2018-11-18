@@ -38,13 +38,21 @@ bool ModuleScene::Start()
 // Load assets
 bool ModuleScene::CleanUp()
 {
-	//for (std::vector<GameObject*>::iterator go = gameobjects.begin(); go != gameobjects.end();)
-	//{
-	//	(*go)->CleanUp();
-	//	RELEASE(*go);
+	for (int i = 0; i < gameobjects.size(); i++)
+	{
+		gameobjects[i]->CleanUp();
+		delete gameobjects[i];
+	}
 
-	//	go = gameobjects.erase(go);
-	//}
+	gameobjects.clear();
+
+	/*for (std::vector<GameObject*>::iterator go = gameobjects.begin(); go != gameobjects.end();)
+	{
+		(*go)->CleanUp();
+		RELEASE(*go);
+
+		go = gameobjects.erase(go);
+	}*/
 
 	return true;
 }
