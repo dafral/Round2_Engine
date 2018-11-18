@@ -155,7 +155,7 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
 	new_mesh->SetIDs(ids[0], ids[1], ids[2]);
-	new_mesh->LoadToMemory();
+	//new_mesh->LoadToMemory();
 
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 	

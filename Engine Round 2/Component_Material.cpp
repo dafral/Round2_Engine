@@ -58,6 +58,7 @@ void Component_Material::OnSave(JSON_Doc* filetosave)
 
 	filetosave->SetNumber("type", 2);
 	filetosave->SetNumber("owner", my_go->GetUniqueID());
+
 	filetosave->SetNumber("material", GetUniqueID());
 
 }
