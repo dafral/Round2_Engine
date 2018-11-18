@@ -157,6 +157,15 @@ void MaterialImporter::Import(const char* full_path, GameObject* go)
 			if (extension == "DDS" || extension == "dds")
 			{
 				App->filesystem->CopyFileTo(full_path, App->filesystem->library_material_path.c_str());
+
+				std::string new_name = App->filesystem->library_material_path;
+				new_name += std::to_string(tex->GetUniqueID());
+				new_name += ".dds";
+
+				std::string old_name = App->filesystem->library_material_path;
+				old_name += App->filesystem->GetNameWithoutPath(full_path, false);
+
+				std::rename(old_name.c_str(), new_name.c_str());
 			}
 			else 
 			{

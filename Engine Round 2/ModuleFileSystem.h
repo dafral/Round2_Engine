@@ -22,6 +22,7 @@ public:
 	void GetFilesInPath(std::vector<std::string>& paths, const char * path, const char * extension = nullptr);
 
 	std::string GetExtension(const char* path);
+	std::string GetNameWithoutPath(const char* path, bool delete_extension);
 
 
 	std::string assets_path;
