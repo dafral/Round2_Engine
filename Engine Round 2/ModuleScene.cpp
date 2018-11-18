@@ -213,7 +213,7 @@ void ModuleScene::RayCast(LineSegment ray)
 			Component_Transform* trans = (Component_Transform*)possible_collisions[i]->FindComponentWithType(TRANSFORM);
 
 			LineSegment local_ray(ray);
-			local_ray.Transform(trans->GetGlobalTransform().Inverted());
+			local_ray.Transform(trans->GetGlobalTransform().Transposed().Inverted());
 
 			for (uint j = 0; j < mesh->GetNumIndices() - 9; j += 3)
 			{
@@ -247,8 +247,12 @@ void ModuleScene::RayIntersections(LineSegment ray, std::vector<GameObject*> &go
 	for (int i = 0; i < gameobjects.size(); i++)
 	{
 		Component_Mesh* mesh = (Component_Mesh*)gameobjects[i]->FindComponentWithType(MESH);
+		Component_Transform* trans = (Component_Transform*)gameobjects[i]->FindComponentWithType(TRANSFORM);
 
-		if (mesh != nullptr && ray.Intersects(mesh->GetBoundingVolume().bounding_box))
+		LineSegment local_ray(ray);
+		local_ray.Transform(trans->GetGlobalTransform().Transposed().Inverted());
+
+		if (mesh != nullptr && local_ray.Intersects(mesh->GetBoundingVolume().bounding_box))
 			go_collided.push_back(gameobjects[i]);
 	}
 
