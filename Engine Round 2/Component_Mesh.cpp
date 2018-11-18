@@ -133,6 +133,18 @@ void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_in
 				memcpy(mesh->indices, n_indices, sizeof(uint) * n_num_indices);
 			}
 		}
+
+		AABB box;
+		box.SetNegativeInfinity();
+		box.Enclose((float3*)n_vertices, n_num_vertices);
+		bv.bounding_box = box;
+
+		Sphere sph;
+		sph.SetNegativeInfinity();
+		sph.r = 0;
+		sph.Enclose((float3*)n_vertices, n_num_vertices);
+		bv.sphere = sph;
+
 	}
 }
 

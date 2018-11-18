@@ -194,9 +194,9 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	CONSOLELOG("Loading mesh with %d vertices", new_mesh->GetNumVertices());
 	CONSOLELOG("Loading mesh with %d indices", new_mesh->GetNumIndices());
 
-	/*RELEASE_ARRAY(indices);
+	RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
-	RELEASE_ARRAY(uvs);*/
+	RELEASE_ARRAY(uvs);
 
 	return new_mesh;
 }
