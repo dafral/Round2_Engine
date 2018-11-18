@@ -17,7 +17,7 @@ Component_Camera::Component_Camera() : Component(CAMERA)
 	SetFOV(vertical_fov);
 
 	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
+	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
 }
 
@@ -46,6 +46,44 @@ void Component_Camera::SetFrustumRot(Quat rot)
 	Quat rotation_z = Quat::RotateZ(new_rot.z);
 	frustum.front = rotation_z.Mul(frustum.front.Normalized());
 	frustum.up = rotation_z.Mul(frustum.up.Normalized());
+}
+
+void Component_Camera::SetFrustumRot(float dx, float dy)
+{
+	if (dx != 0)
+	{
+		Quat rotation_y = Quat::RotateY(dx);
+		frustum.front = rotation_y.Mul(frustum.front.Normalized());
+		frustum.up = rotation_y.Mul(frustum.up.Normalized());
+	}
+
+	if (dy != 0)
+	{
+		Quat rotation_x = Quat::RotateAxisAngle(frustum.WorldRight(), dy);
+
+		float3 new_up = rotation_x.Mul(frustum.up.Normalized());
+
+		if (new_up.y > 0.0f)
+		{
+			frustum.up = new_up;
+			frustum.front = rotation_x.Mul(frustum.front.Normalized());
+		}
+	}
+}
+
+void Component_Camera::LookAt(float3 spot)
+{
+	float3 direction = spot - frustum.pos;
+
+	float3x3 matrix = float3x3::LookAt(frustum.front, direction.Normalized(), frustum.up, float3::unitY);
+
+	frustum.front = matrix.MulDir(frustum.front).Normalized();
+	frustum.up = matrix.MulDir(frustum.up).Normalized();
+}
+
+void Component_Camera::MoveAt(float3 new_pos)
+{
+	SetFrustumPos(new_pos);
 }
 
 // ------------------------------------------------------------------

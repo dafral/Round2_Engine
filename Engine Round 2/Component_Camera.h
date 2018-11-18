@@ -22,6 +22,7 @@ public:
 
 	void SetFOV(uint h_fov);
 	void SetFrustumPos(float3 pos);
+	void SetFrustumRot(float dx, float dy);
 	void SetFrustumRot(Quat rot);
 	void SetAspectRatio(float aspect_ratio);
 	void SetPlanes(float n_near_plane, float n_far_plane);
@@ -31,6 +32,11 @@ public:
 	bool IsAABBInside(AABB &aabb);
 	bool IsSphereInside(Sphere &sphere);
 	void OnSave(JSON_Doc* filetosave);
+
+	// --------------------------------------------
+
+	void LookAt(float3 spot);
+	void MoveAt(float3 new_pos);
 
 private:
 	Frustum frustum;

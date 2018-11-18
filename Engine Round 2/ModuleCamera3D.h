@@ -24,8 +24,10 @@ public:
 
 	Component_Camera* CreateComponentCamera(std::string name);
 
-	void Move(Component_Transform* trans, float dt);
-	void Rotate(Component_Transform* trans, float dt);
+	void MoveAt(float3 new_pos);
+	void LookAt(float3 spot);
+	void Move(float dt);
+	void Rotate(float dt);
 	void Zoom(int mouse_z, float dt);
 	void DrawAllFrustums();
 

@@ -7,6 +7,7 @@
 #include "myPrimitives.h"
 #include "Component.h"
 #include "Component_Transform.h"
+
 #include <algorithm>
 
 ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -23,6 +24,8 @@ bool ModuleScene::Start()
 
 	root_node = CreateGameObject("root", nullptr);
 	App->camera->SetSceneCamera(App->camera->CreateComponentCamera("Scene Camera"));
+	App->camera->MoveAt({ 0, 10, 0 });
+	App->camera->LookAt({ 0, 0, 0 });
 	App->camera->SetGameCamera(App->camera->CreateComponentCamera("Main Camera"));
 
 	state = EDITOR;

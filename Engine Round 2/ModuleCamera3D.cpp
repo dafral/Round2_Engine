@@ -40,10 +40,13 @@ update_status ModuleCamera3D::Update(float dt)
 
 	Component_Transform* trans = (Component_Transform*)scene_camera->my_go->FindComponentWithType(TRANSFORM);
 
-	Move(trans, dt);
+	Move(dt);
 
-	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		Rotate(trans, dt);
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->editor->scene->isHovered())
+		Rotate(dt);
+
+	if (App->input->GetMouseButton(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) && App->editor->scene->isHovered())
+		LookAt({ 0, 0, 0 });
 
 	if (App->debug->IsDebugDrawActive()) DrawAllFrustums();
 
@@ -61,62 +64,61 @@ update_status ModuleCamera3D::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleCamera3D::Rotate(Component_Transform* trans, float dt)
+void ModuleCamera3D::LookAt(float3 spot)
 {
-	float dx = RadToDeg(trans->GetRotation().ToEulerXYZ().x);
-	float dy = RadToDeg(trans->GetRotation().ToEulerXYZ().y);
-
-	orb_x_inverted ? dy += App->input->GetMouseXMotion() * 10 * dt : dy += -App->input->GetMouseXMotion() * 10 * dt;
-	orb_y_inverted ? dx += App->input->GetMouseYMotion() * 10 * dt : dx += -App->input->GetMouseYMotion() * 10 * dt;
-
-	trans->SetRotation(DegToRad({ dx, dy, 0 }));
-	scene_camera->SetFrustumRot(trans->GetRotation());
+	scene_camera->LookAt(spot);
 }
 
-void ModuleCamera3D::Move(Component_Transform* trans, float dt)
+void ModuleCamera3D::MoveAt(float3 new_pos)
 {
-	float speed = 15.f * dt;
+	scene_camera->MoveAt(new_pos);
+}
+
+void ModuleCamera3D::Rotate(float dt)
+{
+	float dx = 0;
+	float dy = 0;
+
+	orb_x_inverted ? dx += App->input->GetMouseXMotion() * sensitivity * dt : dx += -App->input->GetMouseXMotion() * sensitivity * dt;
+	orb_y_inverted ? dy += App->input->GetMouseYMotion() * sensitivity * dt : dy += -App->input->GetMouseYMotion() * sensitivity * dt;
+
+	scene_camera->SetFrustumRot(dx, dy);
+}
+
+void ModuleCamera3D::Move(float dt)
+{
+	float speed = 10.f * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed *= 2.f;
 
-	float3 X = { 1.0f, 0.0f, 0.0f };
-	float3 Y = { 0.0f, 1.0f, 0.0f };
-	float3 Z = { 0.0f, 0.0f, 1.0f };
+	float3 pos = scene_camera->GetPosition();
+	float3 new_pos(0, 0, 0);
 
-	float3 new_pos = trans->GetPosition();
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) new_pos += scene_camera->GetFrustum().front * speed;
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) new_pos -= scene_camera->GetFrustum().front * speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) new_pos += Z * speed;
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) new_pos -= Z * speed;
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) new_pos -= scene_camera->GetFrustum().WorldRight() * speed;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) new_pos += scene_camera->GetFrustum().WorldRight() * speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) new_pos += X * speed;
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) new_pos -= X * speed;
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) new_pos.y += speed;
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) new_pos.y -= speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) new_pos -= Y * speed;
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) new_pos += Y * speed;
-
-	trans->SetPosition(new_pos);
-	scene_camera->SetFrustumPos(new_pos);
+	scene_camera->SetFrustumPos(pos + new_pos);
 }
 
 void ModuleCamera3D::Zoom(int mouse_z, float dt)
 {
-	Component_Transform* trans = (Component_Transform*)scene_camera->my_go->FindComponentWithType(TRANSFORM);
+	float speed = 30.0f * dt;
 
-	float speed = 40.0f * dt;
-
-	float3 X = { 1.0f, 0.0f, 0.0f };
-	float3 Y = { 0.0f, 1.0f, 0.0f };
-	float3 Z = { 0.0f, 0.0f, 1.0f };
-
-	float3 new_pos = trans->GetPosition();
+	float3 pos = scene_camera->GetPosition();
+	float3 new_pos(0, 0, 0);
 
 	if (mouse_z == 1)
-		wheel_inverted ? new_pos -= Z * speed * -sensitivity : new_pos -= Z * speed * sensitivity;
+		wheel_inverted ? new_pos -= scene_camera->GetFrustum().front * -speed  : new_pos -= scene_camera->GetFrustum().front * speed;
 	else if (mouse_z == -1)
-		wheel_inverted ? new_pos += Z * speed * -sensitivity : new_pos += Z * speed * sensitivity;
+		wheel_inverted ? new_pos += scene_camera->GetFrustum().front * -speed : new_pos += scene_camera->GetFrustum().front * speed;
 
-	trans->SetPosition(new_pos);
-	scene_camera->SetFrustumPos(new_pos);
+		scene_camera->SetFrustumPos(pos + new_pos);
 }
 
 void ModuleCamera3D::DrawAllFrustums()
@@ -128,7 +130,7 @@ void ModuleCamera3D::DrawAllFrustums()
 			float3 vertices[8];
 			cameras[i]->GetFrustum().GetCornerPoints(vertices);
 
-			App->debug->DrawBox(vertices, 1.5f, Red);
+			App->debug->DrawBox(vertices, 3.f, Red);
 		}
 	}
 }
