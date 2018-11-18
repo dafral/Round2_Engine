@@ -175,12 +175,18 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 	memcpy(uvs, cursor, bytes);
 	cursor += bytes;
 
+	float color[3];
+	bytes = sizeof(color);
+	memcpy(color, cursor, bytes);
+	cursor += bytes;
+
 	// Create mesh --------------
 	Component_Mesh* new_mesh = new Component_Mesh;
 
 	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
 	new_mesh->SetIDs(ids[0], ids[1], ids[2]);
+	new_mesh->SetColor(float3(color[0], color[1], color[2]));
 	//new_mesh->LoadToMemory();
 
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
@@ -202,11 +208,13 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 	
 	uint ranges[3] = { mesh->GetNumVertices(), mesh->GetNumIndices(), mesh->GetNumUVs() };
 	uint ids[3] = { mesh->GetIdVertices(), mesh->GetIdIndices(), mesh->GetIdUVs() };
+	float color[3] = { mesh->GetColor().x, mesh->GetColor().y, mesh->GetColor().z };
 
 	uint size = sizeof(double) + sizeof(ranges) + sizeof(ids) +
 		sizeof(uint) * mesh->GetNumIndices() +
 		sizeof(float) * mesh->GetNumVertices() * 3 +
-		sizeof(float) * mesh->GetNumUVs() * 3;
+		sizeof(float) * mesh->GetNumUVs() * 3 + 
+		sizeof(color);
 
 	// Allocate data
 	char* data = new char[size];
@@ -235,6 +243,10 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 	// Store UVs
 	bytes = sizeof(float) * mesh->GetNumUVs() * 3;
 	memcpy(cursor, mesh->GetTexCoords(), bytes);
+	cursor += bytes;
+
+	bytes = sizeof(color);
+	memcpy(cursor, color, bytes);
 
 	//fopen
 	if (App->filesystem->SaveFile(path, data, name.c_str(), "mymesh", size) == false)
