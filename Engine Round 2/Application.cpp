@@ -16,7 +16,6 @@ Application::Application()
 	filesystem = new ModuleFileSystem(this);
 	json = new ModuleJSON(this);
 	scene_importer = new SceneImporter(this);
-	resources = new ModuleResources(this);
 	octree = new ModuleOctree(this);
 
 	// The order of calls is very important!
@@ -29,7 +28,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	AddModule(resources);
 	AddModule(octree);
 	
 	// Scenes

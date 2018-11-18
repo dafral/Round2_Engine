@@ -16,7 +16,6 @@
 #include "SceneImporter.h"
 #include "ModuleFileSystem.h"
 #include "ModuleJSON.h"
-#include "ModuleResources.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "DebugDraw.h"
@@ -39,8 +38,6 @@ public:
 	ModuleOctree* octree;
 	ModuleFileSystem* filesystem;
 	ModuleJSON* json;
-	ModuleResources* resources;
-
 	DebugDraw* debug;
 	ImGuiTextBuffer consoleText; 
 	pcg32_random_t rng;
