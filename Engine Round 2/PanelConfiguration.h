@@ -35,6 +35,8 @@ public:
 	float height;
 	bool bordered = false;
 	bool resizable = true;
+	bool light = false;
+	bool dark = true;
 
 	//render
 	bool grid = true;

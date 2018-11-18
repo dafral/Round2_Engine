@@ -151,6 +151,18 @@ void PanelConfiguration::WindowConfig()
 {
 	if (ImGui::CollapsingHeader("Window")) 
 	{
+		if (ImGui::Checkbox("Light", &light))
+		{
+			ImGui::StyleColorsLight();
+			dark = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Checkbox("Dark", &dark))
+		{
+			ImGui::StyleColorsDark();
+			light = false;
+		}
+
 		float brightness =  App->window->GetBrightness();
 		if (ImGui::SliderFloat("Brightness", &brightness, 0, 1))
 			App->window->SetBrightness(brightness);
