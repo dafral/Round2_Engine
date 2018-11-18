@@ -154,18 +154,17 @@ Component_Mesh* MeshImporter::Load(const char * filepath)
 
 	new_mesh->SetFaces(vertices, ranges[0], indices, ranges[1]);
 	new_mesh->SetUvs(uvs, ranges[2]);
-	new_mesh->LoadToMemory();
-
 	new_mesh->SetIDs(ids[0], ids[1], ids[2]);
+	new_mesh->LoadToMemory();
 
 	App->renderer3D->GetMeshesVector()->push_back(new_mesh);
 	
-	CONSOLELOG("Loading mesh with %d vertices", new_mesh->GetNumVertices() * 3);
+	CONSOLELOG("Loading mesh with %d vertices", new_mesh->GetNumVertices());
 	CONSOLELOG("Loading mesh with %d indices", new_mesh->GetNumIndices());
 
-	RELEASE_ARRAY(indices);
+	/*RELEASE_ARRAY(indices);
 	RELEASE_ARRAY(vertices);
-	RELEASE_ARRAY(uvs);
+	RELEASE_ARRAY(uvs);*/
 
 	return new_mesh;
 }
@@ -217,7 +216,7 @@ bool MeshImporter::Save(const char * path, Component_Mesh* mesh)
 		return false;
 	}
 
-	CONSOLELOG("New mesh saved with %d vertices", ranges[0] * 3);
+	CONSOLELOG("New mesh saved with %d vertices", ranges[0]);
 	CONSOLELOG("New mesh saved with %d indices", ranges[1]);
 
 	RELEASE_ARRAY(data);

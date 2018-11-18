@@ -124,14 +124,14 @@ void Component_Mesh::SetFaces(float* n_vertices, uint n_num_vertices, uint* n_in
 			// Indices
 			mesh->num_indices = n_num_indices;
 			mesh->indices = new uint[n_num_indices];
-			if (n_num_indices != 3)
+			/*if (n_num_indices != 3)
 			{
 				CONSOLELOG("WARNING, geometry face with != 3 indices!");
 			}
 			else
-			{
+			{*/
 				memcpy(mesh->indices, n_indices, sizeof(uint) * n_num_indices);
-			}
+			//}
 		}
 	}
 }
@@ -151,31 +151,25 @@ void Component_Mesh::LoadToMemory()
 {
 	if (mesh->id_vertices == 0 && mesh->vertices != nullptr)
 	{
-		uint id = 0;
-
-		glGenBuffers(1, (GLuint*)&(id));
-		glBindBuffer(GL_ARRAY_BUFFER, id);
+		glGenBuffers(1, (GLuint*)&(mesh->id_vertices));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_vertices * 3, mesh->vertices, GL_STATIC_DRAW);
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	if (mesh->id_indices == 0 && mesh->indices != nullptr)
 	{
-		uint id = 0;
-
-		glGenBuffers(1, (GLuint*)&(id));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*)&(mesh->id_indices));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	if (mesh->id_uvs == 0 && mesh->texture_coords != nullptr)
 	{
-		uint id = 0;
-
-		glGenBuffers(1, (GLuint*)&(id));
-		glBindBuffer(GL_ARRAY_BUFFER, id);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mesh->num_uvs * 3, mesh->texture_coords, GL_STATIC_DRAW);
+		glGenBuffers(1, (GLuint*)&(mesh->id_uvs));
+		glBindBuffer(GL_ARRAY_BUFFER, (GLuint)mesh->id_uvs);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint) * mesh->num_uvs * 3, mesh->texture_coords, GL_STATIC_DRAW);
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 }

@@ -126,6 +126,10 @@ void SceneImporter::LoadScene(const char* path)
 				mesh_path += ".mymesh";
 
 				go->AddComponent(App->mesh_importer->Load(mesh_path.c_str()));
+
+				Component_Mesh * mesh = (Component_Mesh*)go->FindComponentWithType(MESH);
+				mesh->SetUniqueID(doc->GetNumber("mesh"));
+
 				break;
 			}
 			case Component_Type::MATERIAL:
@@ -157,7 +161,6 @@ void SceneImporter::LoadScene(const char* path)
 				if (doc->GetBool("scene_camera"))
 					App->camera->SetSceneCamera(cam);
 
-				CONSOLELOG("%d", cam->my_go->GetUniqueID());
 				break;
 			}
 			}

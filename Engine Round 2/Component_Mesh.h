@@ -56,6 +56,7 @@ public:
 	float* GetTexCoords() { return mesh->texture_coords; };
 
 	uint GetUniqueID() { return unique_id; };
+	void SetUniqueID(uint uid) { unique_id = uid; };
 	Bounding_Volume GetBoundingVolume() { return bv; };
 
 	void SetFaces(aiMesh* new_mesh);
