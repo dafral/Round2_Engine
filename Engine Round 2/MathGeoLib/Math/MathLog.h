@@ -15,7 +15,9 @@
 /** @file Log.h
 	@author Jukka Jylänki
 	@brief The LOG and LOGUSER macros. Provides an unified mechanism for logging. */
-#pragma once
+
+#ifndef __MGL_MATHLOG_H__
+#define __MGL_MATHLOG_H__
 
 #include "MathNamespace.h"
 
@@ -72,3 +74,5 @@ void PrintToConsole(MathLogChannel channel, const char *str);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

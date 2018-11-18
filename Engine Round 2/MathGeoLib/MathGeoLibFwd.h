@@ -15,7 +15,9 @@
 /** @file MathFwd.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_MATHGEOLIBFWD_H__
+#define __MGL_MATHGEOLIBFWD_H__
 
 #include "MathBuildConfig.h"
 #include "Math/MathNamespace.h"
@@ -102,4 +104,6 @@ class VertexBuffer;
 
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include <iosfwd>
+#endif
+
 #endif

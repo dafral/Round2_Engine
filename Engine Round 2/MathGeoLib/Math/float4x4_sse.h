@@ -15,7 +15,8 @@
 /** @file float4x4_sse.h
 	@author Jukka Jylänki
 	@brief SSE code for float4x4-related computations. */
-#pragma once
+#ifndef __MGL_FLOAT4X4SSE_H__
+#define __MGL_FLOAT4X4SSE_H__
 
 #include "../MathBuildConfig.h"
 
@@ -566,3 +567,5 @@ inline void mat3x4_transpose(const __m128 *src, __m128 *dst)
 MATH_END_NAMESPACE
 
 #endif // ~MATH_SSE
+
+#endif // !__MGL_FLOAT4X4SSE_H__

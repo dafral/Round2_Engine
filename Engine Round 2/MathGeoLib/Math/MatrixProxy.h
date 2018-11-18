@@ -15,7 +15,9 @@
 /** @file MatrixProxy.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_MATRIXPROXY_H__
+#define __MGL_MATRIXPROXY_H__
 
 #include "myassert.h"
 #include "../MathGeoLibFwd.h"
@@ -47,3 +49,5 @@ public:
 };
 
 MATH_END_NAMESPACE
+
+#endif

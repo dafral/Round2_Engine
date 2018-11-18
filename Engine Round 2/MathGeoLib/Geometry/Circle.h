@@ -15,7 +15,8 @@
 /** @file Circle.h
 	@author Jukka Jylänki
 	@brief The Circle geometry object. */
-#pragma once
+#ifndef __MGL_CIRCLE_H__
+#define __MGL_CIRCLE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -217,3 +218,5 @@ std::ostream &operator <<(std::ostream &o, const Circle &circle);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

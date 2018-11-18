@@ -15,7 +15,9 @@
 /** @file Line.h
 	@author Jukka Jylänki
 	@brief Implementation for the Line geometry object. */
-#pragma once
+
+#ifndef __MGL_LINE_H__
+#define __MGL_LINE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -233,3 +235,5 @@ std::ostream &operator <<(std::ostream &o, const Line &line);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

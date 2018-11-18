@@ -15,7 +15,9 @@
 /** @file Plane.h
 	@author Jukka Jylänki
 	@brief The Plane geometry object. */
-#pragma once
+
+#ifndef __PLANE_H__
+#define __PLANE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -404,3 +406,5 @@ std::ostream &operator <<(std::ostream &o, const Plane &plane);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

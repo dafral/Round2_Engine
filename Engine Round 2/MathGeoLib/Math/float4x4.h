@@ -15,7 +15,9 @@
 /** @file float4x4.h
 	@author Jukka Jylänki
 	@brief A 4-by-4 matrix for affine and perspective projection operations in 3D space. */
-#pragma once
+
+#ifndef __MGL_FLOAT4X4_H__
+#define __MGL_FLOAT4X4_H__
 
 #include "../MathBuildConfig.h"
 #include "SSEMath.h"
@@ -948,3 +950,5 @@ inline float4x4 *AlignedNew<float4x4>(size_t numElements) { return AlignedNew<fl
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

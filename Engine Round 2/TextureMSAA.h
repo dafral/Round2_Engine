@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __TEXTUREMSAA_H__
+#define __TEXTUREMSAA_H__
 
 #include "Globals.h"
 
@@ -32,3 +33,4 @@ private:
 	unsigned int height;
 };
 
+#endif // !__TEXTUREMSAA_H__

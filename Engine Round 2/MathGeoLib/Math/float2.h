@@ -15,7 +15,9 @@
 /** @file float2.h
 	@author Jukka Jylänki
 	@brief A 2D (x,y) ordered pair. */
-#pragma once
+
+#ifndef __MGL_FLOAT2_H__
+#define __MGL_FLOAT2_H__
 
 #include "../MathBuildConfig.h"
 
@@ -640,3 +642,5 @@ Q_DECLARE_METATYPE(float2*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

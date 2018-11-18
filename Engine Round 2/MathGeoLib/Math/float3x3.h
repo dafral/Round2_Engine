@@ -15,7 +15,9 @@
 /** @file float3x3.h
 	@author Jukka Jylänki
 	@brief A 3-by-3 matrix for linear operations in 3D space. */
-#pragma once
+
+#ifndef __MGL_FLOAT3X3_H__
+#define __MGL_FLOAT3X3_H__
 
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include <ostream>
@@ -708,3 +710,5 @@ Q_DECLARE_METATYPE(float3x3*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

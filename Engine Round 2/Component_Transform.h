@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __COMPONENTTRANSFORM_H__
+#define __COMPONENTTRANSFORM_H__
+
 #include "Component.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -31,3 +33,5 @@ private:
 	float3 euler_rotation;
 	float4x4 transform;
 };
+
+#endif

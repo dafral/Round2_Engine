@@ -15,7 +15,8 @@
 /** @file AABB2D.h
 	@author Jukka Jylänki
 	@brief 2D Axis-Aligned Bounding Box structure. */
-#pragma once
+#ifndef __MGL_AABB2D_H__
+#define __MGL_AABB2D_H__
 
 #include <stdio.h>
 
@@ -124,3 +125,5 @@ inline bool Contains(const AABB2D &aabb, const float3 &pt)
 }
 
 MATH_END_NAMESPACE
+
+#endif

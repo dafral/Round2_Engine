@@ -6,7 +6,8 @@
 //   #define IMGUI_DEFINE_MATH_OPERATORS
 // To implement maths operators for ImVec2 (disabled by default to not collide with using IM_VEC2_CLASS_EXTRA along with your own math types+operators)
 
-#pragma once
+#ifndef __IMGUI_IMGUIINTERNAL_H__
+#define __IMGUI_IMGUIINTERNAL_H__
 
 #ifndef IMGUI_VERSION
 #error Must include imgui.h before imgui_internal.h
@@ -1227,4 +1228,6 @@ IMGUI_API void              ImFontAtlasBuildMultiplyRectAlpha8(const unsigned ch
 
 #ifdef _MSC_VER
 #pragma warning (pop)
+#endif
+
 #endif

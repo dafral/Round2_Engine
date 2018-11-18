@@ -15,7 +15,9 @@
 /** @file float4.h
 	@author Jukka Jylänki
 	@brief A 4D (x,y,z,w) homogeneous vector. */
-#pragma once
+
+#ifndef __MGL_FLOAT4_H__
+#define __MGL_FLOAT4_H__
 
 #include "../MathBuildConfig.h"
 
@@ -737,3 +739,5 @@ Q_DECLARE_METATYPE(float4*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

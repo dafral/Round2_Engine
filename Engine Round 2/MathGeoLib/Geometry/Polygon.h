@@ -15,7 +15,9 @@
 /** @file Polygon.h
 	@author Jukka Jylänki
 	@brief The Polygon geometry object. */
-#pragma once
+
+#ifndef __MGL_POLYGON_H__
+#define __MGL_POLYGON_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -398,3 +400,5 @@ Q_DECLARE_METATYPE(Polygon*)
 //#endif
 
 MATH_END_NAMESPACE
+
+#endif

@@ -15,7 +15,9 @@
 /** @file TransformOps.h
 	@author Jukka Jylänki
 	@brief */
-#pragma once
+
+#ifndef __MGL_TRANSFORMOPS_H__
+#define __MGL_TRANSFORMOPS_H__
 
 #include "../MathGeoLibFwd.h"
 #include "float3.h"
@@ -117,3 +119,5 @@ Q_DECLARE_METATYPE(ScaleOp*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

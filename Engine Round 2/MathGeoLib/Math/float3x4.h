@@ -15,7 +15,9 @@
 /** @file float3x4.h
 	@author Jukka Jylänki
 	@brief A 3-by-4 matrix for affine operations in 3D space. */
-#pragma once
+
+#ifndef __MGL_FLOAT3X4_H__
+#define __MGL_FLOAT3X4_H__
 
 #ifdef MATH_ENABLE_STL_SUPPORT
 #include "myassert.h"
@@ -811,3 +813,5 @@ Q_DECLARE_METATYPE(float3x4*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

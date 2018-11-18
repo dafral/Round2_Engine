@@ -15,7 +15,9 @@
 /** @file QuadTree.h
 	@author Jukka Jylänki
 	@brief A QuadTree spatial query acceleration structure for dynamic data. */
-#pragma once
+
+#ifndef __MGL_QUADTREE_H__
+#define __MGL_QUADTREE_H__
 
 #ifdef MATH_GRAPHICSENGINE_INTEROP
 #include "Time/Profiler.h"
@@ -270,3 +272,5 @@ inline void AssociateQuadTreeNode(const float3 &, QuadTree<float3>::Node *) {}
 MATH_END_NAMESPACE
 
 #include "QuadTree.inl"
+
+#endif // !__MGL_QUADTREE_H__

@@ -15,7 +15,9 @@
 /** @file Quat.h
 	@author Jukka Jylänki
 	@brief Quaternions represent rotations and orientations of 3D objects. */
-#pragma once
+
+#ifndef __MGL_QUAT_H__
+#define __MGL_QUAT_H__
 
 #include "../MathBuildConfig.h"
 #include "SSEMath.h"
@@ -442,3 +444,5 @@ Q_DECLARE_METATYPE(Quat*)
 #endif
 
 MATH_END_NAMESPACE
+
+#endif

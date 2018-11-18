@@ -15,7 +15,8 @@
 /** @file Sphere.h
 	@author Jukka Jylänki
 	@brief The Sphere geometry object. */
-#pragma once
+#ifndef __MGL_SPHERE_H__
+#define __MGL_SPHERE_H__
 
 #include "../MathGeoLibFwd.h"
 #include "../Math/float3.h"
@@ -383,3 +384,5 @@ std::ostream &operator <<(std::ostream &o, const Sphere &sphere);
 #endif
 
 MATH_END_NAMESPACE
+
+#endif
