@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 #include <vector>
 #include <string>
@@ -44,6 +45,8 @@ public:
 	void SetWheelInverted(bool new_inverted) { wheel_inverted = new_inverted; };
 	void SetSceneCamera(Component_Camera* sc) { scene_camera = sc; };
 	void SetGameCamera(Component_Camera* sc) { game_camera = sc; };
+
+	LineSegment mouse_ray;
 
 private:
 	float sensitivity = 0.25f;

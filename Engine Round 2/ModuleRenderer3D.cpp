@@ -155,6 +155,27 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	App->scene->Draw();
 	DrawGO(false);
 
+	if (App->camera->mouse_ray.Length() > 0)
+	{
+		glBegin(GL_LINES);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glLineWidth(10.0f);
+		glDisable(GL_CULL_FACE);
+		glColor3f(255, 0, 255);
+
+		glVertex3fv((GLfloat*)&App->camera->mouse_ray.a);
+		glVertex3fv((GLfloat*)&App->camera->mouse_ray.b);
+
+		glEnd();
+		glLineWidth(1.0f);
+		glColor3f(200, 0, 125);
+		glEnable(GL_CULL_FACE);
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+
 	// =============================================================
 	// Scene camera 
 	// =============================================================

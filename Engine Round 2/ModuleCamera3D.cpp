@@ -51,7 +51,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN && App->editor->scene->isHovered())
 	{
-		LineSegment mouse_ray;
 		float2 mouse_pos_norm = App->editor->scene->GetMousePosNormalized();
 		mouse_ray = scene_camera->GetFrustum().UnProjectLineSegment(mouse_pos_norm.x, mouse_pos_norm.y);
 
