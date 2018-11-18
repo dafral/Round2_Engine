@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "Component_Camera.h"
+#include "Component_Transform.h"
 #include "GameObject.h"
 #include "ModuleCamera3D.h"
 
@@ -26,6 +27,8 @@ Component_Camera::Component_Camera() : Component(CAMERA)
 void Component_Camera::SetFrustumPos(float3 pos)
 {
 	frustum.pos = pos;
+	Component_Transform* trans = (Component_Transform*)my_go->FindComponentWithType(TRANSFORM);
+	trans->SetPosition(pos);
 }
 
 void Component_Camera::SetFrustumRot(Quat rot)
@@ -50,6 +53,12 @@ void Component_Camera::SetFrustumRot(Quat rot)
 
 void Component_Camera::SetFrustumRot(float dx, float dy)
 {
+	Component_Transform* trans = (Component_Transform*)my_go->FindComponentWithType(TRANSFORM);
+	Quat rotation = trans->GetRotation();
+	float3 euler_rotation = rotation.ToEulerXYZ();
+	float3 new_euler_rot = { euler_rotation.x + dx, euler_rotation.y + dy, 0 };
+	trans->SetRotation(new_euler_rot);
+
 	if (dx != 0)
 	{
 		Quat rotation_y = Quat::RotateY(dx);

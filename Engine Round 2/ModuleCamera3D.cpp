@@ -100,8 +100,8 @@ void ModuleCamera3D::Move(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) new_pos -= scene_camera->GetFrustum().WorldRight() * speed;
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) new_pos += scene_camera->GetFrustum().WorldRight() * speed;
 
-	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) new_pos.y += speed;
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) new_pos.y -= speed;
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) new_pos += scene_camera->GetFrustum().up * speed;
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT) new_pos -= scene_camera->GetFrustum().up * speed;
 
 	scene_camera->SetFrustumPos(pos + new_pos);
 }

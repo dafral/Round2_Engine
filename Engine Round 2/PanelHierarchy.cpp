@@ -35,7 +35,7 @@ void PanelHierarchy::CreateHierarchy(GameObject* curr_go)
 	if (go_selected == curr_go)
 		flag |= ImGuiTreeNodeFlags_Selected;
 
-	if (curr_go == App->scene->root_node || curr_go == App->camera->GetSceneCamera()->my_go)
+	if (curr_go == App->scene->root_node  || curr_go == App->camera->GetSceneCamera()->my_go)
 	{
 		// Recursion
 		for (int i = 0; i < curr_go->childrens.size(); i++)

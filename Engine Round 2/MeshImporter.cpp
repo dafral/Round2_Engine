@@ -86,6 +86,35 @@ void MeshImporter::ImportMesh(GameObject* parent, const aiScene* scene, aiNode* 
 				trans->SetScale(scale);
 			}
 
+			// Load Texture and color
+			//if (scene->HasMaterials())
+			//{
+			//	cmesh->SetMaterialIndex(new_mesh->mMaterialIndex);
+
+			//	// Material -------------------------------------------------
+
+			//	aiMaterial* mat = scene->mMaterials[cmesh->GetMaterialIndex()];
+			//	aiString texture_name;
+			//	mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture_name);
+
+			//	texture_name = App->loading_manager->GetFileName(texture_name.C_Str());
+
+			//	//Loading the texture on the mesh from the assets folder										
+			//	std::string tex_path("Assets/Textures/");
+
+			//	if (texture_name.length > 0)
+			//	{
+			//		tex_path.append(texture_name.C_Str());
+			//		App->loading_manager->material_loader->LoadPNG(tex_path.c_str());
+			//	}
+
+			//	// Color ----------------------------------------------------
+
+			//	aiColor3D my_color;
+			//	mat->Get(AI_MATKEY_COLOR_DIFFUSE, my_color);
+			//	cmesh->SetColor({ my_color[0],my_color[1],my_color[2] });
+			//}
+
 			// Check if we already loaded this mesh in memory
 			Component_Mesh* aux = App->renderer3D->IsMeshLoaded(cmesh);
 
