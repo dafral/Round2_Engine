@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "PanelHierarchy.h"
-
+#include "PanelScene.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_dock.h"
 #include "ImGui/imgui_impl_sdl.h"
@@ -100,7 +100,7 @@ update_status ModuleInput::PreUpdate(float dt)
 		{
 			case SDL_MOUSEWHEEL:
 			mouse_z = e.wheel.y;
-			App->camera->Zoom(mouse_z, dt);
+			if (App->editor->scene->isHovered()) App->camera->Zoom(mouse_z, dt);
 			break;
 
 			case SDL_MOUSEMOTION:

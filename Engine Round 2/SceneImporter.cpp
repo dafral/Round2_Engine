@@ -92,7 +92,7 @@ void SceneImporter::LoadScene(const char* path)
 				go->SetUniqueID(id);
 				go->SetVisible(visible);
 				go->SetStatic(is_static);
-			}
+			} 
 
 			doc->MoveToFirstObject();
 		}
