@@ -46,8 +46,6 @@ public:
 	void SetSceneCamera(Component_Camera* sc) { scene_camera = sc; };
 	void SetGameCamera(Component_Camera* sc) { game_camera = sc; };
 
-	LineSegment mouse_ray;
-
 private:
 	float sensitivity = 0.25f;
 	bool orb_x_inverted, orb_y_inverted, wheel_inverted = false;
