@@ -30,7 +30,7 @@ struct Mesh
 	float* texture_coords = nullptr;
 
 	uint material_index = 0;
-	float3 color = { 0, 0, 0 };
+	float3 color = { 255, 255, 255 };
 };
 
 // 0..1

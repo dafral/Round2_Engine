@@ -24,7 +24,6 @@ void DebugDraw::DrawBox(float3* corners, float line_width, Color color)
 
 	// Deactivate vertex arrays after drawing
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glColor3f(App->renderer3D->color_hue[0], App->renderer3D->color_hue[1], App->renderer3D->color_hue[2]);
 }
 
 void DebugDraw::DrawSphere(float3 pos, float radius, float line_width, Color color)
@@ -76,5 +75,4 @@ void DebugDraw::DrawSphere(float3 pos, float radius, float line_width, Color col
 	glTranslated(pos.x, pos.y, pos.z);
 	glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glColor3f(App->renderer3D->color_hue[0], App->renderer3D->color_hue[1], App->renderer3D->color_hue[2]);
 }

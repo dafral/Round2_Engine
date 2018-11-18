@@ -54,6 +54,8 @@ void GameObject::Draw(bool is_scene_camera)
 
 		if (trans != nullptr) glMultMatrixf(trans->GetGlobalTransform().ptr());
 
+		glColor3f(mesh->GetColor().x, mesh->GetColor().y, mesh->GetColor().z);
+
 		glEnable(GL_TEXTURE_2D);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->GetIdVertices());
