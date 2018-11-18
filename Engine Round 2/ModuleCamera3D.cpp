@@ -130,7 +130,7 @@ void ModuleCamera3D::DrawAllFrustums()
 			float3 vertices[8];
 			cameras[i]->GetFrustum().GetCornerPoints(vertices);
 
-			App->debug->DrawBox(vertices, 3.f, Red);
+			App->debug->DrawBox(vertices, 5.f, Red);
 		}
 	}
 }

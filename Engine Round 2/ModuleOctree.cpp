@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Color.h"
 #include "Component_Camera.h"
+#include "Component_Transform.h"
 
 void ModuleOctree::AddStatic(GameObject* static_go)
 {
@@ -41,26 +42,30 @@ void ModuleOctree::StartOctree()
 	for (int i = 0; i < all_static_go.size(); i++)
 	{
 		Component_Mesh* mesh = (Component_Mesh*)all_static_go[i]->FindComponentWithType(MESH);
+		Component_Transform* trans = (Component_Transform*)all_static_go[i]->FindComponentWithType(TRANSFORM);
 
 		if (mesh != nullptr)
 		{
-			if (mesh->GetBoundingVolume().bounding_box.minPoint.x < min_point.x)
-				min_point.x = mesh->GetBoundingVolume().bounding_box.minPoint.x;
+			AABB bb = mesh->GetBoundingVolume().bounding_box;
+			bb.TransformAsAABB(trans->GetGlobalTransform().Transposed());
 
-			if (mesh->GetBoundingVolume().bounding_box.minPoint.y < min_point.y)
-				min_point.y = mesh->GetBoundingVolume().bounding_box.minPoint.y;
+			if (bb.minPoint.x < min_point.x)
+				min_point.x = bb.minPoint.x;
 
-			if (mesh->GetBoundingVolume().bounding_box.minPoint.z < min_point.z)
-				min_point.z = mesh->GetBoundingVolume().bounding_box.minPoint.z;
+			if (bb.minPoint.y < min_point.y)
+				min_point.y = bb.minPoint.y;
 
-			if (mesh->GetBoundingVolume().bounding_box.maxPoint.x > max_point.x)
-				max_point.x = mesh->GetBoundingVolume().bounding_box.maxPoint.x;
+			if (bb.minPoint.z < min_point.z)
+				min_point.z = bb.minPoint.z;
 
-			if (mesh->GetBoundingVolume().bounding_box.maxPoint.y > max_point.y)
-				max_point.y = mesh->GetBoundingVolume().bounding_box.maxPoint.y;
+			if (bb.maxPoint.x > max_point.x)
+				max_point.x = bb.maxPoint.x;
 
-			if (mesh->GetBoundingVolume().bounding_box.maxPoint.z > max_point.z)
-				max_point.z = mesh->GetBoundingVolume().bounding_box.maxPoint.z;
+			if (bb.maxPoint.y > max_point.y)
+				max_point.y = bb.maxPoint.y;
+
+			if (bb.maxPoint.z > max_point.z)
+				max_point.z = bb.maxPoint.z;
 		}
 	}
 
@@ -110,10 +115,17 @@ void Octree_Node::DivideNode()
 			for (int j = 0; j < objects_in_node.size(); j++)
 			{
 				Component_Mesh* mesh = (Component_Mesh*)objects_in_node[j]->FindComponentWithType(MESH);
+				Component_Transform* trans = (Component_Transform*)objects_in_node[j]->FindComponentWithType(TRANSFORM);
 
-				if (mesh != nullptr && childs[i]->box.Intersects(mesh->GetBoundingVolume().bounding_box))
+				if (mesh != nullptr)
 				{
-					childs[i]->objects_in_node.push_back(objects_in_node[j]);
+					AABB bb = mesh->GetBoundingVolume().bounding_box;
+					bb.TransformAsAABB(trans->GetGlobalTransform().Transposed());
+
+					if (childs[i]->box.Intersects(bb))
+					{
+						childs[i]->objects_in_node.push_back(objects_in_node[j]);
+					}
 				}
 			}
 		}
@@ -178,10 +190,22 @@ void Octree_Node::FrustumIntersections(Component_Camera* curr_camera)
 		for (int i = 0; i < objects_in_node.size(); i++)
 		{
 			Component_Mesh* mesh = (Component_Mesh*)objects_in_node[i]->FindComponentWithType(MESH);
+			Component_Transform* trans = (Component_Transform*)objects_in_node[i]->FindComponentWithType(TRANSFORM);
 
-			if (mesh != nullptr && objects_in_node[i]->GetVisible() && curr_camera->IsSphereInside(mesh->GetBoundingVolume().sphere))
+			if (mesh != nullptr)
 			{
-					App->renderer3D->AddGOToDraw(objects_in_node[i], curr_camera);
+				AABB bb = mesh->GetBoundingVolume().bounding_box;
+				bb.TransformAsAABB(trans->GetGlobalTransform().Transposed());
+				Sphere sph = mesh->GetBoundingVolume().sphere;
+				sph.Transform(trans->GetGlobalTransform().Transposed());
+
+				if (objects_in_node[i]->GetVisible() && curr_camera->IsSphereInside(sph))
+				{
+					if (curr_camera->IsAABBInside(bb))
+					{
+						App->renderer3D->AddGOToDraw(objects_in_node[i], curr_camera);
+					}
+				}
 			}
 		}
 
