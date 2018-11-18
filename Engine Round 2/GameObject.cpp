@@ -13,7 +13,19 @@ GameObject::GameObject(std::string name, GameObject* parent) : name(name), paren
 }
 
 GameObject::~GameObject()
-{}
+{
+	//for (int i = childrens.size() - 1; i >= 0; i--)
+	//{
+	//	RELEASE(childrens[i]);
+	//	childrens.pop_back();
+	//}
+
+	//for (int i = components.size() - 1; i >= 0; i--)
+	//{
+	//	RELEASE(components[i]);
+	//	components.pop_back();
+	//}
+}
 
 void GameObject::Update()
 {

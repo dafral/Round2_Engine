@@ -38,29 +38,31 @@ public:
 	virtual ~Component_Mesh() {};
 
 private:
-	Mesh mesh;
+	Mesh* mesh;
 	uint unique_id = 0;
 	Bounding_Volume bv;
 
 public:
-	uint GetIdVertices() { return mesh.id_vertices; };
-	uint GetNumVertices() { return mesh.num_vertices; };
-	float* GetVertices() { return mesh.vertices; };
+	uint GetIdVertices() { return mesh->id_vertices; };
+	uint GetNumVertices() { return mesh->num_vertices; };
+	float* GetVertices() { return mesh->vertices; };
 	
-	uint GetIdIndices() { return mesh.id_indices; };
-	uint GetNumIndices() { return mesh.num_indices; };
-	uint* GetIndices() { return mesh.indices; };
+	uint GetIdIndices() { return mesh->id_indices; };
+	uint GetNumIndices() { return mesh->num_indices; };
+	uint* GetIndices() { return mesh->indices; };
 
-	uint GetIdUVs() { return mesh.id_uvs; };
-	uint GetNumUVs() { return mesh.num_uvs; };
-	float* GetTexCoords() { return mesh.texture_coords; };
+	uint GetIdUVs() { return mesh->id_uvs; };
+	uint GetNumUVs() { return mesh->num_uvs; };
+	float* GetTexCoords() { return mesh->texture_coords; };
 
 	uint GetUniqueID() { return unique_id; };
+	void SetUniqueID(uint uid) { unique_id = uid; };
 	Bounding_Volume GetBoundingVolume() { return bv; };
 
 	void SetFaces(aiMesh* new_mesh);
 	void SetUVs(aiMesh* new_mesh);
 	void SetIDs(Component_Mesh* cmesh);
+	void SetIDs(uint idver, uint idind, uint iduvs);
 	void LoadBuffers(aiMesh* new_mesh);
 
 	//Own format

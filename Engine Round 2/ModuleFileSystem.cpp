@@ -92,7 +92,7 @@ bool ModuleFileSystem::SaveFile(const char* path, const char* file_content, cons
 	return ret;
 }
 
-void ModuleFileSystem::CopyFileTo(const char * file, const char * target, std::string* new_path)
+void ModuleFileSystem::CopyFileTo(const char * file, const char * target)
 {
 	std::string curr_file = file;
 	uint cut = curr_file.find_last_of("\\");
@@ -105,9 +105,6 @@ void ModuleFileSystem::CopyFileTo(const char * file, const char * target, std::s
 		dest_file += curr_file.substr(cut, curr_file.size() - cut);
 
 	CopyFile(file, dest_file.c_str(), false);
-
-	if (new_path != nullptr)
-		*new_path = dest_file;
 }
 
 
@@ -155,3 +152,15 @@ void ModuleFileSystem::GetFilesInPath(std::vector<std::string>& paths, const cha
 	if (handle)
 		FindClose(handle);
 }
+
+std::string ModuleFileSystem::GetExtension(const char* path)
+{
+	std::string _path = path;
+	std::string ext;
+
+	uint dot = _path.find_last_of(".");
+	ext = _path.substr(dot + 1);
+
+	return ext;
+}
+

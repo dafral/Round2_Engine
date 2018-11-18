@@ -141,7 +141,7 @@ void Component_Camera::OnSave(JSON_Doc* filetosave)
 	filetosave->SetNumber("owner", my_go->GetUniqueID());
 
 	filetosave->SetNumber("aspect_ratio", aspect_ratio);
-	filetosave->SetNumber("vertical_fov", frustum.verticalFov);
+	filetosave->SetNumber("vertical_fov", vertical_fov);
 	filetosave->SetNumber("near", frustum.nearPlaneDistance);
 	filetosave->SetNumber("far", frustum.farPlaneDistance);
 

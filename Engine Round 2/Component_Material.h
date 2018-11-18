@@ -29,6 +29,7 @@ public:
 	uint GetTextureHeight() { return material.height; };
 	ImTextureID GetTextureSnap() { return snap; };
 	uint GetUniqueID() { return unique_id; };
+	void SetUniqueID(uint uid) { unique_id = uid; };
 	void LoadBuffers();
 
 	void OnSave(JSON_Doc* filetosave);

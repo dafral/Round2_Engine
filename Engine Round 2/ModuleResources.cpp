@@ -23,7 +23,7 @@ uint ModuleResources::ImportFile(const char* new_file_in_assets)
 	switch (type) 
 	{
 	case texture:
-		App->filesystem->CopyFileTo(new_file_in_assets, "Assets\\Meshes", &copy_path);
+		//App->filesystem->CopyFileTo(new_file_in_assets, "Assets\\Meshes", &copy_path);
 		App->material_importer->ImportImage(new_file_in_assets); 
 		break;
 	case mesh: 

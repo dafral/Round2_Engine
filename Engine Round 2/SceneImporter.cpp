@@ -126,14 +126,20 @@ void SceneImporter::LoadScene(const char* path)
 				mesh_path += ".mymesh";
 
 				go->AddComponent(App->mesh_importer->Load(mesh_path.c_str()));
+
+				Component_Mesh * mesh = (Component_Mesh*)go->FindComponentWithType(MESH);
+				mesh->SetUniqueID(doc->GetNumber("mesh"));
+
 				break;
 			}
 			case Component_Type::MATERIAL:
 			{
 				uint material_uniqueid = doc->GetNumber("material");
+				std::string material_path = App->filesystem->library_material_path.c_str();
+				material_path += std::to_string(material_uniqueid);
+				material_path += ".dds";
 
-				Component_Material* material = new Component_Material();
-			//	App->material_importer->Load(material_uniqueid);
+				App->material_importer->Import(material_path.c_str(), go);
 				break;
 			}
 			case Component_Type::CAMERA:
@@ -155,7 +161,6 @@ void SceneImporter::LoadScene(const char* path)
 				if (doc->GetBool("scene_camera"))
 					App->camera->SetSceneCamera(cam);
 
-				CONSOLELOG("%d", cam->my_go->GetUniqueID());
 				break;
 			}
 			}

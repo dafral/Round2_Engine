@@ -25,7 +25,7 @@ public:
 	Component_Material* ImportImage(const char* path, Resource* res = nullptr);
 	Component_Material* CreateComponentMaterial(GameObject* my_go);
 	void DeleteTextures();
-	void SaveAsDDS(Resource* res);
+	void SaveAsDDS(uint uid);
 	uint LoadTextureInMemory(uint w, uint h, GLubyte * tex_data, GLint format)const;
 	void CheckSaveID(const char* file);
 

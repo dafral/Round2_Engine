@@ -102,7 +102,7 @@ Component_Material* MaterialImporter::ImportImage(const char* path, Resource* re
 				r->array_pos = materials.size() - 1;
 				r->type = texture;
 				r->uid = m->GetUniqueID();
-				SaveAsDDS(r);
+				SaveAsDDS(m->GetUniqueID());
 				App->resources->resources[App->resources->CreateNewResourceInPath(path)].push_back(r);
 				//App->resources->CreateMeta(path);
 			}
@@ -152,7 +152,17 @@ void MaterialImporter::Import(const char* full_path, GameObject* go)
 		else
 		{
 			tex->LoadBuffers();
-			/*App->material_importer->SaveAsDDS();*/
+			std::string extension = App->filesystem->GetExtension(full_path);
+
+			if (extension == "DDS" || extension == "dds")
+			{
+				App->filesystem->CopyFileTo(full_path, App->filesystem->library_material_path.c_str());
+			}
+			else 
+			{
+				App->material_importer->SaveAsDDS(tex->GetUniqueID());
+			}
+
 		}
 	}
 	else {
@@ -195,7 +205,7 @@ void MaterialImporter::DeleteTextures()
 	//}
 }
 
-void MaterialImporter::SaveAsDDS(Resource* res)
+void MaterialImporter::SaveAsDDS(uint uid)
 {
 	ILuint		size;
 	ILubyte*	data;
@@ -208,19 +218,17 @@ void MaterialImporter::SaveAsDDS(Resource* res)
 		data = new ILubyte[size];
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
-			char file[69];
-			sprintf_s(file, "Library\\Materials\\texture_%d.dds", save_id++);
-			FILE* tex_file = fopen(file, "wb");
+			std::string file = App->filesystem->library_material_path;
+			file += std::to_string(uid);
+			file += ".dds";
+
+			FILE* tex_file = fopen(file.c_str(), "wb");
 			fwrite(data, sizeof(ILubyte), size, tex_file);
 			fclose(tex_file);
-
-			/*res->lib_name = App->resources->GetNameFromPath(file);
-			res->lib_path = App->resources->GetRelativePathFromPath(file);*/
 
 			CONSOLELOG("New material texture saved: %s.", file);
 		}
 	}
-
 }
 
 uint MaterialImporter::LoadTextureInMemory(uint w, uint h, GLubyte * tex_data, GLint format) const
